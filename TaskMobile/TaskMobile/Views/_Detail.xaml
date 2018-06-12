@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TaskMobile"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              x:Class="TaskMobile.Views._Detail"
-             Title="Página principal">
-    <Label Text="Bienvenido, Usuario."
-            VerticalOptions="Center" 
-           HorizontalOptions="Center"/>
+             ControlTemplate="{StaticResource TenarisTemplate}"
+             Title="Task Mobile">
+        <Image Source="tenaris_imagotipo2_nofondo.png" Scale="1.0" />
 </ContentPage>

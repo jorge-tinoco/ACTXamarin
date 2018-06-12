@@ -62,5 +62,16 @@ namespace TaskMobile.Views
             await App.MasterD.Detail.Navigation.PushAsync(new Views.SOAPServicexaml());
 
         }
+
+        /// <summary>
+        /// Navigate to assigend tasks view.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void tap_TasksAssigned(object sender, EventArgs e)
+        {
+            App.MasterD.IsPresented = false;
+            await App.MasterD.Detail.Navigation.PushAsync(new Views.Tasks.Assigned());
+        }
     }
 }

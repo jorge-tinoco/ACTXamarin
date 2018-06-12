@@ -21,6 +21,15 @@ namespace TaskMobile.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+            // Comment or uncomment this part for using GORILA SDK
+            //LoadApplication(UXDivers.Gorilla.Droid.Player.CreateApplication(
+            //    this,
+            //    new UXDivers.Gorilla.Config("Good Gorilla")
+            //      // Register FontAwesome
+            //      .RegisterAssemblyFromType<TaskMobile.UserControls.FontAwesomeLabel>()
+
+            //    ));
+
         }
     }
 }

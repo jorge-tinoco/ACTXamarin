@@ -50,7 +50,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\FontAwesomeLabel.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="Views\Employees\All.xaml.cs">
       <DependentUpon>All.xaml</DependentUpon>
     </Compile>
@@ -62,6 +66,9 @@
     </Compile>
     <Compile Include="Views\SOAPServicexaml.xaml.cs">
       <DependentUpon>SOAPServicexaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Assigned.xaml.cs">
+      <DependentUpon>Assigned.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WebServices.xaml.cs">
       <DependentUpon>WebServices.xaml</DependentUpon>
@@ -76,6 +83,7 @@
     <Compile Include="WebServices\IClient.cs" />
     <Compile Include="WebServices\REST\Client.cs" />
     <Compile Include="WebServices\SOAP\Calculator.cs" />
+    <Compile Include="WebServices\SOAP\TaskClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainPage.xaml">
@@ -199,6 +207,17 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\images\tenaris_imagotipo2_nofondo.png" />
+    <Content Include="Assets\images\tenaris_isotipo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\Assigned.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

@@ -4,6 +4,7 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using UXDivers.Gorilla.Platform;
 
 namespace TaskMobile.iOS
 {
@@ -24,6 +25,17 @@ namespace TaskMobile.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
+  //          LoadApplication(UXDivers.Gorilla.iOS.Player.CreateApplication(
+  //new UXDivers.Gorilla.Config("Good Gorilla")
+  //    // Register Grial Shared assembly
+  //    .RegisterAssemblyFromType<UXDivers.Artina.Shared.CircleImage>()
+  //    // Register UXDivers Effects assembly
+  //    .RegisterAssembly(typeof(UXDivers.Effects.Effects).Assembly)
+  //    // FFImageLoading.Transformations
+  //    .RegisterAssemblyFromType<FFImageLoading.Transformations.BlurredTransformation>()
+  //    // FFImageLoading.Forms
+  //    .RegisterAssemblyFromType<FFImageLoading.Forms.CachedImage>()
+  //  ));
 
             return base.FinishedLaunching(app, options);
         }

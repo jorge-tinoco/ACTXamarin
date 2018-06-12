@@ -1,10 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TaskMobile"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              x:Class="TaskMobile.App">
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
+      
+        <ResourceDictionary>
+            <!--1. Tenaris Primary Colors-->
+            <Color x:Key="Color.GreenPrimary">#009900</Color>
+            <Color x:Key="Color.PinkPrimary">#CC0066</Color>
+            <Color x:Key="Color.BluePrimary">#00009A</Color>
+            <Color x:Key="Color.GrayPrimary">#666666</Color>
 
-	</Application.Resources>
+            <!--2. Tenaris Secondary Colors-->
+            <Color x:Key="Color.GreenSecondary">#336633</Color>
+            <Color x:Key="Color.PinkSecondary">#993366</Color>
+            <Color x:Key="Color.BlueSecondary">#003366</Color>
+
+            <!--3. Tenaris Extended Earthtone Colors--> 
+            <Color x:Key="Color.Mosque">#006666</Color>
+            <Color x:Key="Color.MilanoRed">#993333</Color>
+            <Color x:Key="Color.SaddleBrown">#993300</Color>
+            <Color x:Key="Color.ShamrockGreen">#009966</Color>
+            <Color x:Key="Color.Olive">#009966</Color>
+
+            <!--4. Tenaris Extended Pastel Colors-->
+            <Color x:Key="Color.RobinsEggBlue">#00cccc</Color>
+            <Color x:Key="Color.PacificBlue">#0099cc</Color>
+            <Color x:Key="Color.Citrus">#99cc00</Color>
+            <Color x:Key="Color.Avocado">#999966</Color>
+            <Color x:Key="Color.Lilac">#cc99cc</Color>
+
+            <!--5. Tenaris Extended Vivid Colors-->
+            <Color x:Key="Color.RedOrange">#ff3333</Color>
+            <Color x:Key="Color.OrangePeel">#ff9900</Color>
+            <Color x:Key="Color.RoyalPurple">#663399</Color>
+
+            <!--6. Tenaris Critically Palette-->
+            <!--Pacific Blue-->
+            <Color x:Key="Color.IslamicGreen">#009900</Color>
+            <!--Citrus-->
+            <!--OrangePeel-->
+            <Color x:Key="Color.OutrageousOrange">#f05c2f</Color>
+            <Color x:Key="Color.FreeSpeechRed">#d80000</Color>
+
+            <!--7. Tenaris KPI Palette-->
+            <!--Islamic Green-->
+            <!--Orange Peel-->
+            <!--Free Speech Red-->
+           
+            
+            <!--8. CUSTOM COLORS-->
+            <Color x:Key="Color.GrayGoogle">#F5F5F5</Color>
+            <Color x:Key="Color.Background">#F5F5F6</Color>
+
+
+            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="#003366"/>
+                <Setter Property="BarTextColor" Value="White"/>
+            </Style>
+
+
+            <Style x:Key="TenarisButton" TargetType="Button">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+            <Style x:Key="LabelNormal" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Color.GrayPrimary}" />
+            </Style>
+
+            <Style x:Key="LabelDirections" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+            </Style>
+
+            <ControlTemplate x:Key="TenarisTemplate" >
+                <StackLayout BackgroundColor="{StaticResource Color.Background}">
+                    <StackLayout VerticalOptions="CenterAndExpand">
+                        <ContentPresenter  />
+                    </StackLayout>
+                    <StackLayout HeightRequest="20"  Orientation="Horizontal"  >
+                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Copyright}"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End"
+                                               FontSize="15"
+                                               TextColor="#495057"/>
+                        <Label Text="Tenaris Tamsa 2018 (v1.0)"
+					       HorizontalOptions="End"
+                               TextColor="#495057"
+                           FontSize="Small"
+                           VerticalOptions="Center"  />
+                    </StackLayout>
+                </StackLayout>
+                
+            </ControlTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

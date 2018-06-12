@@ -1,12 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TaskMobile"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              x:Class="TaskMobile.Views._Master"
-             Title="Master Page Menú">
-    <StackLayout Orientation="Vertical" Padding="12" >
-        <Button Text="Databases" x:Name="btnDBs" Clicked="btnDBs_Clicked"></Button>
-        <Button Text="QR Reader" x:Name="btnQR" Clicked="btnQR_Clicked"></Button>
-        <Button Text="SOAP Service" x:Name="btnSOAP" Clicked="btnSOAP_Clicked"></Button>
-        <Button Text="REST Service" x:Name="btnWS" Clicked="btnWS_Clicked"></Button>
-    </StackLayout>
+             Title="Master Page Menú" BackgroundColor="Red">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Orientation="Vertical"  BackgroundColor="White" >
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center">
+                    <Image Source="tenaris_isotipo.jpg" Scale="1.0" />
+                    <Label Text="Task Mobile" FontSize="28" HorizontalOptions="Center"
+                        VerticalOptions="Center" FontAttributes="Bold" TextColor="{StaticResource Color.GrayPrimary}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.Olive}" Padding="5" >
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnDBs_Clicked"/>
+                    </StackLayout.GestureRecognizers>
+                    <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Taxi}"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="White"/>
+                    <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
+                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Vehículos" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Seleccione el vehículo" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.MilanoRed}" Padding="5" >
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="tap_TasksAssigned"/>
+                    </StackLayout.GestureRecognizers>
+                    <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.ThumbTack}"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="White"/>
+                    <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
+                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas asignadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas que aún tienes pendientes." HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.BlueSecondary}" Padding="5" >
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnDBs_Clicked"/>
+                    </StackLayout.GestureRecognizers>
+                    <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.CaretSquareORight}"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="White"/>
+                    <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
+                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas ejecutadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Consulta las tareas ya realizadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.PacificBlue}" Padding="5" >
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnDBs_Clicked"/>
+                    </StackLayout.GestureRecognizers>
+                    <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.CheckSquare}"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="White"/>
+                    <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
+                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas terminadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas que ya no necesitan atención" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.PinkPrimary}" Padding="5" >
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnDBs_Clicked"/>
+                    </StackLayout.GestureRecognizers>
+                    <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Ban}"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="White"/>
+                    <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
+                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas rechadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas eliminadas por ti" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
 </ContentPage>
