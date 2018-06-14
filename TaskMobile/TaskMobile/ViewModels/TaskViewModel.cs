@@ -6,17 +6,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using TaskMobile.Interfaces;
+using TaskMobile.Services;
+using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels
 {
     public class TaskViewModel : BaseViewModel
     {
+        INavigationService _navigationService;
+        public Command ToDetailCommand { get; private set; }
         public TaskViewModel()
         {
             WebServices.SOAP.TaskClient TaskWsClient = new WebServices.SOAP.TaskClient();
             Driver = "Jorge Tinoco";
             Vehicle = "Hyster";
             AssignedTasks = TaskWsClient.GetAssignedTasks().ToList();
+            ToDetailCommand = new Command((parameter) => {
+                var navigationService = new NavigationService();
+                navigationService.NavigateToPage(new Views.Tasks.Assigned());
+            });
+        }
+
+        public TaskViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+
         }
 
 

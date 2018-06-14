@@ -99,9 +99,13 @@
                                         Factor=.90}">
             <ListView x:Name="AssignedTasks"  ItemsSource="{Binding AssignedTasks}">
                 <ListView.ItemTemplate>
+                    
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="ToDetailCommand" CommandParameter="{Binding Number}"/>
+                                </Grid.GestureRecognizers>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
