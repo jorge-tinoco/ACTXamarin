@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using TaskMobile.DB;
+using Prism.Unity;
 
 namespace TaskMobile
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
         public static MasterDetailPage MasterD { get; set; }
         public static EmployeeREPO EmployeeRepo;
 
-        public App()
+
+        public App(IPlatformInitializer platformInitializer) : base(platformInitializer)
+        {
+        }
+
+        protected override void OnInitialized()
         {
             InitializeComponent();
-            MainPage = new TaskMobile.MainPage(); 
+            NavigationService.NavigateAsync("MainPage");
         }
 
-        protected override void OnStart()
+        protected override void RegisterTypes()
         {
-            // Handle when your app starts
-        }
-
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
+            Container.RegisterTypeForNavigation<NavigationPage>();
+            Container.RegisterTypeForNavigation<MainPage>();
+            Container.RegisterTypeForNavigation<Views.Tasks.AssignedToExecuted>("AssignedToExecuted");
+            Container.RegisterTypeForNavigation<Views._Detail>("DetailPage");
+            Container.RegisterTypeForNavigation<Views.Tasks.Assigned , TaskMobile.ViewModels.TaskViewModel>("AssignedTasks");
         }
     }
 }

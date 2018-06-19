@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Prism.Unity;
+using Microsoft.Practices.Unity;
 
 namespace TaskMobile.Droid
 {
@@ -20,7 +22,7 @@ namespace TaskMobile.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new App());
+            LoadApplication(new TaskMobile.App(new AndroidPlatformInitializer()));
             // Comment or uncomment this part for using GORILA SDK
             //LoadApplication(UXDivers.Gorilla.Droid.Player.CreateApplication(
             //    this,
@@ -30,6 +32,13 @@ namespace TaskMobile.Droid
 
             //    ));
 
+        }
+        public class AndroidPlatformInitializer : IPlatformInitializer
+        {
+            public void RegisterTypes(IUnityContainer container)
+            {
+
+            }
         }
     }
 }

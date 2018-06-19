@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:TaskMobile"
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              x:Class="TaskMobile.Views._Master"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
              Title="Master Page Menú" BackgroundColor="Red">
     <ContentPage.Content>
         <ScrollView>
@@ -15,7 +17,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.Olive}" Padding="5" >
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="btnDBs_Clicked"/>
+                        <TapGestureRecognizer  Tapped="btnDBs_Clicked"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Taxi}"
                                                VerticalOptions="Center"
@@ -28,7 +30,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.MilanoRed}" Padding="5" >
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="tap_TasksAssigned"/>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/AssignedTasks" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.ThumbTack}"
                                                VerticalOptions="Center"

@@ -5,11 +5,11 @@
              xmlns:UserControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              xmlns:ViewModels="clr-namespace:TaskMobile.ViewModels;assembly=TaskMobile"
              x:Class="TaskMobile.Views.Tasks.Assigned"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:behavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
             ControlTemplate="{StaticResource TenarisTemplate}"
              Title="Tareas asignadas">
-    <ContentPage.BindingContext>
-        <ViewModels:TaskViewModel/>
-    </ContentPage.BindingContext>
     <RelativeLayout >
         <Label Text="Asistente para la recepción de materia prima" Style="{StaticResource LabelDirections}"
                RelativeLayout.XConstraint="{ConstraintExpression 
@@ -59,11 +59,8 @@
                                         Type= RelativeToParent, 
                                         Property=Width, 
                                         Factor=.10, 
-                                        Constant=0}"
-                        >
-          
-                <StackLayout x:Name="VehicleContainer"  Orientation="Horizontal"
-                         >
+                                        Constant=0}"  >
+                <StackLayout x:Name="VehicleContainer"  Orientation="Horizontal" >
                     <Label Text="Vehículo:" FontAttributes="Bold"/>
                     <Label Text="{Binding Vehicle}"/>
                 </StackLayout>
@@ -98,14 +95,13 @@
                                         Property=Width,
                                         Factor=.90}">
             <ListView x:Name="AssignedTasks"  ItemsSource="{Binding AssignedTasks}">
+                <ListView.Behaviors>
+                    <behavior:EventToCommandBehavior EventName="ItemTapped" Command="{Binding ToDetailCommand}" EventArgsParameterPath="Item" />
+                </ListView.Behaviors>
                 <ListView.ItemTemplate>
-                    
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="ToDetailCommand" CommandParameter="{Binding Number}"/>
-                                </Grid.GestureRecognizers>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
