@@ -50,13 +50,16 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\TaskDetail.cs" />
+    <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
     <Compile Include="ViewModels\Tasks\AssignedToExecutedViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\TaskViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\AssignedViewModel.cs" />
     <Compile Include="ViewModels\_MasterViewModel.cs" />
     <Compile Include="Views\Employees\All.xaml.cs">
       <DependentUpon>All.xaml</DependentUpon>

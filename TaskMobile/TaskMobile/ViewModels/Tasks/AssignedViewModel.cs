@@ -11,24 +11,24 @@ using Prism.Mvvm;
 using Prism.Commands;
 using Prism.Navigation;
 
-namespace TaskMobile.ViewModels
+namespace TaskMobile.ViewModels.Tasks
 {
     /// <summary>
     /// View model representing <see cref="Views.Tasks.Assigned"/> view.
     /// </summary>
-    public class TaskViewModel : BindableBase
+    public class AssignedViewModel : BindableBase
     {
         INavigationService _navigationService;
        
         public DelegateCommand<object>ToDetailCommand { get; private set; }
 
-        public TaskViewModel(INavigationService navigationService)
+        public AssignedViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             WebServices.SOAP.TaskClient TaskWsClient = new WebServices.SOAP.TaskClient();
             Driver = "Jorge Tinoco";
             Vehicle = "Hyster"; 
-            AssignedTasks = TaskWsClient.GetAssignedTasks().ToList();
+            AssignedTasks = TaskWsClient.GetAssignedTasks();
             ToDetailCommand = new DelegateCommand<object>(GoToAction);
         }
 

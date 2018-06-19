@@ -24,9 +24,9 @@ namespace TaskMobile
         {
             Container.RegisterTypeForNavigation<NavigationPage>();
             Container.RegisterTypeForNavigation<MainPage>();
-            Container.RegisterTypeForNavigation<Views.Tasks.AssignedToExecuted>("AssignedToExecuted");
             Container.RegisterTypeForNavigation<Views._Detail>("DetailPage");
-            Container.RegisterTypeForNavigation<Views.Tasks.Assigned , TaskMobile.ViewModels.TaskViewModel>("AssignedTasks");
+            Container.RegisterTypeForNavigation<Views.Tasks.AssignedToExecuted>("AssignedToExecuted");
+            Container.RegisterTypeForNavigation<Views.Tasks.Assigned >("AssignedTasks");
         }
     }
 }

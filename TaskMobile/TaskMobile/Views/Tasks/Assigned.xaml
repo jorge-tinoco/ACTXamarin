@@ -48,7 +48,6 @@
                 <Label  Text="3" FontSize="20" Grid.Column="1" TextColor="White"  HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
             </Frame>
         </RelativeLayout>
-        
         <RelativeLayout x:Name="VehicleAndDriver"
                         RelativeLayout.YConstraint="{ConstraintExpression 
                                         Type= RelativeToParent, 
@@ -74,7 +73,6 @@
                     <Label Text="{Binding Driver}"/>
                 </StackLayout>
         </RelativeLayout>
-       
         <Frame HasShadow="True" BackgroundColor="White" Margin="10,10,10,-10"
                  RelativeLayout.XConstraint="{ConstraintExpression 
                                         Type=RelativeToParent, 

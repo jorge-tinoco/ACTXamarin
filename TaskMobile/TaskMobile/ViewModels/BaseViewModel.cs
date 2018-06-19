@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace TaskMobile.ViewModels
 {
     /// <summary>
-    /// Common base class for using on all ViewModels.
+    /// Task mobile custom common base class for using on all ViewModels.
     /// </summary>
     /// <example>
     ///     <code>
@@ -18,20 +19,33 @@ namespace TaskMobile.ViewModels
     ///     }
     ///     </code>
     /// </example>
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : BindableBase
     {
+        private string _Driver;
         /// <summary>
-        /// This event should be invoked to notify the view every time some property changes.
+        /// Current driver.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Execute this method when some property in your viewmodel changes.
-        /// </summary>
-        /// <param name="propertyName">Property that changes.</param>
-        protected virtual void OnPropertyChanged(string propertyName)
+        public string Driver
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get { return _Driver; }
+            set
+            {
+                SetProperty(ref _Driver, value);
+            }
+        }
+
+        private string _Vehicle;
+        /// <summary>
+        /// Represents current Vehicle. (Selected by the driver/user)
+        /// </summary>
+        public string Vehicle
+        {
+            get { return _Vehicle; }
+            set
+            {
+                _Vehicle = value;
+                SetProperty(ref _Vehicle, value);
+            }
         }
     }
 }

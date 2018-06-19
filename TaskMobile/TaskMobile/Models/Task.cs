@@ -11,6 +11,32 @@ namespace TaskMobile.Models
     /// </summary>
     public class Task
     {
+        /// <summary>
+        /// Task constructor. Initializes details list.
+        /// </summary>
+        public Task()
+        {
+            Details = new List<TaskDetail>();
+        }
+
+        /// <summary>
+        /// Initializes details list and add the passed detail.
+        /// </summary>
+        /// <param name="Detail">Detail to add.</param>
+        public Task(TaskDetail Detail)
+        {
+            Details = new List<TaskDetail>();
+            Details.Add(Detail);
+        }
+
+        /// <summary>
+        /// Initializes details list and add  passed details.
+        /// </summary>
+        /// <param name="BunchOfDetails">Collection of details to add. </param>
+        public Task(IEnumerable<TaskDetail> BunchOfDetails)
+        {
+            Details = new List<TaskDetail>(BunchOfDetails);
+        }
         private int _Number;
         /// <summary>
         /// Task number.
@@ -72,6 +98,21 @@ namespace TaskMobile.Models
             get { return _DateTask; }
             set { _DateTask = value; }
         }
+
+
+        private char _Status;
+        /// <summary>
+        /// Task status.
+        /// </summary>
+        public char Status
+        {
+            get { return _Status; }
+            set { _Status = value; }
+        }
+
+
+        public IList<Models.TaskDetail> Details { get; set; }
+
 
     }
 }
