@@ -1,33 +1,112 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels.Tasks
 {
-   /// <summary>
-   /// View model representing <see cref="Views.Tasks.AssignedToExecuted"/> view.
-   /// </summary>
+    /// <summary>
+    /// View model representing <see cref="Views.Tasks.AssignedToExecuted"/> view.
+    /// </summary>
     public class AssignedToExecutedViewModel : BaseViewModel, INavigationAware
     {
-        INavigationService _navigationService;
+        #region  VIEW MODEL PROPERTIES
+
+        private List<Models.TaskDetail> _Details;
+        /// <summary>
+        /// Current pending/assigned  tasks.
+        /// </summary>
+        public List<Models.TaskDetail> Details
+        {
+            get { return _Details; }
+            set
+            {
+                SetProperty(ref _Details, value);
+            }
+        }
+
+        private bool _isRefreshing = false;
+        /// <summary>
+        /// Flag for stablish when the list view is refreshing.
+        /// </summary>
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                SetProperty(ref _isRefreshing, value);
+            }
+        }
+
+        #endregion
+        #region  COMMANDS
+        public DelegateCommand<object> RunTaskCommand { get; private set; }
+        public DelegateCommand<object> RejectTaskCommand { get; private set; }
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    IsRefreshing = true;
+                    await RefreshData();
+                    IsRefreshing = false;
+                });
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Constructor that implements navigation service.
         /// </summary>
         /// <param name="navigationService">Navigation service.</param>
-        public AssignedToExecutedViewModel(INavigationService navigationService)
+        public AssignedToExecutedViewModel(INavigationService navigationService):base(navigationService)
         {
-            _navigationService = navigationService;
+            RunTaskCommand = new DelegateCommand<object>(RunTaskAction);
+            RejectTaskCommand = new DelegateCommand<object>(RejectTaskAction);
             Driver = "Jorge Tinocos";
             Vehicle = "Hyster";
         }
 
+       /// <summary>
+       /// Execute selected detail task, and navigate to <see cref="Views.Tasks.Executed"/> view.
+       /// </summary>
+       /// <param name="parameter">Task detail to execute.</param>
+        private async void RunTaskAction(object parameter)
+        {
+            Models.TaskDetail SelectedDetail = parameter as Models.TaskDetail;
+            NavigationParameters Parameters = new NavigationParameters();
+            Parameters.Add("ExecutedTask", SelectedDetail);
+            await _navigationService.NavigateAsync("ExecutedTask", Parameters);
+        }
+
+        /// <summary>
+        /// Reject task and navigate to <see cref="Views.Tasks.Canceled"/> view.
+        /// </summary>
+        /// <param name="parameter">Detail of canceled task.</param>
+        private async void RejectTaskAction(object parameter)
+        {
+            Models.TaskDetail SelectedDetail = parameter as Models.TaskDetail;
+            NavigationParameters Parameters = new NavigationParameters();
+            Parameters.Add("CanceledTask", SelectedDetail);
+            await _navigationService.NavigateAsync("RejectedTask", Parameters);
+        }
+
+        /// <summary>
+        /// Refresh detail  task list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task RefreshData()
+        {
+            await Task.Delay(1000);
+        }
+
+        #region NAVIGATION ACTIONS
         void INavigatedAware.OnNavigatedFrom(NavigationParameters parameters)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -44,19 +123,7 @@ namespace TaskMobile.ViewModels.Tasks
         {
            
         }
-        
-
-        private List<Models.TaskDetail> _Details;
-        /// <summary>
-        /// Current pending/assigned  tasks.
-        /// </summary>
-        public List<Models.TaskDetail> Details
-        {
-            get { return _Details; }
-            set
-            {
-                SetProperty(ref _Details, value);
-            }
-        }
+        #endregion
+       
     }
 }

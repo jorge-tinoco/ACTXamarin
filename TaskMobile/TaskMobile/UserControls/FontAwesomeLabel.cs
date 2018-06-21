@@ -317,6 +317,7 @@ namespace TaskMobile.UserControls
         public static string GraduationCap = "\uf19d";
         public static string Gratipay = "\uf184";
         public static string Grav = "\uf2d6";
+        public static string Grimace = "\uf57f";
         public static string HackerNews = "\uf1d4";
         public static string HandLizardO = "\uf258";
         public static string HandODown = "\uf0a7";

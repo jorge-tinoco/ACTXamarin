@@ -2,14 +2,12 @@
 <prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
-             xmlns:local="clr-namespace:TaskMobile"
+             xmlns:rsrc="clr-namespace:TaskMobile.Resources"
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              x:Class="TaskMobile.App">
     <prism:PrismApplication.Resources>
-
 		<!-- Application resource dictionary -->
-      
-        <ResourceDictionary>
+        <ResourceDictionary  >
             <!--1. Tenaris Primary Colors-->
             <Color x:Key="Color.GreenPrimary">#009900</Color>
             <Color x:Key="Color.PinkPrimary">#CC0066</Color>
@@ -52,7 +50,6 @@
             <!--Islamic Green-->
             <!--Orange Peel-->
             <!--Free Speech Red-->
-           
             
             <!--8. CUSTOM COLORS-->
             <Color x:Key="Color.GrayGoogle">#F5F5F5</Color>
@@ -63,21 +60,153 @@
                 <Setter Property="BarBackgroundColor" Value="#003366"/>
                 <Setter Property="BarTextColor" Value="White"/>
             </Style>
+            <!--#region Buttons styles goes here-->
+            <Style x:Key="BtnBorders" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.PacificBlue}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="11" Tablet="14"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="100" Tablet="130"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="35"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center" />
 
-
-            <Style x:Key="TenarisButton" TargetType="Button">
-                <Setter Property="FontSize" Value="Medium" />
-                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32" Phone="15" Tablet="20"/>
+                    </Setter.Value>
+                </Setter>
             </Style>
+            <Style x:Key="BtnPrincipal" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.BluePrimary}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="11" Tablet="30"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fa-solid-900.ttf#Font Awesome 5 Free Regular" iOS="Font Awesome 5 Free" WinPhone="Assets/fa-solid-900.ttf#Font Awesome 5 Free"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="150" Tablet="200"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="32" Tablet="50"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center" />
+
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32" Phone="15" Tablet="25"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="BtnSecondary" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.PinkSecondary}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="11" Tablet="14"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="100" Tablet="130"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="35"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center" />
+
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32" Phone="15" Tablet="20"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="BtnWithCheck" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.BluePrimary}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="14" Tablet="21"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="40" Tablet="50"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="40" Tablet="50"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fa-solid-900.ttf#Font Awesome 5 Free Regular" iOS="Font Awesome 5 Free" WinPhone="Assets/fa-solid-900.ttf#Font Awesome 5 Free"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32" Phone="20" Tablet="25"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--#endregion-->
+            <!--#region  Label styles goes here-->
             <Style x:Key="LabelNormal" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource Color.GrayPrimary}" />
             </Style>
-
+            <Style x:Key="HighlightedLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="30" />
+                <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+            </Style>
+            <Style x:Key="GreenBoldLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="22" Tablet="30"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+            </Style>
+            <Style x:Key="GreenNormalLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+            </Style>
+            <Style x:Key="BlueBoldLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="TextColor" Value="{StaticResource Color.BluePrimary}" />
+            </Style>
+            <Style x:Key="BlueNormalLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{StaticResource Color.BluePrimary}" />
+            </Style>
             <Style x:Key="LabelDirections" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
             </Style>
-
+            <!--#endregion-->
             <ControlTemplate x:Key="TenarisTemplate" >
                 <StackLayout BackgroundColor="{StaticResource Color.Background}">
                     <StackLayout VerticalOptions="CenterAndExpand">

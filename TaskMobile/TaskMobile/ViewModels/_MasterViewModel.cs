@@ -15,6 +15,7 @@ namespace TaskMobile.ViewModels
        
         INavigationService _navigationService;
         public DelegateCommand<string> NavigateCommand { get; set; }
+
         public _MasterViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
@@ -28,7 +29,7 @@ namespace TaskMobile.ViewModels
         private async void NavigateAction(string name)
         {
             App.MasterD.IsPresented = false;
-            await _navigationService.NavigateAsync( new Uri( name, UriKind.Relative));
+            await _navigationService.NavigateAsync( new Uri( name, UriKind.Absolute));
         }
     }
     

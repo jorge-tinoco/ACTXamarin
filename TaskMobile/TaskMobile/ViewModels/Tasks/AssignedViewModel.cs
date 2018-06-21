@@ -1,69 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using TaskMobile.Models;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using Xamarin.Forms;
-using Prism.Mvvm;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Navigation;
+using System.Collections.Generic;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     /// <summary>
     /// View model representing <see cref="Views.Tasks.Assigned"/> view.
     /// </summary>
-    public class AssignedViewModel : BindableBase
+    public class AssignedViewModel : BaseViewModel
     {
-        INavigationService _navigationService;
-       
-        public DelegateCommand<object>ToDetailCommand { get; private set; }
-
-        public AssignedViewModel(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
-            WebServices.SOAP.TaskClient TaskWsClient = new WebServices.SOAP.TaskClient();
-            Driver = "Jorge Tinoco";
-            Vehicle = "Hyster"; 
-            AssignedTasks = TaskWsClient.GetAssignedTasks();
-            ToDetailCommand = new DelegateCommand<object>(GoToAction);
-        }
-
-        private async  void GoToAction(object selectedTask)
-        {
-            NavigationParameters Parameters = new NavigationParameters();
-            Parameters.Add("SelectedTask", selectedTask);
-            await _navigationService.NavigateAsync("AssignedToExecuted", Parameters);
-        }
-
-
-        private string _Driver;
-        /// <summary>
-        /// Current driver.
-        /// </summary>
-        public string Driver
-        {
-            get { return _Driver; }
-            set {
-                SetProperty(ref _Driver, value);
-            }
-        }
-
-        private string _Vehicle;
-        /// <summary>
-        /// Represents current Vehicle.
-        /// </summary>
-        public string Vehicle
-        {
-            get { return _Vehicle; }
-            set { _Vehicle = value;
-                SetProperty(ref _Vehicle, value);
-            }
-        }
-
         private List<Models.Task> _AssignedTasks;
         /// <summary>
         /// Current pending/assigned  tasks.
@@ -71,10 +16,71 @@ namespace TaskMobile.ViewModels.Tasks
         public List<Models.Task> AssignedTasks
         {
             get { return _AssignedTasks; }
-            set {
+            set
+            {
                 SetProperty(ref _AssignedTasks, value);
 
             }
+        }
+
+        /// <summary>
+        /// Indicates if the listview is refreshing.
+        /// </summary>
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                SetProperty(ref _isRefreshing, value);
+            }
+        }
+        private bool _isRefreshing = false;
+
+        #region COMMANDS
+        public DelegateCommand<object> ToDetailCommand { get; private set; }
+        public DelegateCommand RefreshCommand
+        {
+            get
+            {
+                return new DelegateCommand(async () =>
+                {
+                    IsRefreshing = true;
+
+                    await RefreshData();
+
+                    IsRefreshing = false;
+                });
+            }
+        }
+        #endregion
+
+        public AssignedViewModel(INavigationService navigationService):base(navigationService)
+        {
+            WebServices.SOAP.TaskClient TaskWsClient = new WebServices.SOAP.TaskClient();
+            Driver = "Jorge Tinoco";
+            Vehicle = "Hyster"; 
+            AssignedTasks = TaskWsClient.GetAssignedTasks();
+            ToDetailCommand = new DelegateCommand<object>(GoToAction);
+        }
+
+        /// <summary>
+        /// Navigate to <see cref="Views.Tasks.AssignedToExecuted"/> view that shows details of selected task.
+        /// </summary>
+        /// <param name="selectedTask">Selected task by the user.</param>
+        private async  void GoToAction(object selectedTask)
+        {
+            NavigationParameters Parameters = new NavigationParameters();
+            Parameters.Add("SelectedTask", selectedTask);
+            await _navigationService.NavigateAsync("AssignedToExecuted", Parameters);
+        }
+
+        /// <summary>
+        /// Refresh the assigned task list view.
+        /// </summary>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task RefreshData()
+        {
+            await System.Threading.Tasks.Task.Delay(1000);
         }
     }
 }

@@ -259,3 +259,11 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/TaskMobile/TaskMobile/Styles
+/TaskMobile/TaskMobile/UserControls/CircleButton.cs
+/TaskMobile/TaskMobile/UserControls/FancySwipeItem.cs
+/TaskMobile/TaskMobile/UserControls/SwipeListItem.cs
+/TaskMobile/TaskMobile.Android/CustomRenderers/AndroidSwipeListItemRenderer.cs
+/TaskMobile/TaskMobile.Android/CustomRenderers/CircleButtonRenderer.cs
+/TaskMobile/TaskMobile.Android/CustomRenderers/FancyGestureListener.cs
+/TaskMobile/TaskMobile.Android/CustomRenderers/FancySwipeItemRenderer.cs

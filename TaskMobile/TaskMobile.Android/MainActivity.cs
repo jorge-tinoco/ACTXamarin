@@ -29,8 +29,16 @@ namespace TaskMobile.Droid
             //    new UXDivers.Gorilla.Config("Good Gorilla")
             //      // Register FontAwesome
             //      .RegisterAssemblyFromType<TaskMobile.UserControls.FontAwesomeLabel>()
-
+            //      // Register circle buttons
+            //      .RegisterAssemblyFromType<TaskMobile.UserControls.CircleButton>()
+            //      //Register Prism assemblies
+            //      .RegisterAssemblyFromType<Prism.IActiveAware>()
+            //      .RegisterAssemblyFromType<Prism.Mvvm.BindableBase>()
+            //      .RegisterAssemblyFromType<Prism.Navigation.INavigatedAware>()
+            //      .RegisterAssemblyFromType<Prism.Unity.PrismApplication>()
             //    ));
+
+
 
         }
         public class AndroidPlatformInitializer : IPlatformInitializer

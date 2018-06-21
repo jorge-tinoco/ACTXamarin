@@ -1,10 +1,5 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Prism.Navigation;
 
 namespace TaskMobile.ViewModels
 {
@@ -16,11 +11,23 @@ namespace TaskMobile.ViewModels
     ///     public YourClass: BaseViewModel
     ///     {
     ///         ...
+    ///         void YourClass(INavigationService navigationService):base( navigationService)
+    ///         {
+    ///             ...
+    ///         }
+    ///         ...
     ///     }
     ///     </code>
     /// </example>
     public class BaseViewModel : BindableBase
     {
+        protected INavigationService _navigationService;
+
+        public BaseViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+        }
+
         private string _Driver;
         /// <summary>
         /// Current driver.

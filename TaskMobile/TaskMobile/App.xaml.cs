@@ -9,7 +9,6 @@ namespace TaskMobile
         public static MasterDetailPage MasterD { get; set; }
         public static EmployeeREPO EmployeeRepo;
 
-
         public App(IPlatformInitializer platformInitializer) : base(platformInitializer)
         {
         }
@@ -20,6 +19,9 @@ namespace TaskMobile
             NavigationService.NavigateAsync("MainPage");
         }
 
+        /// <summary>
+        /// When adding new views you must register them views in this method 
+        /// </summary>
         protected override void RegisterTypes()
         {
             Container.RegisterTypeForNavigation<NavigationPage>();
@@ -27,6 +29,9 @@ namespace TaskMobile
             Container.RegisterTypeForNavigation<Views._Detail>("DetailPage");
             Container.RegisterTypeForNavigation<Views.Tasks.AssignedToExecuted>("AssignedToExecuted");
             Container.RegisterTypeForNavigation<Views.Tasks.Assigned >("AssignedTasks");
+            Container.RegisterTypeForNavigation<Views.Tasks.Executed>("ExecutedTask");
+            Container.RegisterTypeForNavigation<Views.Tasks.Canceled>("CanceledTask");
+            Container.RegisterTypeForNavigation<Views.Tasks.Rejected>("RejectedTask");
         }
     }
 }

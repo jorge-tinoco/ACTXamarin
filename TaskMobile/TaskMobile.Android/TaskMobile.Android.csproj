@@ -184,6 +184,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomRenderers\AndroidSwipeListItemRenderer.cs" />
+    <Compile Include="CustomRenderers\FancyGestureListener.cs" />
+    <Compile Include="CustomRenderers\FancySwipeItemRenderer.cs" />
+    <Compile Include="CustomRenderers\CircleButtonRenderer.cs" />
+    <Compile Include="CustomRenderers\FlatButtonRenderer.cs" />
     <Compile Include="CustomRenderers\FontAwesomeLabelRenderer.cs">
       <SubType>Code</SubType>
     </Compile>

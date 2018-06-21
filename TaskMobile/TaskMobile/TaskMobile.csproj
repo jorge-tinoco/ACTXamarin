@@ -55,7 +55,17 @@
     <Compile Include="Models\TaskDetail.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Styles\Buttons.xaml.cs">
+      <DependentUpon>Buttons.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FancySwipeItem.cs" />
+    <Compile Include="UserControls\CircleButton.cs" />
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
+    <Compile Include="UserControls\SwipeListItem.cs" />
+    <Compile Include="Utilities\Screen.cs" />
+    <Compile Include="ViewModels\Tasks\RejectedViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\CanceledViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\ExecutedViewModel.cs" />
     <Compile Include="ViewModels\Tasks\AssignedToExecutedViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -78,6 +88,15 @@
     </Compile>
     <Compile Include="Views\Tasks\AssignedToExecuted.xaml.cs">
       <DependentUpon>AssignedToExecuted.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Canceled.xaml.cs">
+      <DependentUpon>Canceled.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Executed.xaml.cs">
+      <DependentUpon>Executed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Rejected.xaml.cs">
+      <DependentUpon>Rejected.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WebServices.xaml.cs">
       <DependentUpon>WebServices.xaml</DependentUpon>
@@ -247,7 +266,30 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\Executed.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\Canceled.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Styles\Buttons.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\Rejected.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

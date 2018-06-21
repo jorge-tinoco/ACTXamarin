@@ -15,6 +15,17 @@ namespace TaskMobile.Views.Tasks
         public Assigned()
         {
             InitializeComponent();
+            SizeChanged += Assigned_SizeChanged;
+        }
+
+        /// <summary>
+        /// Set the relative layout according Device Height.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Assigned_SizeChanged(object sender, EventArgs e)
+        {
+            AssignedContainer.HeightRequest = (this.Height - Utilities.Screen.FooterSize);
         }
     }
 }
