@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TaskMobile.Views.Tasks.FinishDetails"
+             x:Class="TaskMobile.Views.Tasks.RejectedDetail"
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:behavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
             ControlTemplate="{StaticResource TenarisTemplate}"
              Title="Detalle">
-    <RelativeLayout x:Name="ExecutedToExecutedContainer" HeightRequest="492">
-        <Label Text="Detalle de la tarea finalizada." Style="{StaticResource LabelDirections}"
+    <RelativeLayout x:Name="RejectedContainer" HeightRequest="492">
+        <Label Text="Detalle de la tarea rechazada." Style="{StaticResource LabelDirections}"
                RelativeLayout.XConstraint="{ConstraintExpression 
                                         Type=RelativeToParent, 
                                         Property=Width, 

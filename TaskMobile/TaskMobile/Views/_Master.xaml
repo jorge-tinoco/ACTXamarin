@@ -69,14 +69,14 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.PinkPrimary}" Padding="5" >
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="btnDBs_Clicked"/>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/NavigationPage/QueryRejected" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Ban}"
                                                VerticalOptions="Center"
                                                FontSize="20"
                                                TextColor="White"/>
                     <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
-                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas rechadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas rechazadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
                         <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas eliminadas por ti" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
                     </StackLayout>
                 </StackLayout>

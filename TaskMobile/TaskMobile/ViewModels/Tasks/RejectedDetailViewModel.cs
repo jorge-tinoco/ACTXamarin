@@ -10,9 +10,9 @@ using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels.Tasks
 {
-    public class FinishDetailsViewModel : BaseViewModel, INavigatingAware
+    public class RejectedDetailViewModel : BaseViewModel, INavigatingAware
     {
-        public FinishDetailsViewModel(INavigationService navigationService) : base(navigationService)
+        public RejectedDetailViewModel(INavigationService navigationService) : base(navigationService)
         {
 
         }
@@ -22,7 +22,7 @@ namespace TaskMobile.ViewModels.Tasks
 
         private List<Models.TaskDetail> _Details;
         /// <summary>
-        /// Current finished  tasks details.
+        /// Current rejected  task details.
         /// </summary>
         public List<Models.TaskDetail> Details
         {

@@ -38,6 +38,8 @@ namespace TaskMobile
             Container.RegisterTypeForNavigation<Views.Tasks.Finished>("Finished");
             Container.RegisterTypeForNavigation<Views.Tasks.QueryFinished>("QueryFinished");
             Container.RegisterTypeForNavigation<Views.Tasks.FinishDetails>("FinishDetails");
+            Container.RegisterTypeForNavigation<Views.Tasks.QueryRejected>("QueryRejected");
+            Container.RegisterTypeForNavigation<Views.Tasks.RejectedDetail>("RejectedDetail");
         }
     }
 }

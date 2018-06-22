@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace TaskMobile.ViewModels.Tasks
 {
-    public class QueryFinishedViewModel : BaseViewModel, INavigatingAware
+    public class QueryRejectedViewModel : BaseViewModel,INavigatingAware
     {
-        public QueryFinishedViewModel(INavigationService navigationService) : base(navigationService)
+        public QueryRejectedViewModel(INavigationService navigationService) : base(navigationService)
         {
             Driver = "Jorge Tinoco";
             Vehicle = "Hyster";
@@ -17,16 +17,16 @@ namespace TaskMobile.ViewModels.Tasks
         }
 
         #region VIEW MODEL PROPERTIES
-        private List<Models.Task> _finished;
+        private List<Models.Task> _rejected;
         /// <summary>
         /// Current executed  tasks.
         /// </summary>
-        public List<Models.Task> FinishedTasks
+        public List<Models.Task> RejectedTasks
         {
-            get { return _finished; }
+            get { return _rejected; }
             set
             {
-                SetProperty(ref _finished, value);
+                SetProperty(ref _rejected, value);
 
             }
         }
@@ -58,7 +58,6 @@ namespace TaskMobile.ViewModels.Tasks
                 SetProperty(ref _end, value);
             }
         }
-
         /// <summary>
         /// Indicates if the listview is refreshing.
         /// </summary>
@@ -100,7 +99,7 @@ namespace TaskMobile.ViewModels.Tasks
         {
             NavigationParameters Parameters = new NavigationParameters();
             Parameters.Add("TaskWithDetail", selectedTask);
-            await _navigationService.NavigateAsync("FinishDetails", Parameters);
+            await _navigationService.NavigateAsync("RejectedDetail", Parameters);
         }
 
         /// <summary>
@@ -115,7 +114,7 @@ namespace TaskMobile.ViewModels.Tasks
         public void OnNavigatingTo(NavigationParameters parameters)
         {
             WebServices.SOAP.TaskClient TaskWsClient = new WebServices.SOAP.TaskClient();
-            FinishedTasks = TaskWsClient.FinishedTasks();
+            RejectedTasks = TaskWsClient.RejectedTasks();
         }
     }
 }

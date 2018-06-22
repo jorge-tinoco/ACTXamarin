@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TaskMobile.Views.Tasks.QueryFinished"
+             x:Class="TaskMobile.Views.Tasks.QueryRejected"
              xmlns:local="clr-namespace:TaskMobile"
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:behavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
             ControlTemplate="{StaticResource TenarisTemplate}"
-             Title="Tareas Finalizadas">
-    <RelativeLayout x:Name="FinishedContainer" HeightRequest="492">
-        <Label Text="Tareas que ya fueron finalizadas por ti" Style="{StaticResource LabelDirections}"
+             Title="Tareas rechazadas">
+    <RelativeLayout x:Name="RejectedContainer" HeightRequest="492">
+        <Label Text="Tareas que previamente se rechazaron." Style="{StaticResource LabelDirections}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.05, Constant=0}"/>
         <StackLayout Orientation="Horizontal" 
                     RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.50, Constant=0}"
@@ -40,8 +40,8 @@
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.25, Constant=0}"
                RelativeLayout.HeightConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.70}"
                RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.90}">
-            <ListView x:Name="Finished"  
-                      ItemsSource="{Binding FinishedTasks}"
+            <ListView x:Name="Rejected"  
+                      ItemsSource="{Binding RejectedTasks}"
                       IsPullToRefreshEnabled="True"
                       RefreshCommand="{Binding RefreshCommand}"
                       IsRefreshing="{Binding IsRefreshing}">

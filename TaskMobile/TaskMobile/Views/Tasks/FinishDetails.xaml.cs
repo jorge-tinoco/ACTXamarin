@@ -15,9 +15,7 @@ namespace TaskMobile.Views.Tasks
         /// </summary>
         private void FinishDetails_SizeChanged(object sender, System.EventArgs e)
         {
-            //throw new System.NotImplementedException();
-            //FinishContainer.HeightRequest = (this.Height - Utilities.Screen.FooterSize);
-
+            FinishContainer.HeightRequest = (this.Height - Utilities.Screen.FooterSize);
         }
     }
 }
