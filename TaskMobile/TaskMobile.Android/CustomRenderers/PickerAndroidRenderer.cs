@@ -1,0 +1,27 @@
+using Android.Graphics;
+using TaskMobile.Droid.CustomRenderers;
+using TaskMobile.UserControls;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+
+
+[assembly: ExportRenderer(typeof(Picker), typeof(PickerAndroidRenderer))]
+namespace TaskMobile.Droid.CustomRenderers
+{
+    public class PickerAndroidRenderer:PickerRenderer
+    {
+        /// <summary>
+        /// Created for changing picker font size.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnElementChanged(ElementChangedEventArgs<Picker> e)
+        {
+            base.OnElementChanged(e);
+
+            if (e.OldElement != null || e.NewElement != null)
+            {
+                Control.TextSize *= 0.98f;
+            }
+        }
+    }
+}

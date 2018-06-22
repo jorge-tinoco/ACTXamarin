@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
+             x:Class="TaskMobile.Views.Login"
+             Title="Bienvenido">
+    <RelativeLayout x:Name="LoginContainer"  WidthRequest="492">
+        <Image Source="wallpaper.jpg" Opacity=".60"/>
+        <StackLayout x:Name="BoxContainer" BackgroundColor="WhiteSmoke" Padding="20,25,20,20" Opacity="0.88"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.70,Constant=0}"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.15, Constant=0}"  
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}">
+                
+            <Image Source="tenaris_imagotipo2_nofondo.png" WidthRequest="300" Margin="0,0,0,20"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.40,Constant=0}"
+                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.15, Constant=0}"/>
+            <RelativeLayout x:Name="FieldsContainer" >
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center"
+                             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.20,Constant=0}">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Globe}"
+                                            Margin="0,15,0,10"
+                                            VerticalOptions="Center"
+                                            FontSize="20"
+                                            TextColor="Black"/>
+                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Building}"
+                                                Margin="0,15,0,10"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="Black"/>
+                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.User}"
+                                                Margin="0,15,0,10"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="Black"/>
+                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Key}"
+                                                Margin="0,15,20,10"
+                                               VerticalOptions="Center"
+                                               FontSize="20"
+                                               TextColor="Black"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" >
+                        <Picker x:Name="LanguagePicker" 
+                            Title="Seleccione un idioma"
+                            ItemsSource="{Binding AvailableLanguages}"
+                            ItemDisplayBinding="{Binding Value}"
+                            SelectedItem="{Binding Language}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.80,Constant=0}"/>
+                        <Picker x:Name="MillPicker" 
+                            Title="Seleccione una planta"
+                            ItemsSource="{Binding SupportedMills}"
+                            ItemDisplayBinding="{Binding Value}"
+                            SelectedItem="{Binding Mill}"/>
+                        <Entry Placeholder="Ingrese su usuario" Text="{Binding User}"/>
+                        <Entry IsPassword="True" Placeholder="Introduzca su contraseña" Text="{Binding Password}"/>
+                    </StackLayout>
+                </StackLayout>
+            </RelativeLayout>
+            <Button Text="Ingresar" Command="{Binding LoginCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </RelativeLayout>
+</ContentPage>

@@ -88,30 +88,27 @@
                 </Setter>
             </Style>
             <Style x:Key="BtnPrincipal" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource Color.BluePrimary}" />
-                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderColor" Value="{StaticResource Color.PinkPrimary}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="TextColor" Value="#666666" />
                 <Setter Property="FontSize">
                     <Setter.Value>
-                        <OnIdiom x:TypeArguments="x:Double" Phone="11" Tablet="30"/>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="FontFamily">
-                    <Setter.Value>
-                        <OnPlatform x:TypeArguments="x:String" Android="fa-solid-900.ttf#Font Awesome 5 Free Regular" iOS="Font Awesome 5 Free" WinPhone="Assets/fa-solid-900.ttf#Font Awesome 5 Free"/>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="11" Tablet="15"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="WidthRequest">
                     <Setter.Value>
-                        <OnIdiom x:TypeArguments="x:Double" Phone="150" Tablet="200"/>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="140" Tablet="180"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="HeightRequest">
                     <Setter.Value>
-                        <OnIdiom x:TypeArguments="x:Double" Phone="32" Tablet="50"/>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="HorizontalOptions" Value="Center" />
-
+    
                 <Setter Property="BorderRadius">
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Int32" Phone="15" Tablet="25"/>

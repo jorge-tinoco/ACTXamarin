@@ -16,7 +16,7 @@ namespace TaskMobile
         protected override void OnInitialized()
         {
             InitializeComponent();
-            NavigationService.NavigateAsync("MainPage");
+            NavigationService.NavigateAsync("LoginPage");
         }
 
         /// <summary>
@@ -27,6 +27,7 @@ namespace TaskMobile
             Container.RegisterTypeForNavigation<NavigationPage>();
             Container.RegisterTypeForNavigation<MainPage>();
             Container.RegisterTypeForNavigation<Views._Detail>("DetailPage");
+            Container.RegisterTypeForNavigation<Views.Login>("LoginPage");
             Container.RegisterTypeForNavigation<Views.Tasks.AssignedToExecuted>("AssignedToExecuted");
             Container.RegisterTypeForNavigation<Views.Tasks.Assigned >("AssignedTasks");
             Container.RegisterTypeForNavigation<Views.Tasks.Executed>("ExecutedTask");
