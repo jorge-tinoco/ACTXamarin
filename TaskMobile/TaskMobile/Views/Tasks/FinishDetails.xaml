@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaskMobile.Views.Tasks.FinishDetails"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:behavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+            ControlTemplate="{StaticResource TenarisTemplate}"
+             Title="Detalle">
+    <RelativeLayout x:Name="ExecutedToExecutedContainer" HeightRequest="492">
+        <Label Text="Detalle de la tarea finalizada." Style="{StaticResource LabelDirections}"
+               RelativeLayout.XConstraint="{ConstraintExpression 
+                                        Type=RelativeToParent, 
+                                        Property=Width, 
+                                        Factor=.05, 
+                                        Constant=0}"/>
+        <RelativeLayout x:Name="FinishContainer" MinimumWidthRequest="200"
+                                RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.81, Constant=0}"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height,  Factor=.15, Constant=0}" >
+            <Button Text="Terminar"  Style="{StaticResource BtnSecondary}" Command="{Binding FinishCommand}" />
+            <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.SignLanguage}" FontSize="20" TextColor="White"
+                                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=FinishContainer, Property=Y, Factor=0,Constant=8}"  
+                                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=FinishContainer, Property=X, Factor=0,Constant=13}" />
+        </RelativeLayout>
+        <RelativeLayout x:Name="VehicleAndDriver"
+                        RelativeLayout.YConstraint="{ConstraintExpression 
+                                        Type= RelativeToParent, 
+                                        Property=Height, 
+                                        Factor=.22, 
+                                        Constant=0}"
+                        RelativeLayout.XConstraint="{ConstraintExpression 
+                                        Type= RelativeToParent, 
+                                        Property=Width, 
+                                        Factor=.10, 
+                                        Constant=0}"  >
+            <StackLayout x:Name="VehicleContainer"  Orientation="Horizontal" >
+                <Label Text="Vehículo:" FontAttributes="Bold"/>
+                <Label Text="{Binding Vehicle}"/>
+            </StackLayout>
+            <StackLayout x:Name="DriverContainer" Orientation="Horizontal"
+                          RelativeLayout.XConstraint="{ConstraintExpression 
+                                        Type= RelativeToParent, 
+                                        Property=Width, 
+                                        Factor=.45, 
+                                        Constant=0}">
+                <Label Text="Chofer:" FontAttributes="Bold"/>
+                <Label Text="{Binding Driver}"/>
+            </StackLayout>
+        </RelativeLayout>
+        <Frame HasShadow="True" BackgroundColor="White" Margin="10,10,10,-10"
+                 RelativeLayout.XConstraint="{ConstraintExpression 
+                                        Type=RelativeToParent, 
+                                        Property=Width, 
+                                        Factor=.05, 
+                                        Constant=0}"
+            RelativeLayout.YConstraint="{ConstraintExpression 
+                                        Type=RelativeToParent, 
+                                        Property=Height, 
+                                        Factor=.25, 
+                                        Constant=0}"
+            RelativeLayout.HeightConstraint = "{ConstraintExpression 
+                                        Type=RelativeToParent,
+                                        Property=Height,
+                                        Factor=.70}"
+            RelativeLayout.WidthConstraint = "{ConstraintExpression 
+                                        Type=RelativeToParent,
+                                        Property=Width,
+                                        Factor=.90}">
+            <ListView x:Name="FinishedTasks"  
+                        ItemsSource="{Binding Details}"
+                        IsPullToRefreshEnabled="True"
+                        RefreshCommand="{Binding RefreshCommand}"
+                        IsRefreshing="{Binding IsRefreshing}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding TaskNumber}" Grid.Row="0" Grid.Column="0" />
+                                <Label Text="{Binding WorkOrder}" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="{Binding Lot}" Grid.Row="0" Grid.Column="2" />
+                                <Label Text="{Binding SapCode}" Grid.Row="0" Grid.Column="3" />
+                                <Label Text="{Binding Pieces}" Grid.Row="0" Grid.Column="4" />
+                                <Label Text="{Binding Tons}" Grid.Row="0" Grid.Column="5" />
+                                <Label Text="{Binding StockType}" Grid.Row="0" Grid.Column="6" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Frame>
+    </RelativeLayout>
+</ContentPage>

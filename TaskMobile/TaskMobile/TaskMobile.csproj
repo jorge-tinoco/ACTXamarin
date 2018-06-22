@@ -67,6 +67,8 @@
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
+    <Compile Include="ViewModels\Tasks\FinishDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\QueryFinishedViewModel.cs" />
     <Compile Include="ViewModels\Tasks\FinishedViewModel.cs" />
     <Compile Include="ViewModels\Tasks\ExecutedToFinishViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -109,11 +111,17 @@
     <Compile Include="Views\Tasks\ExecutedToFinish.xaml.cs">
       <DependentUpon>ExecutedToFinish.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Tasks\FinishDetails.xaml.cs">
+      <DependentUpon>FinishDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tasks\Finished.xaml.cs">
       <DependentUpon>Finished.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tasks\QueryExecuted.xaml.cs">
       <DependentUpon>QueryExecuted.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\QueryFinished.xaml.cs">
+      <DependentUpon>QueryFinished.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tasks\Rejected.xaml.cs">
       <DependentUpon>Rejected.xaml</DependentUpon>
@@ -330,6 +338,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Tasks\Finished.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\QueryFinished.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\FinishDetails.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

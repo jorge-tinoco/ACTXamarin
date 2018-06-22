@@ -56,7 +56,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.PacificBlue}" Padding="5" >
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="btnDBs_Clicked"/>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/NavigationPage/QueryFinished" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.CheckSquare}"
                                                VerticalOptions="Center"
