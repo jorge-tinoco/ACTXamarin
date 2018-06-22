@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaskMobile.Views.Tasks.QueryExecuted"
+             xmlns:local="clr-namespace:TaskMobile"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:behavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+            ControlTemplate="{StaticResource TenarisTemplate}"
+             Title="Tareas ejecutadas">
+    <RelativeLayout x:Name="ExecutedContainer" HeightRequest="492">
+        <Label Text="Asistente para la recepción de materia prima" Style="{StaticResource LabelDirections}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.05, Constant=0}"/>
+        <RelativeLayout  x:Name="Steps" 
+                         RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height, Factor=0.080,   Constant=0}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.20,Constant=0}">
+            <Button x:Name="Step1" Text="1" Style="{StaticResource BtnWithCheck}"
+                            RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.25, Constant=0}"/>
+            <Button x:Name="Step2" Text="2" Style="{StaticResource BtnWithCheck}"
+                            RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.55, Constant=0}"/>
+            <Button x:Name="Step3" Text="3" Style="{StaticResource BtnWithCheck}" 
+                            RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.85, Constant=0}"/>
+        </RelativeLayout>
+        <RelativeLayout x:Name="VehicleAndDriver"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent, Property=Height, Factor=.22, Constant=0}"
+                        RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent, Property=Width,  Factor=.10, Constant=0}"  >
+            <StackLayout x:Name="VehicleContainer"  Orientation="Horizontal" >
+                <Label Text="Vehículo:" FontAttributes="Bold"/>
+                <Label Text="{Binding Vehicle}"/>
+            </StackLayout>
+            <StackLayout x:Name="DriverContainer" Orientation="Horizontal"
+                          RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent, Property=Width, Factor=.45, Constant=0}">
+                <Label Text="Chofer:" FontAttributes="Bold"/>
+                <Label Text="{Binding Driver}"/>
+            </StackLayout>
+        </RelativeLayout>
+        <Frame HasShadow="True" BackgroundColor="White" Margin="10,10,10,-10"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.05, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.25, Constant=0}"
+               RelativeLayout.HeightConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.70}"
+               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.90}">
+            <ListView x:Name="ExecutedTasks"  
+                      ItemsSource="{Binding ExecutedTasks}"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding RefreshCommand}"
+                      IsRefreshing="{Binding IsRefreshing}">
+                <ListView.Behaviors>
+                    <behavior:EventToCommandBehavior EventName="ItemTapped" Command="{Binding ToDetailCommand}" EventArgsParameterPath="Item" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Number}" Grid.Row="0" Grid.Column="0" />
+                                <Label Text="{Binding Type}" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="{Binding Remission}" Grid.Row="0" Grid.Column="2" />
+                                <Label Text="{Binding Origin}" Grid.Row="0" Grid.Column="3" />
+                                <Label Text="{Binding Destination}" Grid.Row="0" Grid.Column="4" />
+                                <Label Text="{Binding DateTask}" Grid.Row="0" Grid.Column="5" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Frame>
+    </RelativeLayout>
+</ContentPage>

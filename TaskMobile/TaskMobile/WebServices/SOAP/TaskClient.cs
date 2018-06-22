@@ -27,5 +27,23 @@ namespace TaskMobile.WebServices.SOAP
             Assigned.Add(new Models.Task { Number = 23, Origin = "FAT2", Destination = "FAT1", Remission = 13351, Type ="Movimiento de Material", DateTask = DateTime.Now});
             return Assigned;
         }
+
+        /// <summary>
+        /// Use for getting all executed tasks
+        /// </summary>
+        /// <returns>Collection of executed <see cref="Models.Task"/> .</returns>
+        internal List<Models.Task> GetExecutedTasks()
+        {
+            List<Models.Task> Executed = new List<Models.Task>();
+            Models.TaskDetail GD = new Models.TaskDetail { WorkOrder = "232395", Lot = "4560", Pieces = 45, SapCode = "2300456", Tons = 34.062, StockType = "COPLE", TaskNumber = 234 };
+            Executed.Add(new Models.Task(GD) { Number = 234, Origin = "PRE2", Destination = "FAT2", Remission = 13345, Type = "Movimiento de Material", DateTask = DateTime.Now });
+            Executed.Add(new Models.Task(GD) { Number = 235, Origin = "FAT1", Destination = "PRE2", Remission = 13346, Type = "Movimiento de Material", DateTask = DateTime.Now });
+            Executed.Add(new Models.Task { Number = 300, Origin = "FAT3", Destination = "FAT1", Remission = 13347, Type = "Movimiento de Material", DateTask = DateTime.Now });
+            Executed.Add(new Models.Task { Number = 345, Origin = "FAT2", Destination = "FAT1", Remission = 13348, Type = "Movimiento de Coples", DateTask = DateTime.Now });
+            Executed.Add(new Models.Task { Number = 299, Origin = "FAT1", Destination = "FAT1", Remission = 13349, Type = "Movimiento de Material", DateTask = DateTime.Now });
+            Executed.Add(new Models.Task { Number = 23, Origin = "FAT2", Destination = "FAT1", Remission = 13350, Type = "Movimiento de TUBOS", DateTask = DateTime.Now });
+            Executed.Add(new Models.Task { Number = 23, Origin = "FAT1", Destination = "FAT1", Remission = 13351, Type = "Movimiento de Material", DateTask = DateTime.Now });
+            return Executed;
+        }
     }
 }

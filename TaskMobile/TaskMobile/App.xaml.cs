@@ -33,6 +33,9 @@ namespace TaskMobile
             Container.RegisterTypeForNavigation<Views.Tasks.Executed>("ExecutedTask");
             Container.RegisterTypeForNavigation<Views.Tasks.Canceled>("CanceledTask");
             Container.RegisterTypeForNavigation<Views.Tasks.Rejected>("RejectedTask");
+            Container.RegisterTypeForNavigation<Views.Tasks.QueryExecuted>("QueryExecuted");
+            Container.RegisterTypeForNavigation<Views.Tasks.ExecutedToFinish>("ExecutedToFinish");
+            Container.RegisterTypeForNavigation<Views.Tasks.Finished>("Finished");
         }
     }
 }

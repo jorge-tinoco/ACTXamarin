@@ -67,7 +67,10 @@
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
+    <Compile Include="ViewModels\Tasks\FinishedViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\ExecutedToFinishViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\QueryExecutedViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RejectedViewModel.cs" />
     <Compile Include="ViewModels\Tasks\CanceledViewModel.cs" />
     <Compile Include="ViewModels\Tasks\ExecutedViewModel.cs" />
@@ -102,6 +105,15 @@
     </Compile>
     <Compile Include="Views\Tasks\Executed.xaml.cs">
       <DependentUpon>Executed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\ExecutedToFinish.xaml.cs">
+      <DependentUpon>ExecutedToFinish.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Finished.xaml.cs">
+      <DependentUpon>Finished.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\QueryExecuted.xaml.cs">
+      <DependentUpon>QueryExecuted.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tasks\Rejected.xaml.cs">
       <DependentUpon>Rejected.xaml</DependentUpon>
@@ -300,6 +312,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\QueryExecuted.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\ExecutedToFinish.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Tasks\Finished.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
