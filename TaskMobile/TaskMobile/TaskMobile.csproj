@@ -67,6 +67,7 @@
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
+    <Compile Include="ViewModels\Vehicle\ChangeViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RejectedDetailViewModel.cs" />
     <Compile Include="ViewModels\Tasks\QueryRejectedViewModel.cs" />
     <Compile Include="ViewModels\Tasks\FinishDetailsViewModel.cs" />
@@ -134,6 +135,9 @@
     <Compile Include="Views\Tasks\RejectedDetail.xaml.cs">
       <DependentUpon>RejectedDetail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Vehicle\Change.xaml.cs">
+      <DependentUpon>Change.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WebServices.xaml.cs">
       <DependentUpon>WebServices.xaml</DependentUpon>
     </Compile>
@@ -148,6 +152,7 @@
     <Compile Include="WebServices\REST\Client.cs" />
     <Compile Include="WebServices\SOAP\Calculator.cs" />
     <Compile Include="WebServices\SOAP\TaskClient.cs" />
+    <Compile Include="WebServices\SOAP\VehicleClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainPage.xaml">
@@ -370,6 +375,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Tasks\RejectedDetail.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Vehicle\Change.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

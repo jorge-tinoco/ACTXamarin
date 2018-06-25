@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
+             ControlTemplate="{StaticResource TenarisTemplate}"
+             x:Class="TaskMobile.Views.Vehicle.Change">
+    <RelativeLayout x:Name="ChangeContainer" WidthRequest="492">
+        <Frame HasShadow="True" BackgroundColor="White" Margin="10,10,10,-10"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.20, Constant=0}"
+               RelativeLayout.HeightConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.60}"
+               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.40}">
+            <StackLayout Margin="30,30,30,30">
+                
+                <Label Text="Seleccione un vehículo" Style="{StaticResource BlueNormalLabel}"/>
+                <StackLayout Orientation="Horizontal" Padding="15,15,0,0">
+                    <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Taxi}"
+                                                Margin="0,15,5,10"
+                                                VerticalOptions="Center"
+                                                FontSize="20"
+                                                TextColor="Black"/>
+                    <RelativeLayout>
+                        
+                    <Picker x:Name="VehiclePicker" 
+                            Title="Vehículos"
+                            ItemsSource="{Binding AvailableVehicles}"
+                            ItemDisplayBinding="{Binding Description}"
+                            SelectedItem="{Binding Vehicle}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.70,Constant=0}"/>
+                    </RelativeLayout>
+                </StackLayout>
+                <Button Text="Aceptar" Margin="0,20,0,0" Command="{Binding SelectCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+        </Frame>
+    </RelativeLayout>
+    
+</ContentPage>
