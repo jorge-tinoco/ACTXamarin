@@ -84,6 +84,7 @@ namespace TaskMobile.ViewModels.Vehicle
             }
             catch (Exception e)
             {
+                App.LogToDb.Error(e);
                 await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error al consultar los vehículos", "Aceptar");
             }
         }

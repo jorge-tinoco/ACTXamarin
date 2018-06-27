@@ -47,6 +47,7 @@
     <Compile Include="DB\EmployeeREPO.cs" />
     <Compile Include="DB\ISQLite.cs" />
     <Compile Include="DB\LanguagesREPO.cs" />
+    <Compile Include="DB\LoggingREPO.cs" />
     <Compile Include="DB\MillsREPO.cs" />
     <Compile Include="DB\Models\Employee.cs" />
     <Compile Include="DB\SettingsREPO.cs" />

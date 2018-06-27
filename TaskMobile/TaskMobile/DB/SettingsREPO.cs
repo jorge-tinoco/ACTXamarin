@@ -53,6 +53,7 @@ namespace TaskMobile.DB
             }
             catch (Exception e)
             {
+                App.LogToDb.Error(e);
                 return false;
             }
         }

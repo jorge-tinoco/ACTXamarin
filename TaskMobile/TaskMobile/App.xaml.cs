@@ -9,10 +9,12 @@ namespace TaskMobile
         public static MasterDetailPage MasterD { get; set; }
         public static EmployeeREPO EmployeeRepo;
         public static SettingsREPO SettingsInDb;
+        public static LoggingREPO LogToDb;
 
         public App(IPlatformInitializer platformInitializer) : base(platformInitializer)
         {
             SettingsInDb = new SettingsREPO();
+            LogToDb = new LoggingREPO();
         }
 
         protected override void OnInitialized()
