@@ -15,7 +15,7 @@ namespace TaskMobile.DB
         /// <summary>
         /// Database name.
         /// </summary>
-        public const string Name  = "employees.db3"; // const because Never change
+        public const string Name  = "task_mobile_db.db3"; // const because Never change
 
         /// <summary>
         /// Database connection.

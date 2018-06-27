@@ -49,6 +49,7 @@
     <Compile Include="DB\LanguagesREPO.cs" />
     <Compile Include="DB\MillsREPO.cs" />
     <Compile Include="DB\Models\Employee.cs" />
+    <Compile Include="DB\SettingsREPO.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -147,12 +148,22 @@
     <Compile Include="Views\_Master.xaml.cs">
       <DependentUpon>_Master.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\Entities\Common\LogItem.cs" />
+    <Compile Include="WebServices\Entities\Common\MessageHeader.cs" />
+    <Compile Include="WebServices\Entities\Common\MessageLog.cs" />
+    <Compile Include="WebServices\Entities\Common\Request.cs" />
+    <Compile Include="WebServices\Entities\Common\Response.cs" />
+    <Compile Include="WebServices\Entities\Common\SenderParty.cs" />
     <Compile Include="WebServices\Entities\User.cs" />
+    <Compile Include="WebServices\Entities\Vehicle.cs" />
+    <Compile Include="WebServices\Entities\VehicleListResult.cs" />
+    <Compile Include="WebServices\Entities\VehicleResponse.cs" />
     <Compile Include="WebServices\IClient.cs" />
     <Compile Include="WebServices\REST\Client.cs" />
     <Compile Include="WebServices\SOAP\Calculator.cs" />
     <Compile Include="WebServices\SOAP\TaskClient.cs" />
     <Compile Include="WebServices\SOAP\VehicleClient.cs" />
+    <Compile Include="WebServices\URL.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainPage.xaml">

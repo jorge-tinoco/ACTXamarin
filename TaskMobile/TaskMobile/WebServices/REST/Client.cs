@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace TaskMobile.WebServices.REST
@@ -10,6 +11,15 @@ namespace TaskMobile.WebServices.REST
     class Client : IClient
     {
         private string WebServiceURL = @"https://reqres.in/api/users?page=2"; // Default(dummie) web service URL to query
+
+        public Client()
+        {
+                
+        }
+        public Client(string uri)
+        {
+            WebServiceURL = uri;
+        }
 
         /// <summary>
         /// Generic method for consume REST web service,
@@ -65,6 +75,46 @@ namespace TaskMobile.WebServices.REST
             {
                 T Response = await Get<T>();
                 return Response;
+            }
+        }
+
+        /// <summary>
+        /// Generic method for requesting REST web service by POST METHOD.
+        /// </summary>
+        /// <remarks>
+        /// Use the <see cref="WebServices.Entities.Common.Response{T}"/> type.
+        /// </remarks>
+        /// <typeparam name="T">Generic that represents the response type. </typeparam>
+        /// <param name="request">Request object for sending to web service. Use the <see cref="WebServices.Entities.Common.Request{T}"/> class.</param>
+        /// <returns>Response of <typeparamref name="T"/> type.  </returns>
+        public async Task<T> Post<T>(object request) 
+        {
+            try
+            {
+                HttpClient Client = new HttpClient();
+                Uri URL = new Uri(WebServiceURL, UriKind.Absolute);
+                var ByteArray = Encoding.UTF8.GetBytes("T11092:trabajador0618");
+                Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(ByteArray));
+                var Json = Newtonsoft.Json.JsonConvert.SerializeObject(request);
+                var StringContent = new StringContent(Json, UnicodeEncoding.UTF8, "application/json");
+                HttpResponseMessage Response = await Client.PostAsync(URL,StringContent);
+                if (Response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string JSONstring = await Response.Content.ReadAsStringAsync();
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(JSONstring);
+                }
+                return default(T);
+            }
+            catch (System.Net.WebException ex)
+            {
+                if (ex.Message != null)
+                    throw ex;
+                else
+                    throw new Exception("Hubo un error de red", ex.InnerException);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al consumir el servicio: " + WebServiceURL, e);
             }
         }
     }

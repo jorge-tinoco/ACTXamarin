@@ -26,9 +26,13 @@
                     <Picker x:Name="VehiclePicker" 
                             Title="Vehículos"
                             ItemsSource="{Binding AvailableVehicles}"
-                            ItemDisplayBinding="{Binding Description}"
+                            ItemDisplayBinding="{Binding NameToShow}"
                             SelectedItem="{Binding Vehicle}"
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.70,Constant=0}"/>
+                        <ActivityIndicator  IsVisible="{Binding IsBusy}" 
+                                            IsRunning="{Binding IsBusy}"
+                                            Color="{StaticResource Color.BluePrimary}"  
+                                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"/>
                     </RelativeLayout>
                 </StackLayout>
                 <Button Text="Aceptar" Margin="0,20,0,0" Command="{Binding SelectCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>

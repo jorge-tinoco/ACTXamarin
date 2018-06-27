@@ -46,5 +46,15 @@ namespace TaskMobile.Models
             set { _Descriptioon = value; }
         }
 
+        /// <summary>
+        /// Vehicle name showed in select combos. 
+        /// </summary>
+        [Ignore]
+        public string NameToShow {
+            get
+            {
+                return Plate + " - "+Description; 
+            }
+        }
     }
 }
