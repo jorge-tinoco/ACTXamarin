@@ -59,11 +59,11 @@ namespace TaskMobile.Models
         }
 
 
-        private int _Remission;
+        private string _Remission;
         /// <summary>
         /// Remission number assigned to this task.
         /// </summary>
-        public int Remission
+        public string Remission
         {
             get { return _Remission; }
             set { _Remission = value; }

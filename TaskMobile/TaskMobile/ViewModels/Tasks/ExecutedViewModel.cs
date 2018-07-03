@@ -6,7 +6,7 @@ namespace TaskMobile.ViewModels.Tasks
 {
     public class ExecutedViewModel : BaseViewModel, INavigatingAware
     {
-
+        #region Properties
         private int _TaskNumber;
         /// <summary>
         /// Executed task number.
@@ -17,6 +17,28 @@ namespace TaskMobile.ViewModels.Tasks
             set { SetProperty(ref _TaskNumber, value); }
         }
 
+        private string _origin;
+        /// <summary>
+        /// Where the executed tasks come from
+        /// </summary>
+        public string Origin
+        {
+            get { return _origin; }
+            set { SetProperty(ref _origin, value); }
+        }
+
+        private string _destination;
+        /// <summary>
+        /// Where the executed task goes 
+        /// </summary>
+        public string Destination
+        {
+            get { return _destination; }
+            set { SetProperty(ref _destination, value); }
+        }
+        #endregion
+
+        #region Commands
         private DelegateCommand _Other;
         public DelegateCommand OtherCommand =>
             _Other ?? (_Other = new DelegateCommand(ExecuteOtherCommand));
@@ -24,9 +46,8 @@ namespace TaskMobile.ViewModels.Tasks
         private DelegateCommand _Finish;
         public DelegateCommand FinishCommand =>
             _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
+        #endregion
 
-        
-       
         public ExecutedViewModel(INavigationService navigationService):base (navigationService)
         {
         }
@@ -51,6 +72,8 @@ namespace TaskMobile.ViewModels.Tasks
         {
             Models.TaskDetail Executed = parameters["ExecutedTask"] as Models.TaskDetail;
             TaskNumber = Executed.TaskNumber;
+            this.Origin = Executed.Origin;
+            this.Destination = Executed.Destination;
         }
     }
 }

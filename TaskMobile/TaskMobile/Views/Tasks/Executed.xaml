@@ -25,7 +25,7 @@
                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.38, Constant=0}"  
                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}">
                 <Label HorizontalOptions="Center" Text="Tarea ejecutada"  Style="{StaticResource GreenBoldLabel}" />
-                <Label HorizontalOptions="Center" Text="234" Style="{StaticResource BlueBoldLabel}"/>
+                <Label HorizontalOptions="Center" Text="{Binding TaskNumber}" Style="{StaticResource BlueBoldLabel}"/>
             </StackLayout>
             <StackLayout x:Name="FromToPlaces" Orientation="Horizontal" 
                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=TaskFinished, Property=Y, Factor=1.5,Constant=0}"  
@@ -36,13 +36,13 @@
                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand"
                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}">
                         <Label HorizontalOptions="Center" Text="Origen"  Style="{StaticResource GreenNormalLabel}"/>
-                        <Label HorizontalOptions="Center" Text="ALCO" Style="{StaticResource BlueNormalLabel}"/>
+                        <Label HorizontalOptions="Center" Text="{Binding Origin}" Style="{StaticResource BlueNormalLabel}"/>
                     </StackLayout>
                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand"
                             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.5,    Constant=0}"  
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}">
                         <Label HorizontalOptions="Center" Text="Destino"  Style="{StaticResource GreenNormalLabel}"/>
-                        <Label HorizontalOptions="Center" Text="FAT2" Style="{StaticResource BlueNormalLabel}"/>
+                        <Label HorizontalOptions="Center" Text="{Binding Destination}" Style="{StaticResource BlueNormalLabel}"/>
                     </StackLayout>
                 </RelativeLayout>
             </StackLayout>

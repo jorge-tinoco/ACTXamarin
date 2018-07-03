@@ -69,6 +69,7 @@
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
+    <Compile Include="ViewModels\Converters.cs" />
     <Compile Include="ViewModels\Vehicle\ChangeViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RejectedDetailViewModel.cs" />
     <Compile Include="ViewModels\Tasks\QueryRejectedViewModel.cs" />
@@ -155,6 +156,12 @@
     <Compile Include="WebServices\Entities\Common\Request.cs" />
     <Compile Include="WebServices\Entities\Common\Response.cs" />
     <Compile Include="WebServices\Entities\Common\SenderParty.cs" />
+    <Compile Include="WebServices\Entities\TaskResult.cs" />
+    <Compile Include="WebServices\Entities\TaskRequest.cs" />
+    <Compile Include="WebServices\Entities\TaskResponse.cs" />
+    <Compile Include="WebServices\Entities\Tasks\Activity.cs" />
+    <Compile Include="WebServices\Entities\Tasks\Detail.cs" />
+    <Compile Include="WebServices\Entities\Tasks\Task.cs" />
     <Compile Include="WebServices\Entities\User.cs" />
     <Compile Include="WebServices\Entities\Vehicle.cs" />
     <Compile Include="WebServices\Entities\VehicleListResult.cs" />
@@ -397,6 +404,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

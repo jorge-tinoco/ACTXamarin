@@ -7,8 +7,38 @@ using System.Linq;
 
 namespace TaskMobile.ViewModels.Tasks
 {
-    public class RejectedViewModel : BaseViewModel
+    public class RejectedViewModel : BaseViewModel, INavigatingAware
     {
+        #region Properties
+        private int _taskNumber;
+        /// <summary>
+        /// Rejected task number.
+        /// </summary>
+        public int TaskNumber
+        {
+            get { return _taskNumber; }
+            set { SetProperty(ref _taskNumber, value); }
+        }
+        private string _origin;
+        /// <summary>
+        /// Where the rejected task  came from.
+        /// </summary>
+        public string Origin
+        {
+            get { return _origin; }
+            set { SetProperty(ref _origin, value); }
+        }
+
+        private string _destination;
+        /// <summary>
+        /// Where the rejected task went
+        /// </summary>
+        public string Destination
+        {
+            get { return _destination; }
+            set { SetProperty(ref _destination, value); }
+        }
+        #endregion
 
         #region COMMANDS
 
@@ -41,6 +71,14 @@ namespace TaskMobile.ViewModels.Tasks
         private async void ExecuteFinishCommand()
         {
             await _navigationService.NavigateAsync("TaskMobile:///MainPage");
+        }
+
+        public void OnNavigatingTo(NavigationParameters parameters)
+        {
+            Models.TaskDetail Rejected = parameters["CanceledTask"] as Models.TaskDetail;
+            TaskNumber = Rejected.TaskNumber;
+            this.Origin = Rejected.Origin;
+            this.Destination = Rejected.Destination;
         }
     }
 }

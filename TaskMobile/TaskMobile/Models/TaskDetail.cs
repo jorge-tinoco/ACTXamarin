@@ -91,5 +91,28 @@ namespace TaskMobile.Models
             set { _StockType = value; }
         }
 
+
+        private string _origin;
+        /// <summary>
+        /// Origin location.
+        /// </summary>
+        public string Origin
+        {
+            get { return _origin; }
+            set { _origin = value; }
+        }
+
+        private string _destination;
+        /// <summary>
+        /// Destination Location.
+        /// </summary>
+        public string Destination
+        {
+            get { return _destination; }
+            set { _destination = value; }
+        }
+
+
+
     }
 }

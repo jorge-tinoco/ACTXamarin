@@ -92,6 +92,7 @@ namespace TaskMobile.WebServices.REST
             try
             {
                 HttpClient Client = new HttpClient();
+                Client.Timeout =  new TimeSpan(0,15,0);
                 Uri URL = new Uri(WebServiceURL, UriKind.Absolute);
                 var ByteArray = Encoding.UTF8.GetBytes("T11092:trabajador0618");
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(ByteArray));
