@@ -150,6 +150,8 @@
     <Compile Include="Views\_Master.xaml.cs">
       <DependentUpon>_Master.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\Entities\ActivityRequest.cs" />
+    <Compile Include="WebServices\Entities\ActivityResponse.cs" />
     <Compile Include="WebServices\Entities\Common\LogItem.cs" />
     <Compile Include="WebServices\Entities\Common\MessageHeader.cs" />
     <Compile Include="WebServices\Entities\Common\MessageLog.cs" />
