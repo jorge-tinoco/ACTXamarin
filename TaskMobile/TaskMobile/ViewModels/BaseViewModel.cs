@@ -62,5 +62,15 @@ namespace TaskMobile.ViewModels
                 SetProperty(ref _Vehicle, value);
             }
         }
+
+        private Models.Vehicle _curentVehicle;
+        /// <summary>
+        /// Model that represents the current vehicle.
+        /// </summary>
+        public Models.Vehicle CurrentVehicle
+        {
+            get { return _curentVehicle; }
+            set { SetProperty(ref _curentVehicle, value); }
+        }
     }
 }

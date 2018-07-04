@@ -1,27 +1,32 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using TaskMobile.WebServices.Entities.Common;
+using TaskMobile.WebServices.REST;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class QueryExecutedViewModel : BaseViewModel, INavigatingAware
     {
-        public QueryExecutedViewModel(INavigationService navigationService) : base(navigationService)
+        public QueryExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
         {
             Driver = "Jorge Tinoco";
             Vehicle = "Hyster";
+            ExecutedTasks = new ObservableCollection<Models.Task>();
             ToDetailCommand = new DelegateCommand<object>(GoToAction);
         }
 
         #region VIEW MODEL PROPERTIES
-        private List<Models.Task> _ExecutedTasks;
+        private ObservableCollection<Models.Task> _ExecutedTasks;
         /// <summary>
         /// Current executed  tasks.
         /// </summary>
-        public List<Models.Task> ExecutedTasks
+        public ObservableCollection<Models.Task> ExecutedTasks
         {
             get { return _ExecutedTasks; }
             set
@@ -42,7 +47,7 @@ namespace TaskMobile.ViewModels.Tasks
                 SetProperty(ref _isRefreshing, value);
             }
         }
-        private bool _isRefreshing = false;
+        private bool _isRefreshing = true;
         #endregion
 
         #region COMMANDS
@@ -82,13 +87,54 @@ namespace TaskMobile.ViewModels.Tasks
         /// <returns></returns>
         private async System.Threading.Tasks.Task RefreshData()
         {
-            await System.Threading.Tasks.Task.Delay(1000);
+            int VehicleId;
+            bool VehicleWithId = int.TryParse(CurrentVehicle.Identifier , out VehicleId);
+            if (VehicleWithId == false)
+                await _dialogService.DisplayAlertAsync("Error", "Un minuto, el vehículo no cuenta con un identificador. Configura el vehículo", "Entiendo");
+            else
+            {
+                Client RESTClient = new Client(WebServices.URL.RequestDetails);
+                Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
+                Requests.MessageBody.VehicleId = 369; // TO do: change for VehicleId
+                Requests.MessageBody.Status = "E";
+                Requests.MessageBody.InitialDate = new DateTime(2016, 01, 01);
+                Requests.MessageBody.FinalDate = DateTime.Now;
+                var Response = await RESTClient.Post<Response<WebServices.Entities.TaskResponse>>(Requests);
+                ExecutedTasks.Clear();
+                if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskResult.Count() > 0)
+                {
+                    foreach (WebServices.Entities.TaskResult Result in Response.MessageBody.QueryTaskResult)
+                    {
+                        IEnumerable<Models.Task> TasksConverted = Result.TASK
+                                                                        .Select(taskToConvert => Converters.Task(taskToConvert));
+                        foreach (var TaskToAdd in TasksConverted)
+                        {
+                            ExecutedTasks.Add(TaskToAdd);
+                        }
+                    }
+                }
+                else
+                    await _dialogService.DisplayAlertAsync("Información", "No se encontró tareas asociadas al vehículo ", "Entiendo");
+            }
         }
 
-        public void OnNavigatingTo(NavigationParameters parameters)
+        public async  void OnNavigatingTo(NavigationParameters parameters)
         {
-            WebServices.SOAP.TaskClient TaskWsClient = new WebServices.SOAP.TaskClient();
-            ExecutedTasks = TaskWsClient.GetExecutedTasks();
+            try
+            {
+                CurrentVehicle = await App.SettingsInDb.CurrentVehicle();
+                Vehicle = CurrentVehicle.NameToShow;
+                await RefreshData();
+                IsRefreshing = false;
+            }
+            catch (Exception e)
+            {
+                IsRefreshing = false;
+                App.LogToDb.Error(e);
+                await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error al descargar las tareas ejecutadas", "Entiendo");
+            }
+
         }
+
     }
 }
