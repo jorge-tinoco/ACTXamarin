@@ -209,6 +209,9 @@
                     <StackLayout VerticalOptions="CenterAndExpand">
                         <ContentPresenter  />
                     </StackLayout>
+                    <!--<userControls:GradientColor VerticalOptions="CenterAndExpand" StartColor="{StaticResource Color.BlueSecondary}" EndColor="White">
+                        <ContentPresenter  />
+                    </userControls:GradientColor>-->
                     <StackLayout HeightRequest="20"  Orientation="Horizontal"  >
                         <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Copyright}"
                                                VerticalOptions="Center"

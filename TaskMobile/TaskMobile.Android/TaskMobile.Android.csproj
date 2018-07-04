@@ -192,6 +192,7 @@
     <Compile Include="CustomRenderers\FontAwesomeLabelRenderer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CustomRenderers\GradientColorStackRenderer.cs" />
     <Compile Include="CustomRenderers\PickerAndroidRenderer.cs" />
     <Compile Include="DB\SQLite_Android.cs" />
     <Compile Include="MainActivity.cs" />

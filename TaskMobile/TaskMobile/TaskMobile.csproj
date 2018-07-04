@@ -67,6 +67,7 @@
     <Compile Include="UserControls\FancySwipeItem.cs" />
     <Compile Include="UserControls\CircleButton.cs" />
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
+    <Compile Include="UserControls\GradientColor.cs" />
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
     <Compile Include="ViewModels\Converters.cs" />

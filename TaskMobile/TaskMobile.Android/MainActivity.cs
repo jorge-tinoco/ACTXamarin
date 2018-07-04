@@ -31,6 +31,8 @@ namespace TaskMobile.Droid
             //      .RegisterAssemblyFromType<TaskMobile.UserControls.FontAwesomeLabel>()
             //      // Register circle buttons
             //      .RegisterAssemblyFromType<TaskMobile.UserControls.CircleButton>()
+            //      // Register gradient colors
+            //      .RegisterAssemblyFromType<TaskMobile.UserControls.GradientColor>()
             //      //Register Prism assemblies
             //      .RegisterAssemblyFromType<Prism.IActiveAware>()
             //      .RegisterAssemblyFromType<Prism.Mvvm.BindableBase>()
