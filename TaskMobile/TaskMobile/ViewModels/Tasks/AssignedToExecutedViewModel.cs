@@ -16,7 +16,6 @@ namespace TaskMobile.ViewModels.Tasks
     /// </summary>
     public class AssignedToExecutedViewModel : BaseViewModel, INavigationAware
     {
-        IPageDialogService _dialogService;
         #region  VIEW MODEL PROPERTIES
 
         private List<Models.TaskDetail> _Details;
@@ -67,9 +66,8 @@ namespace TaskMobile.ViewModels.Tasks
         /// Constructor that implements navigation service.
         /// </summary>
         /// <param name="navigationService">Navigation service.</param>
-        public AssignedToExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService)
+        public AssignedToExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
         {
-            _dialogService = dialogService;
             RunTaskCommand = new DelegateCommand<object>(RunTaskAction);
             RejectTaskCommand = new DelegateCommand<object>(RejectTaskAction);
             Driver = "Jorge Tinocos";

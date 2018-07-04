@@ -14,10 +14,8 @@ namespace TaskMobile.ViewModels.Vehicle
 {
     public class ChangeViewModel : BaseViewModel, INavigatingAware
     {
-        IPageDialogService _dialogService;
-        public ChangeViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService)
+        public ChangeViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
         {
-            _dialogService = dialogService;
         }
 
         private IEnumerable<Models.Vehicle> _vehicles;

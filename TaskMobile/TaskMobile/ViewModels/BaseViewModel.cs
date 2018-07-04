@@ -1,5 +1,6 @@
 ﻿using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 
 namespace TaskMobile.ViewModels
 {
@@ -22,10 +23,17 @@ namespace TaskMobile.ViewModels
     public class BaseViewModel : BindableBase
     {
         protected INavigationService _navigationService;
+        protected IPageDialogService _dialogService;
 
         public BaseViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+        }
+
+        public BaseViewModel(INavigationService navigationService, IPageDialogService dialogService)
+        {
+            _navigationService = navigationService;
+            _dialogService = dialogService;
         }
 
         private string _Driver;

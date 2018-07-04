@@ -15,8 +15,6 @@ namespace TaskMobile.ViewModels.Tasks
     /// </summary>
     public class AssignedViewModel : BaseViewModel, INavigatingAware
     {
-        IPageDialogService _dialogService;
-
         private ObservableCollection<Models.Task> _AssignedTasks;
         /// <summary>
         /// Current pending/assigned  tasks.
@@ -62,9 +60,8 @@ namespace TaskMobile.ViewModels.Tasks
         }
         #endregion
 
-        public AssignedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService)
+        public AssignedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService,dialogService)
         {
-            _dialogService = dialogService;
             Driver = "Jorge Tinoco";
             AssignedTasks = new ObservableCollection<Models.Task>();
             ToDetailCommand = new DelegateCommand<object>(GoToAction);
