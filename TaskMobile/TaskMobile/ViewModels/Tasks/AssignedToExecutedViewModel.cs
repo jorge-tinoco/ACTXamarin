@@ -124,20 +124,20 @@ namespace TaskMobile.ViewModels.Tasks
             {
                 Client RESTClient = new Client(WebServices.URL.ActivityStart);
                 Request<WebServices.Entities.ActivityRequest> Requests = new Request<WebServices.Entities.ActivityRequest>();
-                Requests.MessageBody.ActivityId = 0;
-                Requests.MessageBody.DestinyLocation = taskToRun.Destination;
-                Requests.MessageBody.LastUpdateBy = "T1004"; // TO DO: substitute with the current user.
-                Requests.MessageBody.RejectionId = 0;
+                //Requests.MessageBody.ActivityId = 0;
+                //Requests.MessageBody.DestinyLocation = taskToRun.Destination;
+                //Requests.MessageBody.LastUpdateBy = "T1004"; // TO DO: substitute with the current user.
+                //Requests.MessageBody.RejectionId = 0;
                 Requests.MessageBody.TaskId = taskToRun.TaskNumber;
                 var Response = await RESTClient.Post<Response<WebServices.Entities.ActivityResponse>>(Requests);
-                if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.Result != null)
-                {
-                    string LogMessage = string.Format("Tarea ejecutada: {0}", taskToRun.TaskNumber);
-                    App.LogToDb.Info(LogMessage, Response.MessageBody.Result);
-                    await _dialogService.DisplayAlertAsync("WS Response", Response.MessageBody.Result, "Entiendo");
-                }
-                else
-                    await _dialogService.DisplayAlertAsync("Espera", "Algo salió mal cuando intentabamos ejecutar la tarea anterior, por favor intenta de nuevo", "Entiendo");
+                //if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.Result != null)
+                //{
+                //    string LogMessage = string.Format("Tarea ejecutada: {0}", taskToRun.TaskNumber);
+                //    //App.LogToDb.Info(LogMessage, Response.MessageBody.Result);
+                //    await _dialogService.DisplayAlertAsync("WS Response", Response.MessageBody.Result, "Entiendo");
+                //}
+                //else
+                //    await _dialogService.DisplayAlertAsync("Espera", "Algo salió mal cuando intentabamos ejecutar la tarea anterior, por favor intenta de nuevo", "Entiendo");
             }
             catch (System.Exception ex)
             {
@@ -156,21 +156,21 @@ namespace TaskMobile.ViewModels.Tasks
             {
                 Client RESTClient = new Client(WebServices.URL.ActivityRejected);
                 Request<WebServices.Entities.ActivityRequest> Requests = new Request<WebServices.Entities.ActivityRequest>();
-                Requests.MessageBody.ActivityId = 0;
-                Requests.MessageBody.DestinyLocation = taskToReject.Destination;
-                Requests.MessageBody.LastUpdateBy = "T1004"; // TO DO: substitute with the current user.
-                Requests.MessageBody.RejectionId = 0;
+                //Requests.MessageBody.ActivityId = 0;
+                //Requests.MessageBody.DestinyLocation = taskToReject.Destination;
+                //Requests.MessageBody.LastUpdateBy = "T1004"; // TO DO: substitute with the current user.
+                //Requests.MessageBody.RejectionId = 0;
                 Requests.MessageBody.TaskId = taskToReject.TaskNumber;
 
-                var Response = await RESTClient.Post<Response<WebServices.Entities.ActivityResponse>>(Requests);
-                if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.Result != null)
-                {
-                    string LogMessage = string.Format("Tarea rechazada: {0}", taskToReject.TaskNumber);
-                    App.LogToDb.Info(LogMessage, Response.MessageBody.Result);
-                    await _dialogService.DisplayAlertAsync("WS Response", Response.MessageBody.Result, "Entiendo");
-                }
-                else
-                    await _dialogService.DisplayAlertAsync("Espera", "Algo salió mal cuando intentabamos rechazar la tarea anterior, por favor intenta de nuevo", "Entiendo");
+                //var Response = await RESTClient.Post<Response<WebServices.Entities.ActivityResponse>>(Requests);
+                //if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.Result != null)
+                //{
+                //    string LogMessage = string.Format("Tarea rechazada: {0}", taskToReject.TaskNumber);
+                //    //App.LogToDb.Info(LogMessage, Response.MessageBody.Result);
+                //    await _dialogService.DisplayAlertAsync("WS Response", Response.MessageBody.Result, "Entiendo");
+                //}
+                //else
+                //    await _dialogService.DisplayAlertAsync("Espera", "Algo salió mal cuando intentabamos rechazar la tarea anterior, por favor intenta de nuevo", "Entiendo");
             }
             catch (System.Exception ex)
             {

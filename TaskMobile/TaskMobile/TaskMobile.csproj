@@ -54,6 +54,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Mill.cs" />
@@ -71,6 +72,8 @@
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
     <Compile Include="ViewModels\Converters.cs" />
+    <Compile Include="ViewModels\Tasks\TaskDetailViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\TaskViewModel.cs" />
     <Compile Include="ViewModels\Vehicle\ChangeViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RejectedDetailViewModel.cs" />
     <Compile Include="ViewModels\Tasks\QueryRejectedViewModel.cs" />
@@ -151,14 +154,20 @@
     <Compile Include="Views\_Master.xaml.cs">
       <DependentUpon>_Master.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\Entities\ActivityResult.cs" />
+    <Compile Include="WebServices\Entities\ActivityUpdResponse.cs" />
     <Compile Include="WebServices\Entities\ActivityRequest.cs" />
     <Compile Include="WebServices\Entities\ActivityResponse.cs" />
+    <Compile Include="WebServices\Entities\ActivityUpdRequest.cs" />
     <Compile Include="WebServices\Entities\Common\LogItem.cs" />
     <Compile Include="WebServices\Entities\Common\MessageHeader.cs" />
     <Compile Include="WebServices\Entities\Common\MessageLog.cs" />
     <Compile Include="WebServices\Entities\Common\Request.cs" />
     <Compile Include="WebServices\Entities\Common\Response.cs" />
     <Compile Include="WebServices\Entities\Common\SenderParty.cs" />
+    <Compile Include="WebServices\Entities\DetailsRequest.cs" />
+    <Compile Include="WebServices\Entities\DetailsResponse.cs" />
+    <Compile Include="WebServices\Entities\DetailsResult.cs" />
     <Compile Include="WebServices\Entities\TaskResult.cs" />
     <Compile Include="WebServices\Entities\TaskRequest.cs" />
     <Compile Include="WebServices\Entities\TaskResponse.cs" />

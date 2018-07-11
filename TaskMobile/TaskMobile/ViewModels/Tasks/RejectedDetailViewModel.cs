@@ -1,18 +1,22 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TaskMobile.WebServices.REST;
 using Xamarin.Forms;
+using TaskMobile.WebServices.Entities;
+using TaskMobile.WebServices.Entities.Common;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class RejectedDetailViewModel : BaseViewModel, INavigatingAware
     {
-        public RejectedDetailViewModel(INavigationService navigationService) : base(navigationService)
+        public RejectedDetailViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
         {
 
         }
@@ -20,20 +24,22 @@ namespace TaskMobile.ViewModels.Tasks
 
         #region  VIEW MODEL PROPERTIES
 
-        private List<Models.TaskDetail> _Details;
+        private List<Models.Activity> _activities;
+        private bool _isRefreshing = false;
+        private int _currentTask;
+
         /// <summary>
         /// Current rejected  task details.
         /// </summary>
-        public List<Models.TaskDetail> Details
+        public List<Models.Activity> Activities
         {
-            get { return _Details; }
+            get { return _activities; }
             set
             {
-                SetProperty(ref _Details, value);
+                SetProperty(ref _activities, value);
             }
         }
 
-        private bool _isRefreshing = false;
         /// <summary>
         /// Flag for stablish when the list view is refreshing.
         /// </summary>
@@ -44,6 +50,15 @@ namespace TaskMobile.ViewModels.Tasks
             {
                 SetProperty(ref _isRefreshing, value);
             }
+        }
+
+        /// <summary>
+        /// Current task that contains the showed activities by this view model.
+        /// </summary>
+        public int CurrentTask
+        {
+            get { return _currentTask; }
+            set { SetProperty(ref _currentTask, value); }
         }
 
         #endregion
@@ -75,7 +90,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// <returns></returns>
         private async Task RefreshData()
         {
-            await Task.Delay(1000);
+            await ShowActivities(CurrentTask);
         }
 
         /// <summary>
@@ -86,10 +101,52 @@ namespace TaskMobile.ViewModels.Tasks
             await _navigationService.NavigateAsync("TaskMobile:///MainPage");
         }
 
-        public void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            Models.Task Selected = parameters["TaskWithDetail"] as Models.Task;
-            Details = Selected.Details.ToList();
+            int TappedTask = (int) parameters["TaskWithActivities"] ;
+            CurrentTask = TappedTask;
+            Models.Vehicle Current = await App.SettingsInDb.CurrentVehicle();
+            Vehicle = Current.NameToShow;
+            await ShowActivities(TappedTask);
+        }
+
+        private async Task ShowActivities(int taskToQuery)
+        {
+            try
+            {
+                IsRefreshing = true;
+                var RESTClient = new Client(WebServices.URL.GetActivities);
+                var Requests = new Request<ActivityRequest>();
+                Requests.MessageBody.TaskId = taskToQuery;
+                var Response = await RESTClient.Post< Response<ActivityResponse> >(Requests);
+                var ResultCode = Response.MessageLog.ProcessingResultCode;
+                var ActivitiesFromWS = Response.MessageBody.QueryTaskActivitiesResult.ACTIVITIES;
+                
+                if (ResultCode == 0 && ActivitiesFromWS.Count() >= 0)
+                {
+                    Activities = ActivitiesFromWS.Select(activityToConvert => Converters.Activity(activityToConvert) ).ToList();
+                }
+                else
+                {
+                    if (Response.MessageLog.LogItems.Count() >= 0)
+                    {
+                        foreach (LogItem error in Response.MessageLog.LogItems)
+                        {
+                            await _dialogService.DisplayAlertAsync("Error", error.ErrorDescription, "Entiendo");
+                        }
+                    }else
+                        await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
+                }
+            }
+            catch (Exception ex)
+            {
+                App.LogToDb.Error("Error al consultar actividades de la tarea: " + taskToQuery, ex);
+                await _dialogService.DisplayAlertAsync("Error", "Algo sucedió al consultar las actividades", "Entiendo");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
     }
 }

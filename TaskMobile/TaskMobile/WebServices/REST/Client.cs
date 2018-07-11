@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Serialization;
 
 namespace TaskMobile.WebServices.REST
 {
@@ -102,7 +104,13 @@ namespace TaskMobile.WebServices.REST
                 if (Response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string JSONstring = await Response.Content.ReadAsStringAsync();
-                    return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(JSONstring);
+                    var Settings = new JsonSerializerSettings
+                    {
+                        Error = ResponseErrorHandler ,
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    return  Newtonsoft.Json.JsonConvert.DeserializeObject<T>(JSONstring, Settings);
                 }
                 return default(T);
             }
@@ -117,6 +125,12 @@ namespace TaskMobile.WebServices.REST
             {
                 throw new Exception("Error al consumir el servicio: " + WebServiceURL, e);
             }
+        }
+
+        private void ResponseErrorHandler(object sender, ErrorEventArgs errorArgs)
+        {
+            var currentError = errorArgs.ErrorContext.Error.Message;
+            errorArgs.ErrorContext.Handled = true;
         }
     }
 }

@@ -5,11 +5,6 @@ namespace TaskMobile.WebServices.Entities.Tasks
 {
     public class Task
     {
-        public Task()
-        {
-            DETAILS = new List<Detail>();
-            ACTIVITIES = new List<Activity>();
-        }
         public int ID { get; set; }
         public string OPERATION_NAME { get; set; }
         public string TYPE_STOCK { get; set; }
@@ -30,7 +25,5 @@ namespace TaskMobile.WebServices.Entities.Tasks
         public string FLAT_VEHICLE { get; set; }
         public int FLAGSYSTEM { get; set; }
         public DateTime CREATED_DATE { get; set; }
-        public List<Tasks.Detail> DETAILS { get; set; }
-        public List<Tasks.Activity> ACTIVITIES { get; set; }
     }
 }

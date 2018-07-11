@@ -58,7 +58,6 @@ namespace TaskMobile.ViewModels
             get { return _Vehicle; }
             set
             {
-                _Vehicle = value;
                 SetProperty(ref _Vehicle, value);
             }
         }

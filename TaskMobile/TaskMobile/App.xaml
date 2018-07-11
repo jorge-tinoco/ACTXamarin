@@ -179,6 +179,12 @@
                 <Setter Property="FontSize" Value="30" />
                 <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
             </Style>
+            <Style x:Key="OpaqueLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="TextColor" Value="{StaticResource Color.PacificBlue}" />
+            </Style>
             <Style x:Key="GreenBoldLabel" TargetType="Label">
                 <Setter Property="FontSize">
                     <Setter.Value>
@@ -202,6 +208,10 @@
             <Style x:Key="LabelDirections" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+            </Style>
+            <Style x:Key="CenterAndExpand" TargetType="Label">
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
             </Style>
             <!--#endregion-->
             <ControlTemplate x:Key="TenarisTemplate" >

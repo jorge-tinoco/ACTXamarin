@@ -1,17 +1,17 @@
 ﻿namespace TaskMobile.WebServices.Entities
 {
     /// <summary>
-    /// Activity body response.
+    /// Activities body response.
     /// </summary>
     /// <remarks>
-    /// Used for make a web service response . 
+    /// Represents the web service response  of the REST API.
     ///     The properties of this class are the <see cref="Common.Response{T}.MessageBody"/>.
     /// </remarks>
-    public class ActivityResponse
+    public class ActivityUpdResponse
     {
         /// <summary>
-        /// Contains all the activities for  the requested task.
+        /// Result for the last action executed on the task.
         /// </summary>
-        public ActivityResult QueryTaskActivitiesResult { get; set; }
+        public string Result { get; set; }
     }
 }
