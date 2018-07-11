@@ -55,6 +55,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\Derived\Task.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Mill.cs" />
@@ -72,8 +73,6 @@
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
     <Compile Include="ViewModels\Converters.cs" />
-    <Compile Include="ViewModels\Tasks\TaskDetailViewModel.cs" />
-    <Compile Include="ViewModels\Tasks\TaskViewModel.cs" />
     <Compile Include="ViewModels\Vehicle\ChangeViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RejectedDetailViewModel.cs" />
     <Compile Include="ViewModels\Tasks\QueryRejectedViewModel.cs" />

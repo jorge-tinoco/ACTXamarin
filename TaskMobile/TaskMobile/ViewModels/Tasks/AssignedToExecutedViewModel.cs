@@ -192,7 +192,7 @@ namespace TaskMobile.ViewModels.Tasks
         void INavigatedAware.OnNavigatedTo(NavigationParameters parameters)
         {
             Models.Task Selected = parameters["SelectedTask"] as Models.Task;
-            Details = Selected.Details.ToList();
+            //Details = Selected.Details.ToList();
         }
 
         void INavigatingAware.OnNavigatingTo(NavigationParameters parameters)

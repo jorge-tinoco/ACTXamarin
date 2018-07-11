@@ -89,7 +89,7 @@ namespace TaskMobile.ViewModels.Tasks
         public void OnNavigatingTo(NavigationParameters parameters)
         {
             Models.Task Selected = parameters["TaskWithDetail"] as Models.Task;
-            Details = Selected.Details.ToList();
+            //Details = Selected.Details.ToList();
         }
     }
 }

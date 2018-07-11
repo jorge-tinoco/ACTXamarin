@@ -26,8 +26,8 @@ namespace TaskMobile.ViewModels.Tasks
         private bool _isRefreshing = false;
         private bool _isFirstLoad = true;
 
-        public ObservableCollection<TaskViewModel> RejectedTasks { get; private set; }
-            = new ObservableCollection<TaskViewModel>();
+        public ObservableCollection<Models.Task> RejectedTasks { get; private set; }
+            = new ObservableCollection<Models.Task>();
 
         /// <summary>
         /// Used for filter finished tasks.
@@ -82,11 +82,11 @@ namespace TaskMobile.ViewModels.Tasks
         public DelegateCommand<object> ToActivityCommand =>
             _toActivity ?? (_toActivity = new DelegateCommand<object>(GoToActivities));
 
-        public DelegateCommand<TaskViewModel> DetailsCommand
+        public DelegateCommand<Models.Task> DetailsCommand
         {
             get
             {
-                return new DelegateCommand<TaskViewModel>(async (task) =>
+                return new DelegateCommand<Models.Task>(async (task) =>
                 {
                     await ShowDetails(task);
                 });
@@ -122,7 +122,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// Query REST web services to get rejected tasks.
         /// </summary>
         /// <param name="tappedTask">Selected task by the user.</param>
-        private async Task ShowDetails(TaskViewModel tappedTask)
+        private async Task ShowDetails(Models.Task tappedTask)
         {
             try
             {
@@ -160,7 +160,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// <summary>
         /// Refresh the rejected task list view.
         /// </summary>
-        private async System.Threading.Tasks.Task RefreshData()
+        private async Task RefreshData()
         {
             IsRefreshing = true;
             Client RESTClient = new Client(WebServices.URL.GetTasks);
@@ -179,14 +179,12 @@ namespace TaskMobile.ViewModels.Tasks
                                                                     .Select(taskToConvert => Converters.Task(taskToConvert));
                     foreach (var TaskToAdd in TasksConverted)
                     {
-                        TaskViewModel ModelToAdd = new TaskViewModel(TaskToAdd);
-                        RejectedTasks.Add(ModelToAdd);
+                        RejectedTasks.Add(TaskToAdd);
                     }
                 }
             }
             else
                 await _dialogService.DisplayAlertAsync("Información", "No se encontró tareas asociadas al vehículo ", "Entiendo");
-            await System.Threading.Tasks.Task.Delay(1000);
             IsRefreshing = false;
         }
 
