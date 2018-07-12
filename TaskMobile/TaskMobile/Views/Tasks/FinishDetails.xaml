@@ -9,7 +9,7 @@
             ControlTemplate="{StaticResource TenarisTemplate}"
              Title="Detalle">
     <RelativeLayout x:Name="ExecutedToExecutedContainer" HeightRequest="492">
-        <Label Text="Detalle de la tarea finalizada." Style="{StaticResource LabelDirections}"
+        <Label Text="Actividades de la tarea finalizada." Style="{StaticResource LabelDirections}"
                RelativeLayout.XConstraint="{ConstraintExpression 
                                         Type=RelativeToParent, 
                                         Property=Width, 
@@ -67,12 +67,32 @@
                                         Type=RelativeToParent,
                                         Property=Width,
                                         Factor=.90}">
-            <ListView x:Name="FinishedTasks"  
-                        ItemsSource="{Binding Details}"
+            <StackLayout>
+                <RelativeLayout RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.80}" >
+                    <Label Text="Id actividad" HorizontalOptions="Center"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.10}"/>
+                    <Label Text="Órden" HorizontalOptions="Center" FontAttributes="Bold"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.10, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}" />
+                    <Label Text="Estado" 
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}" />
+                    <Label Text="Nombre actividad"  FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.40, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.30}" />
+                    <Label Text="Vehículo (alias)" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" LineBreakMode="WordWrap"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.70, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}"/>
+                    <Label Text="Vehículo (número)" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.85, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}"/>
+                </RelativeLayout>
+                <ListView x:Name="FinishedTasks"  
+                        ItemsSource="{Binding Activities}"
                         IsPullToRefreshEnabled="True"
                         RefreshCommand="{Binding RefreshCommand}"
                         IsRefreshing="{Binding IsRefreshing}">
-                <ListView.ItemTemplate>
+                    <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
@@ -80,26 +100,25 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="1.5*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Text="{Binding TaskNumber}" Grid.Row="0" Grid.Column="0" />
-                                <Label Text="{Binding WorkOrder}" Grid.Row="0" Grid.Column="1" />
-                                <Label Text="{Binding Lot}" Grid.Row="0" Grid.Column="2" />
-                                <Label Text="{Binding SapCode}" Grid.Row="0" Grid.Column="3" />
-                                <Label Text="{Binding Pieces}" Grid.Row="0" Grid.Column="4" />
-                                <Label Text="{Binding Tons}" Grid.Row="0" Grid.Column="5" />
-                                <Label Text="{Binding StockType}" Grid.Row="0" Grid.Column="6" />
+                                <Label Text="{Binding Id}"  Grid.Row="0" Grid.Column="0" />
+                                <Label Text="{Binding Order}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="{Binding Status}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="2" />
+                                <Label Text="{Binding Name}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="3" />
+                                <Label Text="{Binding VehicleAlias}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="4" />
+                                <Label Text="{Binding VehicleNumber}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="5" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
-
+                </ListView>
+            </StackLayout>
         </Frame>
     </RelativeLayout>
 </ContentPage>
