@@ -170,6 +170,35 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="BtnRejections" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="20" Tablet="40"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="70"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="70"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fa-solid-900.ttf#Font Awesome 5 Free Regular" iOS="Font Awesome 5 Free" WinPhone="Assets/fa-solid-900.ttf#Font Awesome 5 Free"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32" Phone="15" Tablet="35"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <!--#endregion-->
             <!--#region  Label styles goes here-->
             <Style x:Key="LabelNormal" TargetType="Label">

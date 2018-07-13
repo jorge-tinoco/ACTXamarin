@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,27 @@ namespace TaskMobile.ViewModels.Tasks
 {
     public class FinishedViewModel : BaseViewModel, INavigatingAware
     {
-        public FinishedViewModel(INavigationService navigationService) : base(navigationService)
+        private int _TaskNumber;
+        private DelegateCommand _Other;
+        private DelegateCommand _Finish;
+
+        public FinishedViewModel(INavigationService navigationService, IPageDialogService dialogService) 
+            : base(navigationService, dialogService)
         {
 
         }
 
+        #region COMMANDS
+
+        public DelegateCommand OtherCommand =>
+            _Other ?? (_Other = new DelegateCommand(ExecuteOtherCommand));
+
+        public DelegateCommand FinishCommand =>
+            _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
+        #endregion
+
         #region VIEW MODEL PROPERTIES
-        private int _TaskNumber;
+
         /// <summary>
         /// Executed task number.
         /// </summary>
@@ -24,16 +39,6 @@ namespace TaskMobile.ViewModels.Tasks
             get { return _TaskNumber; }
             set { SetProperty(ref _TaskNumber, value); }
         }
-        #endregion
-
-        #region COMMANDS
-        private DelegateCommand _Other;
-        public DelegateCommand OtherCommand =>
-            _Other ?? (_Other = new DelegateCommand(ExecuteOtherCommand));
-
-        private DelegateCommand _Finish;
-        public DelegateCommand FinishCommand =>
-            _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
         #endregion
 
         /// <summary>
@@ -58,8 +63,8 @@ namespace TaskMobile.ViewModels.Tasks
         /// <param name="parameters">Finished task.</param>
         void INavigatingAware.OnNavigatingTo(NavigationParameters parameters)
         {
-            Models.TaskDetail Executed = parameters["FinishedTask"] as Models.TaskDetail;
-            TaskNumber = Executed.TaskNumber;
+            Models.Activity Finished = parameters["ActivityFinished"] as Models.Activity;
+            TaskNumber = Finished.Id;
         }
     }
 }

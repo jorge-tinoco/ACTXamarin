@@ -59,6 +59,7 @@
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Mill.cs" />
+    <Compile Include="Models\Rejection.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\TaskDetail.cs" />
     <Compile Include="Models\Vehicle.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="UserControls\GradientColor.cs" />
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
+    <Compile Include="Utilities\TenarisColors.cs" />
     <Compile Include="ViewModels\Converters.cs" />
     <Compile Include="ViewModels\Vehicle\ChangeViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RejectedDetailViewModel.cs" />

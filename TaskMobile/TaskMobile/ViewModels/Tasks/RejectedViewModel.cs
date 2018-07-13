@@ -9,37 +9,14 @@ namespace TaskMobile.ViewModels.Tasks
 {
     public class RejectedViewModel : BaseViewModel, INavigatingAware
     {
-        #region Properties
         private int _taskNumber;
-        /// <summary>
-        /// Rejected task number.
-        /// </summary>
-        public int TaskNumber
-        {
-            get { return _taskNumber; }
-            set { SetProperty(ref _taskNumber, value); }
-        }
         private string _origin;
-        /// <summary>
-        /// Where the rejected task  came from.
-        /// </summary>
-        public string Origin
-        {
-            get { return _origin; }
-            set { SetProperty(ref _origin, value); }
-        }
-
         private string _destination;
-        /// <summary>
-        /// Where the rejected task went
-        /// </summary>
-        public string Destination
-        {
-            get { return _destination; }
-            set { SetProperty(ref _destination, value); }
-        }
-        #endregion
 
+        public RejectedViewModel(INavigationService navigationService) : base(navigationService)
+        {
+
+        }
         #region COMMANDS
 
         private DelegateCommand _Other;
@@ -51,10 +28,40 @@ namespace TaskMobile.ViewModels.Tasks
             _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
         #endregion
 
+        #region VIEW MODEL PROPERTIES
 
-        public RejectedViewModel(INavigationService navigationService) : base(navigationService)
+        /// <summary>
+        /// Rejected task number.
+        /// </summary>
+        public int TaskNumber
         {
+            get { return _taskNumber; }
+            set { SetProperty(ref _taskNumber, value); }
+        }
 
+        /// <summary>
+        /// Where the rejected task  came from.
+        /// </summary>
+        public string Origin
+        {
+            get { return _origin; }
+            set { SetProperty(ref _origin, value); }
+        }
+
+        /// <summary>
+        /// Where the rejected task went
+        /// </summary>
+        public string Destination
+        {
+            get { return _destination; }
+            set { SetProperty(ref _destination, value); }
+        }
+        #endregion
+
+        public void OnNavigatingTo(NavigationParameters parameters)
+        {
+            Models.Activity Rejected = parameters["RejectedActivity"] as Models.Activity;
+            TaskNumber = Rejected.Id;
         }
 
         /// <summary>
@@ -62,7 +69,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// </summary>
         private async void ExecuteOtherCommand()
         {
-            await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/AssignedTasks");
+            await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/RejectedTasks");
         }
 
         /// <summary>
@@ -73,12 +80,5 @@ namespace TaskMobile.ViewModels.Tasks
             await _navigationService.NavigateAsync("TaskMobile:///MainPage");
         }
 
-        public void OnNavigatingTo(NavigationParameters parameters)
-        {
-            Models.TaskDetail Rejected = parameters["CanceledTask"] as Models.TaskDetail;
-            TaskNumber = Rejected.TaskNumber;
-            this.Origin = Rejected.Origin;
-            this.Destination = Rejected.Destination;
-        }
     }
 }

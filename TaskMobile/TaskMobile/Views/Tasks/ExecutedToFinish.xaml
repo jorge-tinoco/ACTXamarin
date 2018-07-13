@@ -15,6 +15,20 @@
                                         Property=Width, 
                                         Factor=.05, 
                                         Constant=0}"/>
+        <Picker x:Name="RejectionPicker" 
+                            Title="Motivos de rechazo"
+                            IsVisible="False"
+                            ItemsSource="{Binding Rejections }"
+                            ItemDisplayBinding="{Binding Reason}"
+                            SelectedItem="{Binding Rejection}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.70,Constant=0}">
+        </Picker>
+        <Button x:Name="RejectionButton" Text="{x:Static userControls:Icon.ExclamationTriangle}" 
+                Style="{StaticResource BtnRejections}"
+                TextColor="{Binding RejectionColor}"
+                Command="{Binding PickerCommand}" CommandParameter="{Reference Name=RejectionPicker}"
+                RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.85, Constant=0}"
+                RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height,  Factor=.13, Constant=0}"/>
         <RelativeLayout  x:Name="Steps" 
                          RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height, Factor=0.080,   Constant=0}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.20,Constant=0}">
@@ -69,43 +83,63 @@
                                         Type=RelativeToParent,
                                         Property=Width,
                                         Factor=.90}">
-            <ListView x:Name="FinishedTasks"  
-                        ItemsSource="{Binding Details}"
+            <StackLayout>
+                
+                <RelativeLayout RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.80}" >
+                    <Label Text="Id actividad" HorizontalOptions="Center"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.10}"/>
+                    <Label Text="Órden" HorizontalOptions="Center" FontAttributes="Bold"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.10, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}" />
+                    <Label Text="Estado" 
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}" />
+                    <Label Text="Nombre actividad"  FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.40, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.30}" />
+                    <Label Text="Vehículo (alias)" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" LineBreakMode="WordWrap"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.70, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}"/>
+                    <Label Text="Vehículo (número)" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.85, Constant=0}"
+                               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}"/>
+                </RelativeLayout>
+                <ListView x:Name="ActivitiesList"  
+                        ItemsSource="{Binding Activities}"
                         IsPullToRefreshEnabled="True"
                         RefreshCommand="{Binding RefreshCommand}"
                         IsRefreshing="{Binding IsRefreshing}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Text="Rechazar" Command="{Binding BindingContext.RejectTaskCommand, Source={x:Reference FinishedTasks}}" CommandParameter="{Binding .}"/>
-                                <MenuItem Text="Finalizar" Command="{Binding BindingContext.FinishTaskCommand, Source={x:Reference FinishedTasks}}" CommandParameter="{Binding .}"/>
-                            </ViewCell.ContextActions>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding TaskNumber}" Grid.Row="0" Grid.Column="0" />
-                                <Label Text="{Binding WorkOrder}" Grid.Row="0" Grid.Column="1" />
-                                <Label Text="{Binding Lot}" Grid.Row="0" Grid.Column="2" />
-                                <Label Text="{Binding SapCode}" Grid.Row="0" Grid.Column="3" />
-                                <Label Text="{Binding Pieces}" Grid.Row="0" Grid.Column="4" />
-                                <Label Text="{Binding Tons}" Grid.Row="0" Grid.Column="5" />
-                                <Label Text="{Binding StockType}" Grid.Row="0" Grid.Column="6" />
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Text="Rechazar" Command="{Binding BindingContext.RejectCommand, Source={x:Reference ActivitiesList}}" CommandParameter="{Binding .}"/>
+                                    <MenuItem Text="Finalizar" Command="{Binding BindingContext.FinishTaskCommand, Source={x:Reference ActivitiesList}}" CommandParameter="{Binding .}"/>
+                                </ViewCell.ContextActions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1.5*" />
+                                        <ColumnDefinition Width="1.5*" />
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="1.5*" />
+                                        <ColumnDefinition Width="1.5*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding Id}"  Grid.Row="0" Grid.Column="0" />
+                                    <Label Text="{Binding Order}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="1" />
+                                    <Label Text="{Binding Status}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="2" />
+                                    <Label Text="{Binding Name}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="3" />
+                                    <Label Text="{Binding VehicleAlias}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="4" />
+                                    <Label Text="{Binding VehicleNumber}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="5" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
         </Frame>
     </RelativeLayout>
 </ContentPage>
