@@ -12,6 +12,7 @@ namespace TaskMobile.ViewModels.Tasks
         private int _taskNumber;
         private string _origin;
         private string _destination;
+        private string cameFrom;
 
         public RejectedViewModel(INavigationService navigationService) : base(navigationService)
         {
@@ -61,15 +62,20 @@ namespace TaskMobile.ViewModels.Tasks
         public void OnNavigatingTo(NavigationParameters parameters)
         {
             Models.Activity Rejected = parameters["RejectedActivity"] as Models.Activity;
+            cameFrom = (string)parameters["ComesFrom"] ;
             TaskNumber = Rejected.Id;
         }
 
         /// <summary>
-        /// Navigate to <see cref="Views.Tasks.Assigned"/> view for continue working in assigned tasks.
+        /// Navigate to <see cref="Views.Tasks.QueryAssigned"/> view for continue working in assigned tasks.
         /// </summary>
         private async void ExecuteOtherCommand()
         {
-            await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/RejectedTasks");
+            if ( cameFrom == "Executed")
+                await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/QueryExecuted");
+            if ( cameFrom == "Assigned")
+                await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/QueryAssigned");
+
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace TaskMobile.ViewModels.Tasks
         #endregion
 
         /// <summary>
-        /// Navigate to <see cref="Views.Tasks.Assigned"/> view for continue working in assigned tasks.
+        /// Navigate to <see cref="Views.Tasks.QueryAssigned"/> view for continue working in assigned tasks.
         /// </summary>
         private async void ExecuteOtherCommand()
         {

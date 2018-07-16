@@ -223,6 +223,7 @@ namespace TaskMobile.ViewModels.Tasks
                     {
                         NavigationParameters Parameters = new NavigationParameters();
                         Parameters.Add("RejectedActivity", tappedActivity);
+                        Parameters.Add("ComesFrom", "Executed");
                         await _navigationService.NavigateAsync("RejectedTask", Parameters);
                     }
                     else

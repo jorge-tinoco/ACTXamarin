@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace TaskMobile.Views.Tasks
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Assigned : ContentPage
+    public partial class QueryAssigned : ContentPage
     {
-        public Assigned()
+        public QueryAssigned()
         {
             InitializeComponent();
             SizeChanged += Assigned_SizeChanged;

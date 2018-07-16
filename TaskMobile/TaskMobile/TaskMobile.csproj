@@ -90,7 +90,7 @@
     <Compile Include="ViewModels\Tasks\AssignedToExecutedViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\Tasks\AssignedViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\QueryAssignedViewModel.cs" />
     <Compile Include="ViewModels\_MasterViewModel.cs" />
     <Compile Include="Views\Employees\All.xaml.cs">
       <DependentUpon>All.xaml</DependentUpon>
@@ -107,8 +107,8 @@
     <Compile Include="Views\SOAPServicexaml.xaml.cs">
       <DependentUpon>SOAPServicexaml.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Tasks\Assigned.xaml.cs">
-      <DependentUpon>Assigned.xaml</DependentUpon>
+    <Compile Include="Views\Tasks\QueryAssigned.xaml.cs">
+      <DependentUpon>QueryAssigned.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tasks\AssignedToExecuted.xaml.cs">
       <DependentUpon>AssignedToExecuted.xaml</DependentUpon>
@@ -328,7 +328,7 @@
     <Content Include="Assets\images\tenaris_isotipo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Tasks\Assigned.xaml">
+    <EmbeddedResource Include="Views\Tasks\QueryAssigned.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

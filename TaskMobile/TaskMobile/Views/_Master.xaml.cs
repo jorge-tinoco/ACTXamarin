@@ -71,7 +71,7 @@ namespace TaskMobile.Views
         private async void tap_TasksAssigned(object sender, EventArgs e)
         {
             App.MasterD.IsPresented = false;
-            await App.MasterD.Detail.Navigation.PushAsync(new Views.Tasks.Assigned());
+            await App.MasterD.Detail.Navigation.PushAsync(new Views.Tasks.QueryAssigned());
         }
     }
 }

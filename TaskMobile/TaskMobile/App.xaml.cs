@@ -33,7 +33,7 @@ namespace TaskMobile
             Container.RegisterTypeForNavigation<Views._Detail>("DetailPage");
             Container.RegisterTypeForNavigation<Views.Login>("LoginPage");
             Container.RegisterTypeForNavigation<Views.Tasks.AssignedToExecuted>("AssignedToExecuted");
-            Container.RegisterTypeForNavigation<Views.Tasks.Assigned >("AssignedTasks");
+            Container.RegisterTypeForNavigation<Views.Tasks.QueryAssigned >("QueryAssigned");
             Container.RegisterTypeForNavigation<Views.Tasks.Executed>("ExecutedTask");
             Container.RegisterTypeForNavigation<Views.Tasks.Canceled>("CanceledTask");
             Container.RegisterTypeForNavigation<Views.Tasks.Rejected>("RejectedTask");

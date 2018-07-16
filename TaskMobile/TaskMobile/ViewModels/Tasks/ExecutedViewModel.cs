@@ -54,11 +54,11 @@ namespace TaskMobile.ViewModels.Tasks
 
 
         /// <summary>
-        /// Navigate to <see cref="Views.Tasks.Assigned"/> view for continue working in assigned tasks.
+        /// Navigate to <see cref="Views.Tasks.QueryAssigned"/> view for continue working in assigned tasks.
         /// </summary>
         private async void  ExecuteOtherCommand()
         {
-            await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/AssignedTasks");
+            await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/QueryAssigned");
         }
 
         /// <summary>

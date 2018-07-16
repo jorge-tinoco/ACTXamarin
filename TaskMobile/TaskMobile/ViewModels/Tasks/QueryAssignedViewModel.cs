@@ -11,9 +11,9 @@ using System.Collections.ObjectModel;
 namespace TaskMobile.ViewModels.Tasks
 {
     /// <summary>
-    /// View model representing <see cref="Views.Tasks.Assigned"/> view.
+    /// View model representing <see cref="Views.Tasks.QueryAssigned"/> view.
     /// </summary>
-    public class AssignedViewModel : BaseViewModel, INavigatingAware
+    public class QueryAssignedViewModel : BaseViewModel, INavigatingAware
     {
         private ObservableCollection<Models.Task> _AssignedTasks;
         /// <summary>
@@ -60,7 +60,7 @@ namespace TaskMobile.ViewModels.Tasks
         }
         #endregion
 
-        public AssignedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService,dialogService)
+        public QueryAssignedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService,dialogService)
         {
             Driver = "Jorge Tinoco";
             AssignedTasks = new ObservableCollection<Models.Task>();
