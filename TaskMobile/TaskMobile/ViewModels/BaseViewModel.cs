@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using System.Threading.Tasks;
 
 namespace TaskMobile.ViewModels
 {
@@ -22,6 +23,9 @@ namespace TaskMobile.ViewModels
     /// </example>
     public class BaseViewModel : BindableBase
     {
+        private string _Driver;
+        private string _Vehicle;
+        private Models.Vehicle _curentVehicle;
         protected INavigationService _navigationService;
         protected IPageDialogService _dialogService;
 
@@ -36,7 +40,6 @@ namespace TaskMobile.ViewModels
             _dialogService = dialogService;
         }
 
-        private string _Driver;
         /// <summary>
         /// Current driver.
         /// </summary>
@@ -49,7 +52,6 @@ namespace TaskMobile.ViewModels
             }
         }
 
-        private string _Vehicle;
         /// <summary>
         /// Represents current Vehicle. (Selected by the driver/user)
         /// </summary>
@@ -62,7 +64,6 @@ namespace TaskMobile.ViewModels
             }
         }
 
-        private Models.Vehicle _curentVehicle;
         /// <summary>
         /// Model that represents the current vehicle.
         /// </summary>
@@ -70,6 +71,23 @@ namespace TaskMobile.ViewModels
         {
             get { return _curentVehicle; }
             set { SetProperty(ref _curentVehicle, value); }
+        }
+
+        /// <summary>
+        /// Check if the vehicle has been set by the user.
+        /// </summary>
+        protected async Task  CheckVehicle()
+        {
+            CurrentVehicle = await App.SettingsInDb.CurrentVehicle();
+            if (CurrentVehicle == null)
+            {
+                if (_dialogService != null)
+                    await _dialogService.DisplayAlertAsync("Oops", "Un minuto, el vehículo no ha sido configurado. Configura el vehículo", "Entiendo");
+                else
+                    await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/ChangeVehicle");
+            }
+            else
+                Vehicle = CurrentVehicle.NameToShow;
         }
     }
 }

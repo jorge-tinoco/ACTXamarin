@@ -193,16 +193,18 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 IsFirstLoad = false;
-                Models.Vehicle Current = await App.SettingsInDb.CurrentVehicle();
-                Vehicle = Current.NameToShow;
-                await RefreshData();
-                IsRefreshing = false;
+                await CheckVehicle();
+                if (CurrentVehicle != null)
+                    await RefreshData();
             }
             catch (Exception e)
             {
                 IsRefreshing = false;
                 App.LogToDb.Error(e);
                 await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error al descargar las tareas rechazadas", "Entiendo");
+            }
+            finally {
+                IsRefreshing = false;
             }
         }
 

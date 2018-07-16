@@ -88,9 +88,9 @@ namespace TaskMobile.ViewModels.Tasks
         {
             try
             {
-                CurrentVehicle = await App.SettingsInDb.CurrentVehicle();
-                Vehicle = CurrentVehicle.NameToShow;
-                await RefreshData();
+                await CheckVehicle();
+                if (CurrentVehicle != null)
+                    await RefreshData();
             }
             catch (Exception e)
             {
@@ -171,35 +171,28 @@ namespace TaskMobile.ViewModels.Tasks
         /// <returns></returns>
         private async Thread.Task RefreshData()
         {
-            int VehicleId;
-            bool VehicleWithId = int.TryParse(CurrentVehicle.Identifier, out VehicleId);
-            if (VehicleWithId == false)
-                await _dialogService.DisplayAlertAsync("Error", "Un minuto, el vehículo no cuenta con un identificador. Configura el vehículo", "Entiendo");
-            else
+            Client RESTClient = new Client(WebServices.URL.GetTasks);
+            Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
+            Requests.MessageBody.VehicleId = 369; // TO do: change for VehicleId
+            Requests.MessageBody.Status = "E";
+            Requests.MessageBody.InitialDate = new DateTime(2016, 01, 01);
+            Requests.MessageBody.FinalDate = DateTime.Now;
+            var Response = await RESTClient.Post<Response<WebServices.Entities.TaskResponse>>(Requests);
+            AssignedTasks.Clear();
+            if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskResult.Count() > 0)
             {
-                Client RESTClient = new Client(WebServices.URL.GetTasks);
-                Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
-                Requests.MessageBody.VehicleId = 369; // TO do: change for VehicleId
-                Requests.MessageBody.Status = "E";
-                Requests.MessageBody.InitialDate = new DateTime(2016, 01, 01);
-                Requests.MessageBody.FinalDate = DateTime.Now;
-                var Response = await RESTClient.Post<Response<WebServices.Entities.TaskResponse>>(Requests);
-                AssignedTasks.Clear();
-                if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskResult.Count() > 0)
+                foreach (WebServices.Entities.TaskResult Result in Response.MessageBody.QueryTaskResult)
                 {
-                    foreach (WebServices.Entities.TaskResult Result in Response.MessageBody.QueryTaskResult)
+                    IEnumerable<Models.Task> TasksConverted = Result.TASK
+                                                                    .Select(taskToConvert => Converters.Task(taskToConvert));
+                    foreach (var TaskToAdd in TasksConverted)
                     {
-                        IEnumerable<Models.Task> TasksConverted = Result.TASK
-                                                                        .Select(taskToConvert => Converters.Task(taskToConvert));
-                        foreach (var TaskToAdd in TasksConverted)
-                        {
-                            AssignedTasks.Add(TaskToAdd);
-                        }
+                        AssignedTasks.Add(TaskToAdd);
                     }
                 }
-                else
-                    await _dialogService.DisplayAlertAsync("Información", "No se encontró tareas asociadas al vehículo ", "Entiendo");
             }
+            else
+                await _dialogService.DisplayAlertAsync("Información", "No se encontró tareas asociadas al vehículo ", "Entiendo");
         }
 
     }
