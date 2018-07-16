@@ -6,18 +6,36 @@ namespace TaskMobile.ViewModels.Tasks
 {
     public class ExecutedViewModel : BaseViewModel, INavigatingAware
     {
-        #region Properties
-        private int _TaskNumber;
+
+        private int _taskNumber;
+        private string _origin;
+        private string _destination;
+        private DelegateCommand _other;
+        private DelegateCommand _finish;
+
+        public ExecutedViewModel(INavigationService navigationService):base (navigationService)
+        {
+        }
+
+        #region Commands
+        public DelegateCommand OtherCommand =>
+            _other ?? (_other = new DelegateCommand(OtherActivity));
+
+        public DelegateCommand FinishCommand =>
+            _finish ?? (_finish = new DelegateCommand(JobDone));
+        #endregion
+
+
+        #region VIEW MODEL PROPERTIES
         /// <summary>
         /// Executed task number.
         /// </summary>
         public int TaskNumber
         {
-            get { return _TaskNumber; }
-            set { SetProperty(ref _TaskNumber, value); }
+            get { return _taskNumber; }
+            set { SetProperty(ref _taskNumber, value); }
         }
 
-        private string _origin;
         /// <summary>
         /// Where the executed tasks come from
         /// </summary>
@@ -27,7 +45,6 @@ namespace TaskMobile.ViewModels.Tasks
             set { SetProperty(ref _origin, value); }
         }
 
-        private string _destination;
         /// <summary>
         /// Where the executed task goes 
         /// </summary>
@@ -38,25 +55,16 @@ namespace TaskMobile.ViewModels.Tasks
         }
         #endregion
 
-        #region Commands
-        private DelegateCommand _Other;
-        public DelegateCommand OtherCommand =>
-            _Other ?? (_Other = new DelegateCommand(ExecuteOtherCommand));
-
-        private DelegateCommand _Finish;
-        public DelegateCommand FinishCommand =>
-            _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
-        #endregion
-
-        public ExecutedViewModel(INavigationService navigationService):base (navigationService)
+        public void OnNavigatingTo(NavigationParameters parameters)
         {
+            var Executed = parameters["ExecutedActivity"] as Models.Activity;
+            TaskNumber = Executed.Id;
         }
-
 
         /// <summary>
         /// Navigate to <see cref="Views.Tasks.QueryAssigned"/> view for continue working in assigned tasks.
         /// </summary>
-        private async void  ExecuteOtherCommand()
+        private async void  OtherActivity()
         {
             await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/QueryAssigned");
         }
@@ -64,16 +72,10 @@ namespace TaskMobile.ViewModels.Tasks
         /// <summary>
         /// Go to main page.
         /// </summary>
-        private async void ExecuteFinishCommand()
+        private async void JobDone()
         {
             await _navigationService.NavigateAsync("TaskMobile:///MainPage");
         }
-        void INavigatingAware.OnNavigatingTo(NavigationParameters parameters)
-        {
-            Models.TaskDetail Executed = parameters["ExecutedTask"] as Models.TaskDetail;
-            TaskNumber = Executed.TaskNumber;
-            this.Origin = Executed.Origin;
-            this.Destination = Executed.Destination;
-        }
+
     }
 }

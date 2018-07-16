@@ -40,15 +40,71 @@
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.25, Constant=0}"
                RelativeLayout.HeightConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.70}"
                RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.90}">
-            <ListView x:Name="AssignedTasks"  
-                      ItemsSource="{Binding AssignedTasks}"
-                      IsPullToRefreshEnabled="True"
-                      RefreshCommand="{Binding RefreshCommand}"
-                      IsRefreshing="{Binding IsRefreshing}">
-                <ListView.Behaviors>
-                    <behavior:EventToCommandBehavior EventName="ItemTapped" Command="{Binding ToDetailCommand}" EventArgsParameterPath="Item" />
-                </ListView.Behaviors>
-                <ListView.ItemTemplate>
+            <StackLayout>
+                <RelativeLayout RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.80}" >
+                <Label Text="Tarea" HorizontalOptions="Center"
+                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.10}"/>
+                <Label Text="Tipo de tarea" HorizontalOptions="Center" FontAttributes="Bold"
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.10, Constant=0}"
+                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.35}" />
+                <Label Text="Remisión" 
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.45, Constant=0}"
+                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.10}" />
+                <Label Text="Origen"  FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.60, Constant=0}"
+                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.075}" />
+                <Label Text="Destino" HorizontalOptions="CenterAndExpand"
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.675, Constant=0}"
+                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.085}"/>
+                <Label Text="Fecha" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.76, Constant=0}"
+                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.20}"/>
+            </RelativeLayout>
+                <ListView x:Name="AssignedTasksList"  
+                          IsGroupingEnabled="True"
+                          ItemsSource="{Binding AssignedTasks}"
+                          IsPullToRefreshEnabled="True"
+                          RefreshCommand="{Binding RefreshCommand}"
+                          IsRefreshing="{Binding IsRefreshing}">
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid  BackgroundColor="{StaticResource Color.GrayGoogle}" Padding="10,10,10,10"  VerticalOptions="Center">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.ToActivityCommand, Source={x:Reference AssignedTasksList}}" CommandParameter="{Binding Number}" />
+                                    </Grid.GestureRecognizers>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions >
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="0.75*" />
+                                        <ColumnDefinition Width="0.75*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="0.5*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding Number}" Grid.Row="0" Grid.Column="0" />
+                                    <Label Text="{Binding Type}" Grid.Row="0" Grid.Column="1" />
+                                    <Label Text="{Binding Remission}" Grid.Row="0" Grid.Column="2" />
+                                    <Label Text="{Binding Origin}" Grid.Row="0" Grid.Column="3" />
+                                    <Label Text="{Binding Destination}" Grid.Row="0" Grid.Column="4" />
+                                    <Label Text="{Binding DateTask, StringFormat='{0:dd-MM-yyyy}'}" HorizontalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="5" />
+                                    <userControls:FontAwesomeLabel Text="{Binding StateIcon}" Grid.Row="0" Grid.Column="6"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            FontSize="20"
+                                                            Opacity="0.6"
+                                                            TextColor="{StaticResource Color.GrayPrimary}">
+                                        <userControls:FontAwesomeLabel.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.DetailsCommand, Source={x:Reference AssignedTasksList}}" CommandParameter="{Binding .}" />
+                                        </userControls:FontAwesomeLabel.GestureRecognizers>
+                                    </userControls:FontAwesomeLabel>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                    <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
@@ -56,23 +112,33 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width=".5*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width=".5*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Number}" Grid.Row="0" Grid.Column="0" />
-                                <Label Text="{Binding Type}" Grid.Row="0" Grid.Column="1" />
-                                <Label Text="{Binding Remission}" Grid.Row="0" Grid.Column="2" />
-                                <Label Text="{Binding Origin}" Grid.Row="0" Grid.Column="3" />
-                                <Label Text="{Binding Destination}" Grid.Row="0" Grid.Column="4" />
-                                <Label Text="{Binding DateTask}" Grid.Row="0" Grid.Column="5" />
+                                <Label Text="OP" Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="0" />
+                                <Label Text="{Binding WorkOrder}" VerticalOptions="CenterAndExpand" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="Lote" Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="2" />
+                                <Label Text="{Binding Lot}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="3" />
+                                <Label Text="SAP" Style="{StaticResource OpaqueLabel}" FontSize="13"  Grid.Row="0" Grid.Column="4" />
+                                <Label Text="{Binding SapCode}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="5" />
+                                <Label Text="Pzas."  Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="6" />
+                                <Label Text="{Binding Pieces}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="7" />
+                                <Label Text="Tons." Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="8" />
+                                <Label Text="{Binding Tons}" VerticalOptions="CenterAndExpand"  Grid.Row="0" Grid.Column="9" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            </StackLayout>
         </Frame>
     </RelativeLayout>
 </ContentPage>
