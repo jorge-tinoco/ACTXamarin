@@ -20,7 +20,11 @@ namespace TaskMobile.Droid.CustomRenderers
 
             if (e.OldElement != null || e.NewElement != null)
             {
-                Control.TextSize *= 0.98f;
+                if ( Device.Idiom == TargetIdiom.Phone )
+                    Control.TextSize *= 0.48f;
+                else
+                    Control.TextSize *= 0.95f;
+
             }
         }
     }

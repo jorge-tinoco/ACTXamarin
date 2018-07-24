@@ -5,61 +5,98 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              x:Class="TaskMobile.Views.Login"
+             BackgroundColor="Transparent"
              Title="Bienvenido">
-    <RelativeLayout x:Name="LoginContainer"  WidthRequest="492">
-        <Image Source="wallpaper.jpg" Opacity=".60"/>
-        <StackLayout x:Name="BoxContainer" BackgroundColor="WhiteSmoke" Padding="20,25,20,20" Opacity="0.88"
-                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.70,Constant=0}"
-                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}"
-                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.15, Constant=0}"  
-                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}">
-                
-            <Image Source="tenaris_imagotipo2_nofondo.png" WidthRequest="300" Margin="0,0,0,20"
+    <ContentPage.BackgroundImage>
+        <OnIdiom x:TypeArguments="x:String" Phone="wallpaper.jpg" Tablet="wallpaper.jpg" />
+    </ContentPage.BackgroundImage>
+    <RelativeLayout x:Name="LoginContainer">
+        <RelativeLayout.IsVisible>
+            <OnIdiom x:TypeArguments="x:Boolean" Phone="true" Tablet="true" />
+        </RelativeLayout.IsVisible>
+        <StackLayout x:Name="BoxContainer" Style="{StaticResource LoggingBox}" BackgroundColor="WhiteSmoke" Padding="20,25,20,20" Opacity="0.88" >
+            <RelativeLayout.HeightConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.80,Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.70,Constant=0}" />
+            </RelativeLayout.HeightConstraint>
+            <RelativeLayout.WidthConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.70,Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}" />
+            </RelativeLayout.WidthConstraint>
+            <RelativeLayout.YConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.10, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.15, Constant=0}" />
+            </RelativeLayout.YConstraint>
+            <RelativeLayout.XConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.15, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}" />
+            </RelativeLayout.XConstraint>
+            <StackLayout.Orientation>
+                <OnIdiom x:TypeArguments="StackOrientation" Phone="Horizontal" Tablet="Vertical" />
+            </StackLayout.Orientation>
+            <StackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
+                <StackLayout.Orientation>
+                    <OnIdiom x:TypeArguments="StackOrientation" Phone="Vertical" Tablet="Horizontal" />
+                </StackLayout.Orientation>
+                <Image Source="tenaris_imagotipo2_nofondo.png" Style="{StaticResource TenarisLogo}" HorizontalOptions="Fill"
                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.40,Constant=0}"
                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.15, Constant=0}"/>
-            <RelativeLayout x:Name="FieldsContainer" >
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center"
-                             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.20,Constant=0}">
-                    <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Globe}"
-                                            Margin="0,15,0,10"
-                                            VerticalOptions="Center"
-                                            FontSize="20"
-                                            TextColor="Black"/>
-                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Building}"
-                                                Margin="0,15,0,10"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="Black"/>
-                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.User}"
-                                                Margin="0,15,0,10"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="Black"/>
-                        <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Key}"
-                                                Margin="0,15,20,10"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="Black"/>
+                <Label Text="WTT" FontAttributes="Bold" HorizontalOptions="End">
+                    <Label.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="{StaticResource SmallTextSize}" Tablet="{StaticResource MediumTextSize}" />
+                    </Label.FontSize>
+                </Label>
+            </StackLayout>
+           
+            <RelativeLayout x:Name="FieldsContainer" MinimumWidthRequest="310" >
+                <StackLayout Orientation="Vertical"
+                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.80,Constant=0}"
+                             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.90,Constant=0}"
+                             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.10,Constant=0}"
+                             RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.05,Constant=0}">
+                    <StackLayout.Spacing>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="10" Tablet="-55" />
+                    </StackLayout.Spacing>
+                    <StackLayout x:Name="ColumnsContainer" Orientation="Horizontal" HorizontalOptions="Center">
+                        <StackLayout  Orientation="Vertical" HorizontalOptions="CenterAndExpand" >
+                            <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Globe}"
+                                                            Style="{StaticResource LoggingIcos}"
+                                                            x:Name="LoggingIco"/>
+
+                            <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Building}"
+                                                           Style="{StaticResource LoggingIcos}"/>
+
+                            <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.User}"
+                                                           Style="{StaticResource LoggingIcos}"/>
+
+                            <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Key}"
+                                                           Style="{StaticResource LoggingIcos}"/>
+
+                        </StackLayout >
+                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                            <StackLayout.Spacing>
+                                <OnIdiom x:TypeArguments="x:Double" Phone="-5" Tablet="5" />
+                            </StackLayout.Spacing>
+                            <Picker x:Name="LanguagePicker" 
+                                Title="Seleccione un idioma"
+                                ItemsSource="{Binding AvailableLanguages}"
+                                ItemDisplayBinding="{Binding Value}"
+                                SelectedItem="{Binding Language}">
+                            </Picker>
+                             <Picker x:Name="MillPicker" 
+                                Title="Seleccione una planta"
+                                ItemsSource="{Binding SupportedMills}"
+                                ItemDisplayBinding="{Binding Value}"
+                                SelectedItem="{Binding Mill}">
+                            </Picker>
+                            <Entry Placeholder="Ingrese su usuario" Text="{Binding User}" />
+                            <Entry IsPassword="True" Placeholder="Introduzca su contraseña" Text="{Binding Password}" />
+                        </StackLayout>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" >
-                        <Picker x:Name="LanguagePicker" 
-                            Title="Seleccione un idioma"
-                            ItemsSource="{Binding AvailableLanguages}"
-                            ItemDisplayBinding="{Binding Value}"
-                            SelectedItem="{Binding Language}"
-                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.80,Constant=0}"/>
-                        <Picker x:Name="MillPicker" 
-                            Title="Seleccione una planta"
-                            ItemsSource="{Binding SupportedMills}"
-                            ItemDisplayBinding="{Binding Value}"
-                            SelectedItem="{Binding Mill}"/>
-                        <Entry Placeholder="Ingrese su usuario" Text="{Binding User}"/>
-                        <Entry IsPassword="True" Placeholder="Introduzca su contraseña" Text="{Binding Password}"/>
-                    </StackLayout>
+                    <Button Text="Ingresar"  Command="{Binding LoginCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
                 </StackLayout>
             </RelativeLayout>
-            <Button Text="Ingresar" Command="{Binding LoginCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </RelativeLayout>
+    
 </ContentPage>

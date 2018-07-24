@@ -267,3 +267,10 @@ __pycache__/
 /TaskMobile/TaskMobile.Android/CustomRenderers/CircleButtonRenderer.cs
 /TaskMobile/TaskMobile.Android/CustomRenderers/FancyGestureListener.cs
 /TaskMobile/TaskMobile.Android/CustomRenderers/FancySwipeItemRenderer.cs
+/TaskMobile/TaskMobile/WebServices/IServiceInterface.cs
+/TaskMobile/TaskMobile.Android/Assets/userCert.cer
+/TaskMobile/TaskMobile.Android/Utilities/Settings.cs
+/TaskMobile/TaskMobile.UWP/WebServices/Client_UWP.cs
+/TaskMobile/TaskMobile.iOS/WebServices/Client_iOS.cs
+/TaskMobile/TaskMobile.Android/WebServices/Crypto.cs
+/TaskMobile/TaskMobile.Android/WebServices/Client_Android.cs
