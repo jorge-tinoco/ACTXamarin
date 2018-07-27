@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
+             Title="Test view for showing project components"
+             x:Class="TaskMobile.Views.Fonts.Sizes">
+    <StackLayout Orientation="Horizontal">
+        
+        <StackLayout Orientation="Vertical">
+            <Label Text="XSmall" FontSize="{StaticResource XSmallTextSize}"/>
+            <Label Text="Small" FontSize="{StaticResource SmallTextSize}"/>
+            <Label Text="Medium" FontSize="{StaticResource MediumTextSize}"/>
+            <Label Text="Large" FontSize="{StaticResource LargeTextSize}"/>
+            <Label Text="XLarge" FontSize="{StaticResource XLargeTextSize}"/>
+        </StackLayout>
+        <StackLayout Orientation="Vertical">
+            <Button Text="Principal"  Command="{Binding LoginCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
+            <Button Text="Borders"  Command="{Binding LoginCommand}" Style="{StaticResource BtnBorders}" VerticalOptions="CenterAndExpand"/>
+            <Button Text="Secondary"  Command="{Binding LoginCommand}" Style="{StaticResource BtnSecondary}" VerticalOptions="CenterAndExpand"/>
+            <Button Text="Checks"  Command="{Binding LoginCommand}" Style="{StaticResource BtnWithCheck}" VerticalOptions="CenterAndExpand"/>
+            <Button Text="Rejections"  Command="{Binding LoginCommand}" Style="{StaticResource BtnRejections}" VerticalOptions="CenterAndExpand"/>
+            
+        </StackLayout>
+        <StackLayout Orientation="Vertical">
+            
+            <StackLayout Orientation="Vertical">
+                <StackLayout >
+                    <StackLayout.Spacing>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="5"/>
+                    </StackLayout.Spacing>
+                    <userControls:SquareButton  Text="{x:Static userControls:Icon.Child}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
+                    <Label Text="Otra" HorizontalOptions="Center"/>
+                </StackLayout>
+                <StackLayout >
+                    <StackLayout.Spacing>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="5"/>
+                    </StackLayout.Spacing>
+                    <userControls:SquareButton  Text="{x:Static userControls:Icon.SignLanguage}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
+                    <Label Text="Terminar" TextColor="Black" HorizontalOptions="Center"/>
+                </StackLayout>
+            </StackLayout>
+            
+        </StackLayout>
+    </StackLayout>
+
+</ContentPage>
