@@ -16,6 +16,7 @@ namespace TaskMobile
             this.Master = new Views._Master();
             this.Detail = new NavigationPage(new Views._Detail());
             App.MasterD = this;
+            this.MasterBehavior = MasterBehavior.Popover;
         }
     }
 }
