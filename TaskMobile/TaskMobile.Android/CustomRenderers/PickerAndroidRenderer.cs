@@ -20,11 +20,29 @@ namespace TaskMobile.Droid.CustomRenderers
 
             if (e.OldElement != null || e.NewElement != null)
             {
-                if ( Device.Idiom == TargetIdiom.Phone )
-                    Control.TextSize *= 0.48f;
-                else
-                    Control.TextSize *= 0.95f;
-
+                var Small = Device.GetNamedSize(NamedSize.Small, typeof(Picker));
+                var Medium = Device.GetNamedSize(NamedSize.Medium, typeof(Picker));
+                var Large = Device.GetNamedSize(NamedSize.Large, typeof(Picker));
+                var Micro = Device.GetNamedSize(NamedSize.Micro, typeof(Picker));
+                var Default = Device.GetNamedSize(NamedSize.Default, typeof(Picker));
+                switch (Device.Idiom)
+                {
+                    case TargetIdiom.Unsupported:
+                        Control.TextSize = (float)Medium;
+                        break;
+                    case TargetIdiom.Phone:
+                        Control.TextSize = 14;
+                        break;
+                    case TargetIdiom.Tablet:
+                        Control.TextSize = 22;
+                        break;
+                    case TargetIdiom.Desktop:
+                        Control.TextSize = 28;
+                        break;
+                    default:
+                        Control.TextSize = (float)Medium;
+                        break;
+                }
             }
         }
     }
