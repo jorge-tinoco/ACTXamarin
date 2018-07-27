@@ -4,15 +4,14 @@ using TaskMobile.UserControls;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-
-[assembly: ExportRenderer(typeof( FontAwesomeLabel), typeof(FontAwesomeLabelRenderer))]
+[assembly: ExportRenderer(typeof(SquareButton), typeof(SquareButtonRenderer))]
 namespace TaskMobile.Droid.CustomRenderers
 {
-    public class FontAwesomeLabelRenderer : LabelRenderer
+    public class SquareButtonRenderer: ButtonRenderer
     {
-        protected override void OnElementChanged(ElementChangedEventArgs<Label> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<Button> e)
         {
-            
+
             base.OnElementChanged(e);
             if (e.OldElement == null)
             {

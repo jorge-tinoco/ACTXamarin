@@ -2,24 +2,18 @@
 
 namespace TaskMobile.UserControls
 {
-    
-    /// <summary>
-    /// Class for using FontAwesome in XAML namespaces.
-    /// </summary>
-    public class FontAwesomeLabel : Label
+    public class SquareButton: Button
     {
         //Parameterless constructor for XAML
-        public FontAwesomeLabel()
+        public SquareButton()
         {
             FontFamily = FontAwesome.FontAwesomeName;
         }
 
-        public FontAwesomeLabel(string fontAwesomeLabel = null)
+        public SquareButton(string fontAwesomeLabel = null)
         {
             FontFamily = FontAwesome.FontAwesomeName;
             Text = fontAwesomeLabel;
         }
     }
-
-   
 }
