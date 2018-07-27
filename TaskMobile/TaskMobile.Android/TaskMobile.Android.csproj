@@ -194,6 +194,7 @@
     </Compile>
     <Compile Include="CustomRenderers\GradientColorStackRenderer.cs" />
     <Compile Include="CustomRenderers\PickerAndroidRenderer.cs" />
+    <Compile Include="CustomRenderers\SquareButtonRenderer.cs" />
     <Compile Include="DB\SQLite_Android.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

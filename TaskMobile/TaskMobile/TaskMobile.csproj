@@ -72,6 +72,7 @@
     <Compile Include="UserControls\FontAwesome.cs" />
     <Compile Include="UserControls\FontAwesomeLabel.cs" />
     <Compile Include="UserControls\GradientColor.cs" />
+    <Compile Include="UserControls\SquareButton.cs" />
     <Compile Include="UserControls\SwipeListItem.cs" />
     <Compile Include="Utilities\Screen.cs" />
     <Compile Include="Utilities\TenarisColors.cs" />
