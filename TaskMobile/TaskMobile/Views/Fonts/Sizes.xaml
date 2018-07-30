@@ -2,10 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
-             Title="Test view for showing project components"
              x:Class="TaskMobile.Views.Fonts.Sizes">
     <StackLayout Orientation="Horizontal">
-        
+
         <StackLayout Orientation="Vertical">
             <Label Text="XSmall" FontSize="{StaticResource XSmallTextSize}"/>
             <Label Text="Small" FontSize="{StaticResource SmallTextSize}"/>
@@ -19,10 +18,10 @@
             <Button Text="Secondary"  Command="{Binding LoginCommand}" Style="{StaticResource BtnSecondary}" VerticalOptions="CenterAndExpand"/>
             <Button Text="Checks"  Command="{Binding LoginCommand}" Style="{StaticResource BtnWithCheck}" VerticalOptions="CenterAndExpand"/>
             <Button Text="Rejections"  Command="{Binding LoginCommand}" Style="{StaticResource BtnRejections}" VerticalOptions="CenterAndExpand"/>
-            
+
         </StackLayout>
         <StackLayout Orientation="Vertical">
-            
+
             <StackLayout Orientation="Vertical">
                 <StackLayout >
                     <StackLayout.Spacing>
@@ -39,8 +38,7 @@
                     <Label Text="Terminar" TextColor="Black" HorizontalOptions="Center"/>
                 </StackLayout>
             </StackLayout>
-            
+
         </StackLayout>
     </StackLayout>
-
 </ContentPage>
