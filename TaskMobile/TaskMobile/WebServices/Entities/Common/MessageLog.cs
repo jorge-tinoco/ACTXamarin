@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,7 @@ namespace TaskMobile.WebServices.Entities.Common
 
         public double MaximumLogItemSeverityCode { set; get; }
 
-        public List<LogItem> LogItems { get; set; }
-
-        public MessageLog()
-        {
-            ProcessingResultCode = 0;
-            MaximumLogItemSeverityCode = 0;
-            LogItems = new List<LogItem>();
-        }
+        public LogItem LogItem { get; set; }
 
     }
 }

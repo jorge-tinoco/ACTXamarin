@@ -49,6 +49,9 @@
                     case "A":
                         _status = "Asignada";
                         break;
+                    case "F":
+                        _status = "Finalizada";
+                        break;
                     default:
                         _status = "No reconocido";
                         break;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Thread = System.Threading.Tasks;
 using TaskMobile.Models;
@@ -12,9 +13,11 @@ namespace TaskMobile.DB
     {
         public SettingsREPO()
         {
+            //CleanDB();
             connection.CreateTableAsync<Vehicle>().Wait(); // Only one item should be stored in DB. 
             connection.CreateTableAsync<Driver>().Wait();
             connection.CreateTableAsync<Rejection>().Wait();
+            InitRejections();
         }
 
         /// <summary>
@@ -101,6 +104,39 @@ namespace TaskMobile.DB
                 App.LogToDb.Error(e);
                 throw  e;
             }
+        }
+
+        /// <summary>
+        /// Insert the initial rejections that app should contain.
+        /// </summary>
+        internal async void InitRejections()
+        {
+            IEnumerable<Rejection> RejectionsInDb = await  Rejections();
+            if (RejectionsInDb.Count() == 0)
+            {
+                await AddRejection("Paquetón Mal Armado", 54) ;
+                await AddRejection("Material Revuelto (OP, Colada, EE, Etc.)", 55) ;
+                await AddRejection("Exceso de Tonelaje", 56) ;
+                await AddRejection("Plana Dañada", 57) ;
+                await AddRejection("Mantenimiento Programado", 41) ;
+                await AddRejection("Mantenimiento Correctivo", 42) ;
+                await AddRejection("Cambio de Turno", 43) ;
+                await AddRejection("Comida", 44) ;
+                await AddRejection("Carga Combustible", 45) ;
+                await AddRejection("Falta Equipo Descarga", 46) ;
+                await AddRejection("Espera BME: Plana no Lista", 47) ;
+                await AddRejection("Comunicaciones (Radio Saturada, Etc)", 48) ;
+                await AddRejection("Leer Tarjeta/Falta Tarjeta", 49) ;
+                await AddRejection("Falta de Demanda", 50) ;
+                await AddRejection("Falta de Conductor", 51) ;
+            }
+        }
+
+        private async void CleanDB()
+        {
+            connection.DropTableAsync<Vehicle>().Wait(); // Only one item should be stored in DB. 
+            //connection.DropTableAsync<Driver>().Wait();
+            connection.DropTableAsync<Rejection>().Wait();
         }
     }
 }

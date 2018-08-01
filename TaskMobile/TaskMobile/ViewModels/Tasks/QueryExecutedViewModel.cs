@@ -151,7 +151,7 @@ namespace TaskMobile.ViewModels.Tasks
         {
             Client RESTClient = new Client(WebServices.URL.GetTasks);
             Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
-            Requests.MessageBody.VehicleId = 369; // TO do: change for VehicleId
+            Requests.MessageBody.VehicleId = int.Parse(CurrentVehicle.Identifier); // TO do: change for VehicleId
             Requests.MessageBody.Status = "E";
             Requests.MessageBody.InitialDate = new DateTime(2016, 01, 01);
             Requests.MessageBody.FinalDate = DateTime.Now;

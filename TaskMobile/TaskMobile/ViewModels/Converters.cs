@@ -78,5 +78,23 @@
                 VehicleNumber = activityToConvert.VEHICLE_NUMBER,
                 Status = activityToConvert.STATUS  };
         }
+
+        /// <summary>
+        /// Translate <see cref="WebServices.Entities.VehicleListResult"/> to <see cref="Models.Vehicle"/> (local entity).
+        /// </summary>
+        /// <param name="vehicleToConvert">Entity to convert</param>
+        /// <returns>Entity object converted.</returns>
+        internal static Models.Vehicle Vehicle(WebServices.Entities.VehicleListResult vehicleToConvert)
+        {
+            string VehicleIdentifier = vehicleToConvert != null ? vehicleToConvert.VEHICLEID.ToString() : "";
+            return new Models.Vehicle
+            {
+                Identifier = VehicleIdentifier,
+                Description = vehicleToConvert.BRAND,
+                Plate = vehicleToConvert.UNITNUMBER,
+                InventoryNumber = vehicleToConvert.VEHICLEINVENTORYNUMBER
+            };
+           
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace TaskMobile.ViewModels.Tasks
 
         public QueryFinishedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService,dialogService)
         {
-            Driver = "Jorge Tinoco";
+            Driver = "TINOCO";
         }
         
         #region COMMANDS
@@ -70,9 +70,9 @@ namespace TaskMobile.ViewModels.Tasks
             get { return  _start; }
             set
             {
+                SetProperty(ref _start, value);
                 if (!IsFirstLoad)
                     RefreshCommand.Execute();
-                SetProperty(ref _start, value);
             }
         }
 
@@ -84,9 +84,9 @@ namespace TaskMobile.ViewModels.Tasks
             get { return _end; }
             set
             {
+                SetProperty(ref _end, value.AddDays(1).AddTicks(-1));
                 if (!IsFirstLoad)
                     RefreshCommand.Execute();
-                SetProperty(ref _end, value);
             }
         }
 
@@ -182,8 +182,8 @@ namespace TaskMobile.ViewModels.Tasks
         {
             Client RESTClient = new Client(WebServices.URL.GetTasks);
             Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
-            Requests.MessageBody.VehicleId = 369; // TO do: change for VehicleId
-            Requests.MessageBody.Status = "E";
+            Requests.MessageBody.VehicleId = int.Parse(CurrentVehicle.Identifier); // TO do: change for VehicleId
+            Requests.MessageBody.Status = "F";
             Requests.MessageBody.InitialDate = StartDate;
             Requests.MessageBody.FinalDate = EndDate;
             var Response = await RESTClient.Post<Response<WebServices.Entities.TaskResponse>>(Requests);

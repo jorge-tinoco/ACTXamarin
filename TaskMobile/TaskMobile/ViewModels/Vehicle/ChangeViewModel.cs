@@ -14,11 +14,20 @@ namespace TaskMobile.ViewModels.Vehicle
 {
     public class ChangeViewModel : BaseViewModel, INavigatingAware
     {
+        private IEnumerable<Models.Vehicle> _vehicles;
+        private Models.Vehicle _veh;
+        private bool _IsBusy = false;
         public ChangeViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
         {
         }
 
-        private IEnumerable<Models.Vehicle> _vehicles;
+        #region COMMANDS
+        // Command implementations goes here.
+        private DelegateCommand _select;
+        public DelegateCommand SelectCommand =>
+            _select ?? (_select = new DelegateCommand(ExecuteSelectCommand));
+        #endregion
+
         /// <summary>
         /// Available vehicles for working. 
         /// </summary>
@@ -29,7 +38,6 @@ namespace TaskMobile.ViewModels.Vehicle
         }
 
 
-        private Models.Vehicle _veh;
         /// <summary>
         /// Current selected vehicle.
         /// </summary>
@@ -41,7 +49,6 @@ namespace TaskMobile.ViewModels.Vehicle
             }
         }
 
-        private bool _IsBusy = false;
         /// <summary>
         /// Determine if the webservices is loading.
         /// </summary>
@@ -49,22 +56,6 @@ namespace TaskMobile.ViewModels.Vehicle
         {
             get { return _IsBusy; }
             set { SetProperty(ref _IsBusy, value); }
-        }
-        #region COMMANDS
-        // Command implementations goes here.
-        private DelegateCommand _select;
-        public DelegateCommand SelectCommand =>
-            _select ?? (_select = new DelegateCommand(ExecuteSelectCommand));
-        #endregion
-
-        /// <summary>
-        /// Add selected vehicle to database and navigate to <see cref="MainPage"/>.
-        /// </summary>
-        private async void ExecuteSelectCommand()
-        {
-            await App.SettingsInDb.SetVehicle(Vehicle);
-            await _dialogService.DisplayAlertAsync("Mensaje", "Haz seleccionado el vehículo: "+Vehicle.Description, "Bien");
-            await _navigationService.NavigateAsync("TaskMobile:///MainPage");
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -74,24 +65,30 @@ namespace TaskMobile.ViewModels.Vehicle
                 IsBusy = true;
                 Client RESTClient = new Client (WebServices.URL.GetVehicles);
                 Request<WebServices.Entities.Vehicle> Requests = new Request<WebServices.Entities.Vehicle>();
-                Requests.MessageBody.SystemId = "ACT";
+                Requests.MessageBody.SystemId = "ILO";
                 Requests.MessageBody.User = "Tinoco";
                 var Response = await RESTClient.Post<Response<VehicleResponse>>(Requests);
-                AvailableVehicles = Response.MessageBody.VehicleListResult.Select(vehicle => ConvertToModel(vehicle)).ToList();
+                AvailableVehicles = Response.MessageBody.VehicleListResult.Select(vehicle => Converters.Vehicle(vehicle)).ToList();
+                
                 IsBusy = false;
             }
             catch (Exception e)
             {
+                if (AvailableVehicles == null)
+                    AvailableVehicles = new List<Models.Vehicle>() { new Models.Vehicle() { Plate = 1, Description = "Test", Identifier = "s3" }, new Models.Vehicle() { Plate = 2, Description = "Test 4", Identifier = "s4" } };
                 App.LogToDb.Error(e);
                 await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error al consultar los vehículos", "Aceptar");
             }
         }
 
-
-        private Models.Vehicle ConvertToModel(VehicleListResult entityToConvert)
+        /// <summary>
+        /// Add selected vehicle to database and navigate to <see cref="MainPage"/>.
+        /// </summary>
+        private async void ExecuteSelectCommand()
         {
-            string VehicleIdentifier = entityToConvert != null ? entityToConvert.VEHICLEID.ToString() : "";
-            return new Models.Vehicle { Identifier = VehicleIdentifier, Description = entityToConvert.BRAND, Plate = entityToConvert.UNITNUMBER };
+            await App.SettingsInDb.SetVehicle(Vehicle);
+            await _dialogService.DisplayAlertAsync("Mensaje", "Haz seleccionado el vehículo: " + Vehicle.NameToShow, "Bien");
+            await _navigationService.NavigateAsync("TaskMobile:///MainPage");
         }
     }
 }

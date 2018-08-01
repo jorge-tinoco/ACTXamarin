@@ -12,6 +12,10 @@ namespace TaskMobile.Models
     public class Vehicle
     {
         private string _Identifier;
+        private string _inventoryNumber;
+        private int _Plate;
+        private string _Descriptioon;
+
         /// <summary>
         /// Vehicle unique identifier.
         /// </summary>
@@ -23,7 +27,6 @@ namespace TaskMobile.Models
         }
 
 
-        private int _Plate;
         /// <summary>
         /// Vehicle plate number.
         /// </summary>
@@ -34,7 +37,6 @@ namespace TaskMobile.Models
             set { _Plate = value; }
         }
 
-        private string _Descriptioon;
         /// <summary>
         /// Brief vehicle description.
         /// </summary>
@@ -53,8 +55,22 @@ namespace TaskMobile.Models
         public string NameToShow {
             get
             {
+                if(Plate == 0  )
+                    return InventoryNumber + " - "+Description;
                 return Plate + " - "+Description; 
             }
         }
+
+
+        /// <summary>
+        /// Inventory number. Similar to <see cref="Plate"/>.
+        /// </summary>
+        [MaxLength(60), Column("inventory")]
+        public string InventoryNumber
+        {
+            get { return _inventoryNumber; }
+            set { _inventoryNumber = value; }
+        }
+
     }
 }

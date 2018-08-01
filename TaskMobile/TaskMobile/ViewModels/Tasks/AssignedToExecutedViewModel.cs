@@ -32,7 +32,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// <param name="navigationService">Navigation service.</param>
         public AssignedToExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
         {
-            Driver = "Jorge Tinocos";
+            Driver = "TINOCO";
         }
 
         #region  COMMANDS
@@ -173,7 +173,7 @@ namespace TaskMobile.ViewModels.Tasks
                 Requests.MessageBody.ActivityId = tappedActivity.Id;
                 var Response = await RESTClient.Post<Response<ActivityUpdResponse>>(Requests);
                 var ResultCode = Response.MessageLog.ProcessingResultCode;
-                if (ResultCode == 0 && Response.MessageBody.Result == "1")
+                if (ResultCode == 0 && Response.MessageBody.Result == "0")
                 {
                     NavigationParameters Parameters = new NavigationParameters();
                     Parameters.Add("ExecutedActivity", tappedActivity);
@@ -181,13 +181,8 @@ namespace TaskMobile.ViewModels.Tasks
                 }
                 else
                 {
-                    if (Response.MessageLog.LogItems.Count() > 0)
-                    {
-                        foreach (LogItem error in Response.MessageLog.LogItems)
-                        {
-                            await _dialogService.DisplayAlertAsync("Error", error.ErrorDescription, "Entiendo");
-                        }
-                    }
+                    if (Response.MessageLog.LogItem != null)
+                        await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
                     else
                         await _dialogService.DisplayAlertAsync("Información", "No se ha podido ejecutar la actividad : " + tappedActivity.Name, "Entiendo");
                 }
@@ -222,9 +217,10 @@ namespace TaskMobile.ViewModels.Tasks
                     Requests.MessageBody.RejectionId = Rejection.Number;
                     Requests.MessageBody.LastUpdateBy = Driver;
                     Requests.MessageBody.ActivityId = tappedActivity.Id;
+                    Requests.MessageBody.DestinyLocation = "sample string 4";
                     var Response = await RESTClient.Post<Response<ActivityUpdResponse>>(Requests);
                     var ResultCode = Response.MessageLog.ProcessingResultCode;
-                    if (ResultCode == 1 && Response.MessageBody.Result == "1")
+                    if (ResultCode == 0 && Response.MessageBody.Result == "0")
                     {
                         NavigationParameters Parameters = new NavigationParameters();
                         Parameters.Add("RejectedActivity", tappedActivity);
@@ -233,13 +229,8 @@ namespace TaskMobile.ViewModels.Tasks
                     }
                     else
                     {
-                        if (Response.MessageLog.LogItems.Count() > 0)
-                        {
-                            foreach (LogItem error in Response.MessageLog.LogItems)
-                            {
-                                await _dialogService.DisplayAlertAsync("Error", error.ErrorDescription, "Entiendo");
-                            }
-                        }
+                        if (Response.MessageLog.LogItem != null )
+                            await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
                         else
                             await _dialogService.DisplayAlertAsync("Información", "No se ha podido rechazar la actividad : " + tappedActivity.Name, "Entiendo");
                     }
@@ -278,13 +269,8 @@ namespace TaskMobile.ViewModels.Tasks
                 }
                 else
                 {
-                    if (Response.MessageLog.LogItems.Count() >= 0)
-                    {
-                        foreach (LogItem error in Response.MessageLog.LogItems)
-                        {
-                            await _dialogService.DisplayAlertAsync("Error", error.ErrorDescription, "Entiendo");
-                        }
-                    }
+                    if (Response.MessageLog.LogItem != null )
+                            await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
                     else
                         await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
                 }

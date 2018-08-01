@@ -66,14 +66,14 @@
                 <StackLayout.Spacing>
                     <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="8"/>
                 </StackLayout.Spacing>
-                <userControls:SquareButton  Text="{x:Static userControls:Icon.Child}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
+                <userControls:SquareButton Command="{Binding OtherCommand}"  Text="{x:Static userControls:Icon.Child}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
                 <Label Text="Otra" TextColor="Black" HorizontalOptions="Center"/>
             </StackLayout>
             <StackLayout  x:Name="FinishButton">
                 <StackLayout.Spacing>
                     <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="5"/>
                 </StackLayout.Spacing>
-                <userControls:SquareButton  Text="{x:Static userControls:Icon.SignLanguage}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
+                <userControls:SquareButton Command="{Binding FinishCommand}" Text="{x:Static userControls:Icon.SignLanguage}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
                 <Label Text="Terminar" TextColor="Black" HorizontalOptions="Center"/>
             </StackLayout>
         </StackLayout>

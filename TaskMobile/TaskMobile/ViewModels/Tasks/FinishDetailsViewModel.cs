@@ -117,13 +117,8 @@ namespace TaskMobile.ViewModels.Tasks
                 }
                 else
                 {
-                    if (Response.MessageLog.LogItems.Count() >= 0)
-                    {
-                        foreach (LogItem error in Response.MessageLog.LogItems)
-                        {
-                            await _dialogService.DisplayAlertAsync("Error", error.ErrorDescription, "Entiendo");
-                        }
-                    }
+                    if (Response.MessageLog.LogItem != null)
+                        await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
                     else
                         await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
                 }

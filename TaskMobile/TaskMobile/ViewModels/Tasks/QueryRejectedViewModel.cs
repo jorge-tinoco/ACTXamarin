@@ -37,9 +37,9 @@ namespace TaskMobile.ViewModels.Tasks
             get { return _start; }
             set
             {
+                SetProperty(ref _start, value);
                 if(!IsFirstLoad)
                     RefreshCommand.Execute();
-                SetProperty(ref _start, value);
             }
         }
 
@@ -51,9 +51,9 @@ namespace TaskMobile.ViewModels.Tasks
             get { return _end; }
             set
             {
+                SetProperty(ref _end, value.AddDays(1).AddTicks(-1) );
                 if ( !IsFirstLoad )
                     RefreshCommand.Execute();
-                SetProperty(ref _end, value);
             }
         }
 
@@ -156,7 +156,7 @@ namespace TaskMobile.ViewModels.Tasks
                 await _dialogService.DisplayAlertAsync("Error", "Algo ocurrió cuando mostrábamos los detalles", "Entiendo");
             }
         }
-       
+
         /// <summary>
         /// Refresh the rejected task list view.
         /// </summary>
@@ -165,8 +165,8 @@ namespace TaskMobile.ViewModels.Tasks
             IsRefreshing = true;
             Client RESTClient = new Client(WebServices.URL.GetTasks);
             Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
-            Requests.MessageBody.VehicleId = 369;
-            Requests.MessageBody.Status = "E";
+            Requests.MessageBody.VehicleId = int.Parse(CurrentVehicle.Identifier);
+            Requests.MessageBody.Status = "R";
             Requests.MessageBody.InitialDate = StartDate;
             Requests.MessageBody.FinalDate = EndDate;
             var Response = await RESTClient.Post<Response<WebServices.Entities.TaskResponse>>(Requests);

@@ -83,8 +83,7 @@ namespace TaskMobile.ViewModels
             {
                 if (_dialogService != null)
                     await _dialogService.DisplayAlertAsync("Oops", "Un minuto, el vehículo no ha sido configurado. Configura el vehículo", "Entiendo");
-                else
-                    await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/ChangeVehicle");
+                await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/ChangeVehicle");
             }
             else
                 Vehicle = CurrentVehicle.NameToShow;

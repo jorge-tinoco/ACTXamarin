@@ -4,27 +4,54 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
+             xmlns:forms="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
              ControlTemplate="{StaticResource TenarisTemplate}"
              x:Class="TaskMobile.Views.Vehicle.Change">
     <RelativeLayout x:Name="ChangeContainer" WidthRequest="492">
-        <Frame HasShadow="True" BackgroundColor="White" Margin="10,10,10,-10"
-               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"
-               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.20, Constant=0}"
-               RelativeLayout.HeightConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.60}"
-               RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.40}">
-            <StackLayout Margin="30,30,30,30">
-                
+        <Frame HasShadow="True" BackgroundColor="White" Margin="10,10,10,-10">
+            <RelativeLayout.HeightConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.80}"
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.60,Constant=0}" 
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.60,Constant=0}" />
+            </RelativeLayout.HeightConstraint>
+            <RelativeLayout.WidthConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.40,Constant=0}" 
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.40,Constant=0}" />
+            </RelativeLayout.WidthConstraint>
+            <RelativeLayout.XConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"/>
+            </RelativeLayout.XConstraint>
+            <RelativeLayout.YConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.10, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.20, Constant=0}"
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.20, Constant=0}"/>
+            </RelativeLayout.YConstraint>
+           
+            <StackLayout   VerticalOptions="CenterAndExpand">
+                <StackLayout.Margin>
+                    <OnIdiom x:TypeArguments="Thickness" Phone="10,10,10,10" Tablet="20,20,20,20"/>
+                </StackLayout.Margin>
+                <StackLayout.Spacing>
+                    <OnIdiom x:TypeArguments="x:Double" Phone="0" 
+                                                      Tablet="20"
+                                                      Desktop="25"/>
+                </StackLayout.Spacing>
                 <Label Text="Seleccione un vehículo" Style="{StaticResource BlueNormalLabel}"/>
-                <StackLayout Orientation="Horizontal" Padding="15,15,0,0">
+                <StackLayout   Orientation="Horizontal"  VerticalOptions="FillAndExpand" Spacing="30">
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Taxi}"
-                                                Margin="0,15,5,10"
+                                                   Margin="0,15,5,10"
                                                 VerticalOptions="Center"
                                                 FontSize="20"
-                                                TextColor="Black"/>
+                                                TextColor="{StaticResource Color.BluePrimary}"/>
                     <RelativeLayout>
                         
-                    <Picker x:Name="VehiclePicker" 
+                    <Picker x:Name="VehiclePicker" HorizontalOptions="Fill"
+                           
                             Title="Vehículos"
+                            VerticalOptions="CenterAndExpand"
                             ItemsSource="{Binding AvailableVehicles}"
                             ItemDisplayBinding="{Binding NameToShow}"
                             SelectedItem="{Binding Vehicle}"
@@ -35,10 +62,72 @@
                                             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"/>
                     </RelativeLayout>
                 </StackLayout>
-                <Button Text="Aceptar" Margin="0,20,0,0" Command="{Binding SelectCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
+                <Button  Text="Aceptar" Margin="0,20,0,0" Command="{Binding SelectCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
             </StackLayout>
 
         </Frame>
     </RelativeLayout>
-    
+    <!--<forms:CarouselView x:Name="CarouselVehicles" ItemsSource="{Binding AvailableVehicles}">
+        <forms:CarouselView.ItemTemplate>
+            <DataTemplate>
+                <Label Text="{Binding NameToShow}" FontSize="20"/>
+            </DataTemplate>
+        </forms:CarouselView.ItemTemplate>
+    </forms:CarouselView>-->
+
+    <!--<RelativeLayout x:Name="ChangeContainer" WidthRequest="492">
+        <Label Text="Seleccione un vehículo" Style="{StaticResource BlueNormalLabel}"/>
+        <StackLayout  BackgroundColor="BlueViolet"  >
+            <RelativeLayout.HeightConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.80}"
+                                                    Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.60,Constant=0}" 
+                                                    Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.60,Constant=0}" />
+            </RelativeLayout.HeightConstraint>
+            <RelativeLayout.WidthConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}" 
+                                                    Tablet="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.40,Constant=0}" 
+                                                    Desktop="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.40,Constant=0}" />
+            </RelativeLayout.WidthConstraint>
+            <RelativeLayout.XConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}" 
+                                                    Tablet="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"
+                                                    Desktop="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"/>
+            </RelativeLayout.XConstraint>
+            <RelativeLayout.YConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.10, Constant=0}" 
+                                                    Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.20, Constant=0}"
+                                                    Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.20, Constant=0}"/>
+            </RelativeLayout.YConstraint>
+            <StackLayout.Margin>
+                <OnIdiom x:TypeArguments="Thickness" Phone="10,10,10,10" Tablet="20,20,20,20"/>
+            </StackLayout.Margin>
+            <StackLayout.Spacing>
+                <OnIdiom x:TypeArguments="x:Double" Phone="0" 
+                                                    Tablet="20"
+                                                    Desktop="25"/>
+            </StackLayout.Spacing>
+            <Button x:Name="Step1w" Text="{x:Static userControls:Icon.Taxi}" Style="{StaticResource BtnVehicles}"/>
+
+            <StackLayout   Orientation="Horizontal"  VerticalOptions="FillAndExpand" Spacing="30">
+                <Button x:Name="Step1" Text="{x:Static userControls:Icon.Taxi}" Style="{StaticResource BtnVehicles}"/>
+                <Label Text="01 - Hyster"/>
+            </StackLayout>
+           
+           
+        </StackLayout>
+        <Button  Text="Aceptar" Margin="0,20,0,0" Command="{Binding SelectCommand}" Style="{StaticResource BtnPrincipal}" VerticalOptions="CenterAndExpand"/>
+        <ActivityIndicator  IsVisible="{Binding IsBusy}" 
+                                            IsRunning="{Binding IsBusy}"
+                                            Color="{StaticResource Color.BluePrimary}"  
+                                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.30, Constant=0}"/>
+    </RelativeLayout>-->
+    <!--<StackLayout   Orientation="Vertical" VerticalOptions="FillAndExpand" Padding="0"  BackgroundColor="FloralWhite">
+        <Label Text="Seleccione un vehículo" Style="{StaticResource BlueNormalLabel}"/>
+        <Button HorizontalOptions="Center" x:Name="Step1" Text="{x:Static userControls:Icon.TruckMoving}" Style="{StaticResource BtnVehicles}"/>
+        <Label HorizontalOptions="Center" Text="01 - Hyster" Style="{StaticResource LabelNormal}"/>
+        <StackLayout BackgroundColor="#80000000" Padding="20">
+            <Label TextColor="White" Text="Texto" FontSize="16" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </StackLayout>-->
+   
 </ContentPage>

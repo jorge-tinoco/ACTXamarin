@@ -107,8 +107,7 @@ namespace TaskMobile.WebServices.REST
                     var Settings = new JsonSerializerSettings
                     {
                         Error = ResponseErrorHandler ,
-                        NullValueHandling = NullValueHandling.Ignore,
-                        MissingMemberHandling = MissingMemberHandling.Ignore
+                        NullValueHandling = NullValueHandling.Ignore
                     };
                     return  Newtonsoft.Json.JsonConvert.DeserializeObject<T>(JSONstring, Settings);
                 }

@@ -10,5 +10,6 @@
         public int MODEL { get; set; }
         public string VEHICLEPIP { get; set; }
         public string OBSERVATIONS { get; set; }
+        public string VEHICLEINVENTORYNUMBER { get; set; }
     }
 }
