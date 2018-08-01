@@ -280,8 +280,12 @@
                 <Setter Property="TextColor" Value="{StaticResource Color.BluePrimary}" />
             </Style>
             <Style x:Key="BlueNormalLabel" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{StaticResource Color.BluePrimary}" />
+                <Setter Property="TextColor" Value="{StaticResource Color.Silver}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="{StaticResource MediumTextSize}" Tablet="{StaticResource MediumTextSize}"/>
+                    </Setter.Value>
+                </Setter>
             </Style>
             <Style x:Key="LabelDirections" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
@@ -353,7 +357,7 @@
                                                HorizontalOptions="End"
                                                FontSize="15"
                                                TextColor="#495057"/>
-                        <Label Text="Tenaris Tamsa 2018 (v1.0)"
+                        <Label Text="Tenaris Tamsa 2018 (v1.0.0)"
 					       HorizontalOptions="End"
                                TextColor="#495057"
                            FontSize="Small"
