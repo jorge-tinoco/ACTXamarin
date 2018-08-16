@@ -10,6 +10,7 @@ namespace TaskMobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel, INavigatingAware
     {
+        private bool _isBusy = false;
         private IEnumerable<Models.Language> _available;
         /// <summary>
         /// Supported languages for this application.
@@ -76,7 +77,11 @@ namespace TaskMobile.ViewModels
             set { SetProperty(ref _password, value); }
         }
 
-
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
         #region COMMANDS
         private DelegateCommand _login;
         public DelegateCommand LoginCommand =>
@@ -93,7 +98,9 @@ namespace TaskMobile.ViewModels
         /// </summary>
         private async void ExecuteLoginCommand()
         {
+            IsBusy = true;
             await _navigationService.NavigateAsync("TaskMobile:///MainPage");
+            IsBusy = false;
         }
 
         /// <summary>

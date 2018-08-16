@@ -265,7 +265,11 @@ namespace TaskMobile.ViewModels.Tasks
 
                 if (ResultCode == 0 && ActivitiesFromWS.Count() >= 0)
                 {
-                    Activities = ActivitiesFromWS.Select(activityToConvert => Converters.Activity(activityToConvert)).ToList();
+                    Activities = ActivitiesFromWS.
+                                        Where(x => x.STATUS  == "A").
+                                        Select(activityToConvert => Converters.Activity(activityToConvert)).
+                                        OrderBy(x => x.Order).
+                                        ToList();
                 }
                 else
                 {

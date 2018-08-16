@@ -86,9 +86,14 @@ namespace TaskMobile.ViewModels.Vehicle
         /// </summary>
         private async void ExecuteSelectCommand()
         {
-            await App.SettingsInDb.SetVehicle(Vehicle);
-            await _dialogService.DisplayAlertAsync("Mensaje", "Haz seleccionado el vehículo: " + Vehicle.NameToShow, "Bien");
-            await _navigationService.NavigateAsync("TaskMobile:///MainPage");
+            if (Vehicle == null)
+                await _dialogService.DisplayAlertAsync("Un momento", "Primero selecciona un vehículo de la lista ", "Lo haré");
+            else
+            {
+                await App.SettingsInDb.SetVehicle(Vehicle);
+                await _dialogService.DisplayAlertAsync("Mensaje", "Haz seleccionado el vehículo: " + Vehicle.NameToShow, "Bien");
+                await _navigationService.NavigateAsync("TaskMobile:///MainPage");
+            }
         }
     }
 }

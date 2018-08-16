@@ -137,7 +137,7 @@
                 </StackLayout>
             </RelativeLayout>
         </StackLayout>
-        <ActivityIndicator IsVisible="True" IsRunning="true"
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"
             VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
             <RelativeLayout.YConstraint>
                 <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.40, Constant=0}" 
