@@ -124,6 +124,14 @@ namespace TaskMobile.ViewModels.Tasks
                     var Response = await RESTClient.Post<Response<WebServices.Entities.DetailsResponse>>(Requests);
                     if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskDetailsResult != null)
                     {
+                        Models.TaskDetail DetailHeaders = new Models.TaskDetail();
+                        DetailHeaders.WorkOrder = "OP";
+                        DetailHeaders.Lot = "Lote";
+                        DetailHeaders.SapCode = "Código SAP";
+                        DetailHeaders.PiecesText = "Piezas";
+                        DetailHeaders.TonsText = "Toneladas";
+                        DetailHeaders.RowIsHeader = true;
+                        tappedTask.Add(DetailHeaders);
                         IEnumerable<Models.TaskDetail> LocalDetails = Response.MessageBody.QueryTaskDetailsResult.DETAILS.
                                                                         Select(detailToConvert => Converters.TaskDetail(detailToConvert, TaskToExpand, StockType));
                         tappedTask.Add(LocalDetails);
