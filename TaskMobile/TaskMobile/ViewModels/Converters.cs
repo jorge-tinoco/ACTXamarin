@@ -21,7 +21,10 @@
                 Tons = entityToConvert.TONS,
                 WorkOrder = entityToConvert.OP,
                 Origin = entityToConvert.ORIG_LOCATION,
-                Destination = entityToConvert.DEST_LOCATION };
+                Destination = entityToConvert.DEST_LOCATION,
+                PiecesText = entityToConvert.PIECES.ToString(),
+                TonsText = entityToConvert.TONS.ToString()
+            };
         }
 
         /// <summary>
@@ -31,7 +34,7 @@
         /// <param name="stockType">Stock type for detail to translate.</param>
         /// <param name="entityToConvert">Entity that contains the model to translate.</param>
         /// <returns>Entity converted</returns>
-        internal static  Models.TaskDetail TaskDetail(WebServices.Entities.Tasks.Detail entityToConvert,int taskNumber,  string stockType)
+        internal static Models.TaskDetail TaskDetail(WebServices.Entities.Tasks.Detail entityToConvert, int taskNumber, string stockType)
         {
             return new Models.TaskDetail {
                 Lot = entityToConvert.LOTE,
@@ -42,7 +45,10 @@
                 Tons = entityToConvert.TONS,
                 WorkOrder = entityToConvert.OP,
                 Origin = entityToConvert.ORIG_LOCATION,
-                Destination = entityToConvert.DEST_LOCATION };
+                Destination = entityToConvert.DEST_LOCATION,
+                PiecesText = entityToConvert.PIECES.ToString(),
+                TonsText = entityToConvert.TONS.ToString()
+            };
         }
 
         /// <summary>

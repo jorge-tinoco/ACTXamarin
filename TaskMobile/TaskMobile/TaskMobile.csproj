@@ -43,6 +43,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BoolToObject.cs" />
     <Compile Include="DB\Database.cs" />
     <Compile Include="DB\EmployeeREPO.cs" />
     <Compile Include="DB\ISQLite.cs" />
@@ -56,6 +57,7 @@
     </Compile>
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\Derived\Task.cs" />
+    <Compile Include="Models\Derived\TaskDetail.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Mill.cs" />
@@ -267,6 +269,7 @@
     <None Include="Connected Services\CalculatorService\calculator.wsdl" />
     <None Include="packages.config" />
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
+    <None Include="SampleData.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\WebServices.xaml">
@@ -428,6 +431,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

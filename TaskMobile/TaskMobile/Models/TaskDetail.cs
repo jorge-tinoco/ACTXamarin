@@ -9,9 +9,17 @@ namespace TaskMobile.Models
     /// <summary>
     /// Represent a single detail for a <see cref="Models.Task"/> entity.
     /// </summary>
-    public class TaskDetail
+    public partial class TaskDetail
     {
         private int _TaskNumber;
+        private string _WorkOrder;
+        private string _Lot;
+        private string _SapCode;
+        private int _Pieces;
+        private double _Tons;
+        private string _StockType;
+        private string _origin;
+        private string _destination;
         /// <summary>
         /// Task to which this detail belongs
         /// </summary>
@@ -22,7 +30,6 @@ namespace TaskMobile.Models
             set { _TaskNumber = value; }
         }
 
-        private string _WorkOrder;
         /// <summary>
         /// Detail work order
         /// </summary>
@@ -33,8 +40,6 @@ namespace TaskMobile.Models
             set { _WorkOrder = value; }
         }
 
-
-        private string _Lot;
         /// <summary>
         /// Represents the lot number of this detail task.
         /// </summary>
@@ -45,8 +50,6 @@ namespace TaskMobile.Models
             set { _Lot = value; }
         }
 
-
-        private string _SapCode;
         /// <summary>
         /// Assigned sap code.
         /// </summary>
@@ -57,8 +60,6 @@ namespace TaskMobile.Models
             set { _SapCode = value; }
         }
 
-
-        private int _Pieces;
         /// <summary>
         /// Amount of pieces.
         /// </summary>
@@ -69,7 +70,6 @@ namespace TaskMobile.Models
             set { _Pieces = value; }
         }
 
-        private double _Tons;
         /// <summary>
         /// Amount of tons.
         /// </summary>
@@ -80,7 +80,6 @@ namespace TaskMobile.Models
             set { _Tons = value; }
         }
 
-        private string _StockType;
         /// <summary>
         /// Detail stock type.
         /// </summary>
@@ -91,8 +90,6 @@ namespace TaskMobile.Models
             set { _StockType = value; }
         }
 
-
-        private string _origin;
         /// <summary>
         /// Origin location.
         /// </summary>
@@ -102,7 +99,6 @@ namespace TaskMobile.Models
             set { _origin = value; }
         }
 
-        private string _destination;
         /// <summary>
         /// Destination Location.
         /// </summary>

@@ -1,0 +1,63 @@
+﻿{
+  "@Global": {
+    "Version": "1.0",
+    "Icon": "app.png",
+    "RefreshCommand": "",
+    "Vehicle": "HYSTER-WEE4",
+    "Driver": "Juanito",
+    "IsRefreshing": "false",
+    "knownAssemblies": [
+      { "name": "TaskMobile" }
+    ]
+  },
+
+  "Change.xaml": {
+    "AvailableVehicles": [
+      { "NameToShow": "PTH-TX-EX" },
+      { "NameToShow": "PE-20-3210" },
+      { "NameToShow": "XA-301-2423" }
+    ],
+    "IsBusy": "true",
+    "Vehicle": { "NameToShow": "Holi" },
+    "SelectCommand": {}
+  },
+  "QueryAssigned.xaml": {
+    "AssignedTasks": [
+      {
+        "Number": "12345",
+        "Type": "TU",
+        "Remission": "234234",
+        "Origin": "ALCO",
+        "Destination": "FALT1",
+        "DateTask": "23/10/2017",
+        "Status": "P",
+        "RowIsHeader": "true",
+        "TaskNumber": "ss"
+      },
+      {
+        "Number": "4567",
+        "Type": "TU",
+        "Remission": "3562333",
+        "Origin": "PATIO1",
+        "Destination": "ALCO3",
+        "DateTask": "23/12/2018",
+        "Status": "P",
+        "RowIsHeader": "true"
+      },
+      {
+        "Number": "56780",
+        "Type": "TU",
+        "Remission": "532345324",
+        "Origin": "MESTT",
+        "Destination": "LOPEM",
+        "DateTask": "20/10/1882",
+        "Status": "P",
+        "RowIsHeader": "true"
+      }
+    ],
+    "StateIcon": "\uf078",
+    "Expanded": "true",
+    "WhenFalse": "",
+    "WhenTrue": ""
+  }
+}

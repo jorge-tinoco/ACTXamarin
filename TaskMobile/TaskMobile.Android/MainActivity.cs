@@ -33,6 +33,8 @@ namespace TaskMobile.Droid
             //      .RegisterAssemblyFromType<TaskMobile.UserControls.CircleButton>()
             //      // Register gradient colors
             //      .RegisterAssemblyFromType<TaskMobile.UserControls.GradientColor>()
+            //      // Register converter
+            //      .RegisterAssemblyFromType<TaskMobile.Converters.BoolToObject<Xamarin.Forms.Style>>()
             //      //Register Prism assemblies
             //      .RegisterAssemblyFromType<Prism.IActiveAware>()
             //      .RegisterAssemblyFromType<Prism.Mvvm.BindableBase>()

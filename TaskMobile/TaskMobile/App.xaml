@@ -74,7 +74,6 @@
             <OnIdiom x:Key="LargeTextSize" x:TypeArguments="x:Double" Phone="30" Tablet="35" Desktop="32" />
             
             <OnIdiom x:Key="XLargeTextSize" x:TypeArguments="x:Double" Phone="35" Tablet="45" Desktop="32" />
-            
             <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="#003366"/>
                 <Setter Property="BarTextColor" Value="White"/>
@@ -259,7 +258,6 @@
             </Style>
             <Style x:Key="OpaqueLabel" TargetType="Label">
                 <Setter Property="FontSize" Value="14" />
-                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
                 <Setter Property="TextColor" Value="{StaticResource Color.PacificBlue}" />
             </Style>
