@@ -6,6 +6,8 @@
              xmlns:userControls="clr-namespace:TaskMobile.UserControls;assembly=TaskMobile"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:behavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:core="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
+             xmlns:converter="clr-namespace:TaskMobile.Converters"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Name="Page"
             ControlTemplate="{StaticResource TenarisTemplate}"
@@ -42,25 +44,32 @@
                RelativeLayout.HeightConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.70}"
                RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.90}">
             <StackLayout  >
-                <RelativeLayout RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.80}" >
-                    <Label Text="Tarea" HorizontalOptions="Center"
-                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.10}"/>
-                    <Label Text="Tipo de tarea" HorizontalOptions="Center" FontAttributes="Bold"
-                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.10, Constant=0}"
-                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.35}" />
-                    <Label Text="Remisión" 
-                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.45, Constant=0}"
-                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.10}" />
-                    <Label Text="Origen"  FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.60, Constant=0}"
-                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.075}" />
-                    <Label Text="Destino" HorizontalOptions="CenterAndExpand"
-                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.675, Constant=0}"
-                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.085}"/>
-                    <Label Text="Fecha" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.76, Constant=0}"
-                           RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.20}"/>
-                </RelativeLayout>
+                <Grid>
+                    <Grid.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="90" 
+                                                            Tablet="100" 
+                                                            Desktop="110" />
+                    </Grid.HeightRequest>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="0.75*" />
+                        <ColumnDefinition Width="0.75*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="0.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Tarea" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" />
+                    <Label Text="Tipo de tarea" Grid.Row="0" Grid.Column="1" />
+                    <Label Text="Remisión" FontAttributes="Bold" Grid.Row="0" Grid.Column="2" />
+                    <Label Text="Origen" Grid.Row="0" Grid.Column="3" />
+                    <Label Text="Destino" FontAttributes="Bold" Grid.Row="0" Grid.Column="4" />
+                    <Label Text="Fecha" Grid.Row="0" Grid.Column="5" />
+                    <Label Text="{Binding StateIcon}" Grid.Row="0" Grid.Column="6" />
+                </Grid>
                 <ListView x:Name="RejectedList"  
                       IsGroupingEnabled="True" 
                       ItemsSource="{Binding RejectedTasks}"
@@ -91,7 +100,7 @@
                                     <Label Text="{Binding Remission}" Grid.Row="0" Grid.Column="2" />
                                     <Label Text="{Binding Origin}" Grid.Row="0" Grid.Column="3" />
                                     <Label Text="{Binding Destination}" Grid.Row="0" Grid.Column="4" />
-                                    <Label Text="{Binding DateTask, StringFormat='{0:dd-MM-yyyy}'}" HorizontalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="5" />
+                                    <Label Text="{Binding DateTask, StringFormat='{0:dd-MM-yyyy}'}" Grid.Row="0" Grid.Column="5" />
                                     <userControls:FontAwesomeLabel Text="{Binding StateIcon}" Grid.Row="0" Grid.Column="6"
                                                             VerticalOptions="CenterAndExpand"
                                                             FontSize="20"
@@ -114,27 +123,67 @@
                                             <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width=".5*" />
-                                            <ColumnDefinition Width="1.5*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
                                         </Grid.ColumnDefinitions>
-                                        <Label Text="OP" Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="0" />
-                                        <Label Text="{Binding WorkOrder}" VerticalOptions="CenterAndExpand" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" />
-                                        <Label Text="Lote" Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="2" />
-                                        <Label Text="{Binding Lot}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="3" />
-                                        <Label Text="SAP" Style="{StaticResource OpaqueLabel}" FontSize="13"  Grid.Row="0" Grid.Column="4" />
-                                        <Label Text="{Binding SapCode}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="5" />
-                                        <Label Text="Pzas."  Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="6" />
-                                        <Label Text="{Binding Pieces}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="7" />
-                                        <Label Text="Tons." Style="{StaticResource OpaqueLabel}"  Grid.Row="0" Grid.Column="8" />
-                                        <Label Text="{Binding Tons}" VerticalOptions="CenterAndExpand"  Grid.Row="0" Grid.Column="9" />
+                                        <Label Text="{Binding WorkOrder}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" >
+                                            <Label.Style>
+                                                <Binding Path="RowIsHeader" >
+                                                    <Binding.Converter>
+                                                        <converter:BoolToObject x:TypeArguments="core:Style"
+                                                         WhenTrue="{StaticResource OpaqueLabel}"
+                                                         WhenFalse="{StaticResource LabelNormal}" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Label.Style>
+                                        </Label>
+                                        <Label Text="{Binding Lot}" Grid.Row="0" Grid.Column="1" >
+                                            <Label.Style>
+                                                <Binding Path="RowIsHeader" >
+                                                    <Binding.Converter>
+                                                        <converter:BoolToObject x:TypeArguments="core:Style"
+                                                         WhenTrue="{StaticResource OpaqueLabel}"
+                                                         WhenFalse="{StaticResource LabelNormal}" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Label.Style>
+                                        </Label>
+                                        <Label Text="{Binding SapCode}" Grid.Row="0" Grid.Column="2" >
+                                            <Label.Style>
+                                                <Binding Path="RowIsHeader" >
+                                                    <Binding.Converter>
+                                                        <converter:BoolToObject x:TypeArguments="core:Style"
+                                                         WhenTrue="{StaticResource OpaqueLabel}"
+                                                         WhenFalse="{StaticResource LabelNormal}" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Label.Style>
+                                        </Label>
+                                        <Label Text="{Binding PiecesText}" Grid.Row="0" Grid.Column="3">
+                                            <Label.Style>
+                                                <Binding Path="RowIsHeader" >
+                                                    <Binding.Converter>
+                                                        <converter:BoolToObject x:TypeArguments="core:Style"
+                                                         WhenTrue="{StaticResource OpaqueLabel}"
+                                                         WhenFalse="{StaticResource LabelNormal}" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Label.Style>
+                                        </Label>
+                                        <Label Text="{Binding TonsText}"  Grid.Row="0" Grid.Column="4" >
+                                            <Label.Style>
+                                                <Binding Path="RowIsHeader" >
+                                                    <Binding.Converter>
+                                                        <converter:BoolToObject x:TypeArguments="core:Style"
+                                                         WhenTrue="{StaticResource OpaqueLabel}"
+                                                         WhenFalse="{StaticResource LabelNormal}" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Label.Style>
+                                        </Label>
                                     </Grid>
                                 </Grid>
                             </ViewCell>
