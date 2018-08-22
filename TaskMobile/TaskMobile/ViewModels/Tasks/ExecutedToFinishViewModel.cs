@@ -259,7 +259,10 @@ namespace TaskMobile.ViewModels.Tasks
 
                 if (ResultCode == 0 && ActivitiesFromWS.Count() >= 0)
                 {
-                    Activities = ActivitiesFromWS.Select(activityToConvert => Converters.Activity(activityToConvert)).ToList();
+                    Activities = ActivitiesFromWS.
+                                        Where(activity => activity.STATUS == "E").
+                                        Select(activityToConvert => Converters.Activity(activityToConvert)).
+                                        ToList();
                 }
                 else
                 {

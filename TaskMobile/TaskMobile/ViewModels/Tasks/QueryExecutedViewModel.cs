@@ -167,14 +167,12 @@ namespace TaskMobile.ViewModels.Tasks
             ExecutedTasks.Clear();
             if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskResult.Count() > 0)
             {
-                foreach (WebServices.Entities.TaskResult Result in Response.MessageBody.QueryTaskResult)
+                var AllTasks = Response.MessageBody.QueryTaskResult.SelectMany(x => x.TASK);
+                var Ordered = AllTasks.OrderByDescending(x => x.CREATED_DATE);
+                var TasksConverted = Ordered.Select(taskToConvert => Converters.Task(taskToConvert));
+                foreach (var item in TasksConverted)
                 {
-                    IEnumerable<Models.Task> TasksConverted = Result.TASK
-                                                                    .Select(taskToConvert => Converters.Task(taskToConvert));
-                    foreach (var TaskToAdd in TasksConverted)
-                    {
-                        ExecutedTasks.Add(TaskToAdd);
-                    }
+                    ExecutedTasks.Add(item);
                 }
             }
             else
