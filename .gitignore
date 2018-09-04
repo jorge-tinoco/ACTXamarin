@@ -276,3 +276,10 @@ __pycache__/
 /TaskMobile/TaskMobile.Android/WebServices/Client_Android.cs
 /Antes de Iniciar
 /TaskMobile/TaskMobile/Views/Fonts
+/TaskMobile/TaskMobile.Android/Assets/Configuration/current_config.txt
+/TaskMobile/TaskMobile.Android/Assets/Configuration/config_ti.txt
+/TaskMobile/TaskMobile.Android/Assets/Configuration/config_prod.txt
+/TaskMobile/TaskMobile.Android/Assets/Configuration/config_lab.txt
+/TaskMobile/TaskMobile.Android/Assets/Configuration/config_dev.txt
+/TaskMobile/TaskMobile.Android/Assets/config_tl.txt
+/TaskMobile/TaskMobile.Android/DependencyInjection/Services.cs
