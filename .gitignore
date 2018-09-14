@@ -276,3 +276,4 @@ __pycache__/
 /TaskMobile/TaskMobile.Android/WebServices/Client_Android.cs
 /Antes de Iniciar
 /TaskMobile/TaskMobile/Views/Fonts
+/TaskMobile/TaskMobile.Android/DependencyInjection/Services.cs
