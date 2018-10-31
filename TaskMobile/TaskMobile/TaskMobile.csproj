@@ -52,6 +52,8 @@
     <Compile Include="DB\MillsREPO.cs" />
     <Compile Include="DB\Models\Employee.cs" />
     <Compile Include="DB\SettingsREPO.cs" />
+    <Compile Include="Exceptions\Severity.cs" />
+    <Compile Include="Exceptions\WttException.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -162,6 +164,7 @@
     <Compile Include="Views\_Master.xaml.cs">
       <DependentUpon>_Master.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\AuthenticationType.cs" />
     <Compile Include="WebServices\Entities\ActivityResult.cs" />
     <Compile Include="WebServices\Entities\ActivityUpdResponse.cs" />
     <Compile Include="WebServices\Entities\ActivityRequest.cs" />
@@ -182,12 +185,17 @@
     <Compile Include="WebServices\Entities\Tasks\Activity.cs" />
     <Compile Include="WebServices\Entities\Tasks\Detail.cs" />
     <Compile Include="WebServices\Entities\Tasks\Task.cs" />
+    <Compile Include="WebServices\Entities\TMAP\AuthResponse.cs" />
+    <Compile Include="WebServices\Entities\TMAP\TmapResponse.cs" />
     <Compile Include="WebServices\Entities\User.cs" />
     <Compile Include="WebServices\Entities\Vehicle.cs" />
     <Compile Include="WebServices\Entities\VehicleListResult.cs" />
     <Compile Include="WebServices\Entities\VehicleResponse.cs" />
     <Compile Include="WebServices\IClient.cs" />
+    <Compile Include="WebServices\REST\Activities.cs" />
     <Compile Include="WebServices\REST\Client.cs" />
+    <Compile Include="WebServices\REST\Tasks.cs" />
+    <Compile Include="WebServices\REST\Vehicles.cs" />
     <Compile Include="WebServices\SOAP\Calculator.cs" />
     <Compile Include="WebServices\SOAP\TaskClient.cs" />
     <Compile Include="WebServices\SOAP\VehicleClient.cs" />
@@ -431,7 +439,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -355,7 +355,7 @@
                                                HorizontalOptions="End"
                                                FontSize="15"
                                                TextColor="#495057"/>
-                        <Label Text="Tenaris Tamsa 2018 (v1.0.0) gamma"
+                        <Label Text="Tenaris Tamsa 2018 (v1.0.0) delta"
 					       HorizontalOptions="End"
                                TextColor="#495057"
                            FontSize="Small"

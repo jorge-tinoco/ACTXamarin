@@ -1,14 +1,13 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TaskMobile.Models;
-using TaskMobile.WebServices.REST;
 using TaskMobile.WebServices.Entities;
 using TaskMobile.WebServices.Entities.Common;
+using TaskMobile.WebServices;
+using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels.Vehicle
 {
@@ -16,9 +15,13 @@ namespace TaskMobile.ViewModels.Vehicle
     {
         private IEnumerable<Models.Vehicle> _vehicles;
         private Models.Vehicle _veh;
-        private bool _IsBusy = false;
-        public ChangeViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
+        private bool _isBusy ;
+        private readonly WebServices.REST.Vehicles _service;
+
+        public ChangeViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient client) 
+            : base(navigationService, dialogService, client)
         {
+            _service = new WebServices.REST.Vehicles(client);
         }
 
         #region COMMANDS
@@ -37,7 +40,6 @@ namespace TaskMobile.ViewModels.Vehicle
             set { SetProperty(ref _vehicles, value); }
         }
 
-
         /// <summary>
         /// Current selected vehicle.
         /// </summary>
@@ -54,8 +56,8 @@ namespace TaskMobile.ViewModels.Vehicle
         /// </summary>
         public bool IsBusy
         {
-            get { return _IsBusy; }
-            set { SetProperty(ref _IsBusy, value); }
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -63,14 +65,15 @@ namespace TaskMobile.ViewModels.Vehicle
             try
             {
                 IsBusy = true;
-                Client RESTClient = new Client (WebServices.URL.GetVehicles);
-                Request<WebServices.Entities.Vehicle> Requests = new Request<WebServices.Entities.Vehicle>();
-                Requests.MessageBody.SystemId = "ILO";
-                Requests.MessageBody.User = "Tinoco";
-                var Response = await RESTClient.Post<Response<VehicleResponse>>(Requests);
-                AvailableVehicles = Response.MessageBody.VehicleListResult.Select(vehicle => Converters.Vehicle(vehicle)).ToList();
-                
-                IsBusy = false;
+                _service.All(
+                    vehicles =>
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            AvailableVehicles = vehicles.ToList();
+                            IsBusy = false;
+                        });
+                    }, OnWebServiceError);
             }
             catch (Exception e)
             {

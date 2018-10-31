@@ -1,27 +1,26 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using TaskMobile.WebServices.Entities.Common;
-using TaskMobile.WebServices.REST;
 using System.Threading.Tasks;
+using TaskMobile.WebServices;
+using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class QueryExecutedViewModel : BaseViewModel, INavigatingAware
     {
-        private bool _isRefreshing = true;
         private DelegateCommand<object> _toActivity;
+        private readonly WebServices.REST.Tasks _service;
 
-        public QueryExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService) 
-            : base(navigationService, dialogService)
+        public QueryExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient client) 
+            : base(navigationService, dialogService,client)
         {
             Driver = "Jorge Tinoco";
             ExecutedTasks = new ObservableCollection<Models.Task>();
+            _service = new WebServices.REST.Tasks(client);
         }
 
         #region COMMANDS
@@ -40,18 +39,8 @@ namespace TaskMobile.ViewModels.Tasks
             }
         }
 
-        public DelegateCommand RefreshCommand
-        {
-            get
-            {
-                return new DelegateCommand(async () =>
-                {
-                    IsRefreshing = true;
-                    await RefreshData();
-                    IsRefreshing = false;
-                });
-            }
-        }
+        public DelegateCommand RefreshCommand => new DelegateCommand( RefreshData);
+
         #endregion
 
         #region VIEW MODEL PROPERTIES
@@ -60,18 +49,6 @@ namespace TaskMobile.ViewModels.Tasks
         /// Current executed  tasks.
         /// </summary>
         public ObservableCollection<Models.Task> ExecutedTasks { get; private set; }
-
-        /// <summary>
-        /// Indicates if the listview is refreshing.
-        /// </summary>
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                SetProperty(ref _isRefreshing, value);
-            }
-        }
         #endregion
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -80,28 +57,24 @@ namespace TaskMobile.ViewModels.Tasks
             {
                 await CheckVehicle();
                 if (CurrentVehicle != null)
-                    await RefreshData();
+                    RefreshData();
             }
             catch (Exception e)
             {
                 App.LogToDb.Error(e);
                 await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error al descargar las tareas ejecutadas", "Entiendo");
             }
-            finally
-            {
-                IsRefreshing = false;
-            }
         }
 
         /// <summary>
-        /// Navigate to <see cref="ExecutedToFinish"/> view.
+        /// Navigate to <see cref="Views.Tasks.ExecutedToFinish"/> view.
         /// </summary>
-        /// <param name="selectedTask">Selected task by the user.</param>
-        private async void GoToActivities(object tappedTask)
+        /// <param name="tapped">Selected task by the user.</param>
+        private async void GoToActivities(object tapped)
         {
-            NavigationParameters Parameters = new NavigationParameters();
-            Parameters.Add("TaskToFinish", tappedTask);
-            await _navigationService.NavigateAsync("ExecutedToFinish", Parameters);
+            NavigationParameters parameters = new NavigationParameters();
+            parameters.Add("TaskToFinish", tapped);
+            await _navigationService.NavigateAsync("ExecutedToFinish", parameters);
         }
 
         /// <summary>
@@ -113,36 +86,34 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 IsRefreshing = true;
-                int TaskToExpand = tappedTask.Number;
-                string StockType = tappedTask.Type;
                 if (!tappedTask.Expanded)
                 {
                     tappedTask.Clear();
-                    Client RESTClient = new Client(WebServices.URL.RequestDetails);
-                    Request<WebServices.Entities.DetailsRequest> Requests = new Request<WebServices.Entities.DetailsRequest>();
-                    Requests.MessageBody.TaskId = TaskToExpand;
-                    var Response = await RESTClient.Post<Response<WebServices.Entities.DetailsResponse>>(Requests);
-                    if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskDetailsResult != null)
-                    {
-                        Models.TaskDetail DetailHeaders = new Models.TaskDetail();
-                        DetailHeaders.WorkOrder = "OP";
-                        DetailHeaders.Lot = "Lote";
-                        DetailHeaders.SapCode = "Código SAP";
-                        DetailHeaders.PiecesText = "Piezas";
-                        DetailHeaders.TonsText = "Toneladas";
-                        DetailHeaders.RowIsHeader = true;
-                        tappedTask.Add(DetailHeaders);
-                        IEnumerable<Models.TaskDetail> LocalDetails = Response.MessageBody.QueryTaskDetailsResult.DETAILS.
-                                                                        Select(detailToConvert => Converters.TaskDetail(detailToConvert, TaskToExpand, StockType));
-                        tappedTask.Add(LocalDetails);
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync("Información", "No se encontró detalles", "Entiendo");
-                    }
+                    _service.Details(tappedTask,
+                        response =>
+                        {
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                if (!response.Any())
+                                    await _dialogService.DisplayAlertAsync("Información", "No se encontró detalles",
+                                        "Entiendo");
+                                else
+                                {
+                                    foreach (var taskToAdd in response)
+                                    {
+                                        tappedTask.Add(taskToAdd);
+                                    }
+                                }
+                                tappedTask.Expanded = !tappedTask.Expanded;
+                                IsRefreshing = false;
+                            });
+                        }, OnWebServiceError);
                 }
-                tappedTask.Expanded = !tappedTask.Expanded;
-                IsRefreshing = false;
+                else
+                {
+                    tappedTask.Expanded = !tappedTask.Expanded;
+                    IsRefreshing = false;
+                }
             }
             catch (Exception ex)
             {
@@ -155,28 +126,22 @@ namespace TaskMobile.ViewModels.Tasks
         /// Refresh the assigned task list view.
         /// </summary>
         /// <returns></returns>
-        private async Task RefreshData()
+        private void RefreshData()
         {
-            Client RESTClient = new Client(WebServices.URL.GetTasks);
-            Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
-            Requests.MessageBody.VehicleId = int.Parse(CurrentVehicle.Identifier); // TO do: change for VehicleId
-            Requests.MessageBody.Status = "E";
-            Requests.MessageBody.InitialDate = new DateTime(2016, 01, 01);
-            Requests.MessageBody.FinalDate = DateTime.Now;
-            var Response = await RESTClient.Post<Response<WebServices.Entities.TaskResponse>>(Requests);
+            IsRefreshing = true;
             ExecutedTasks.Clear();
-            if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskResult.Count() > 0)
-            {
-                var AllTasks = Response.MessageBody.QueryTaskResult.SelectMany(x => x.TASK);
-                var Ordered = AllTasks.OrderByDescending(x => x.CREATED_DATE);
-                var TasksConverted = Ordered.Select(taskToConvert => Converters.Task(taskToConvert));
-                foreach (var item in TasksConverted)
+            _service.All(VehicleId, "E",
+                response =>
                 {
-                    ExecutedTasks.Add(item);
-                }
-            }
-            else
-                await _dialogService.DisplayAlertAsync("Información", "No se encontró tareas asociadas al vehículo ", "Entiendo");
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        foreach (var taskToAdd in response)
+                        {
+                            ExecutedTasks.Add(taskToAdd);
+                        }
+                        IsRefreshing = false;
+                    });
+                }, OnWebServiceError);
         }
 
     }

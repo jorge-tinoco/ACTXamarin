@@ -27,7 +27,7 @@ namespace TaskMobile.Views
             HeaderLabel.Text = "Requesting Web Service";
             Device.BeginInvokeOnMainThread(async () =>
             {
-                IClient RESTClient = new TaskMobile.WebServices.REST.Client();
+                var RESTClient = new TaskMobile.WebServices.REST.Client();
 
                 var TaskResponse = await RESTClient.Get<User>();
                 User Result = (User)TaskResponse;
