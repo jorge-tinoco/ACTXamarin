@@ -1,17 +1,45 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using TaskMobile.WebServices;
+using TaskMobile.WebServices.Entities;
+using TaskMobile.WebServices.Entities.Common;
+using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel, INavigatingAware
     {
-        private bool _isBusy = false;
+
+        private string _user;
+        private string _password;
+        private bool _isBusy = true;
+        private Models.Language _lang;
+        private Models.Mill _mill;
         private IEnumerable<Models.Language> _available;
+        private IEnumerable<Models.Mill> _mills;
+        private DelegateCommand _login;
+
+        public LoginViewModel(INavigationService navigationService, IPageDialogService dialog, IClient client)
+            : base(navigationService, dialog, client)
+        {
+        }
+
+
+
+        #region COMMANDS
+        public DelegateCommand LoginCommand =>
+            _login ?? (_login = new DelegateCommand(ExecuteLoginCommand));
+        #endregion
+
+
         /// <summary>
         /// Supported languages for this application.
         /// </summary>
@@ -21,7 +49,6 @@ namespace TaskMobile.ViewModels
             set { SetProperty(ref _available, value); }
         }
 
-        private Models.Language _lang;
         /// <summary>
         /// Selected language.
         /// </summary>
@@ -34,7 +61,6 @@ namespace TaskMobile.ViewModels
             }
         }
 
-        private IEnumerable<Models.Mill> _mills;
         /// <summary>
         /// Supported mills for this application.
         /// </summary>
@@ -45,7 +71,6 @@ namespace TaskMobile.ViewModels
         }
 
 
-        private Models.Mill _mill;
         /// <summary>
         /// Selected mill.
         /// </summary>
@@ -55,19 +80,18 @@ namespace TaskMobile.ViewModels
             set { SetProperty(ref _mill, value); }
         }
 
-        private string _user;
         /// <summary>
         /// Specified user.
         /// </summary>
         public string User
         {
             get { return _user; }
-            set {
+            set
+            {
                 SetProperty(ref _user, value);
             }
         }
 
-        private string _password;
         /// <summary>
         /// Given password.
         /// </summary>
@@ -82,16 +106,7 @@ namespace TaskMobile.ViewModels
             get { return _isBusy; }
             set { SetProperty(ref _isBusy, value); }
         }
-        #region COMMANDS
-        private DelegateCommand _login;
-        public DelegateCommand LoginCommand =>
-            _login ?? (_login = new DelegateCommand(ExecuteLoginCommand, CanExecuteLoginCommand));
-        #endregion
 
-        public  LoginViewModel(INavigationService navigationService):base(navigationService)
-        {
-            
-        }
 
         /// <summary>
         /// Go to the application.
@@ -99,17 +114,27 @@ namespace TaskMobile.ViewModels
         private async void ExecuteLoginCommand()
         {
             IsBusy = true;
-            await _navigationService.NavigateAsync("TaskMobile:///MainPage");
-            IsBusy = false;
-        }
-
-        /// <summary>
-        /// TO DO: validate user with the tenaris webservices
-        /// </summary>
-        /// <returns></returns>
-        bool CanExecuteLoginCommand()
-        {
-            return User == Password;
+            var domain = "";
+            var user = "";
+            if (User == null)
+            {
+                await _dialogService.DisplayAlertAsync("Atención", "Ingrese un nombre se usuario", "Lo haré");
+                IsBusy = false;
+                return;
+            }
+            string[] splited = User.Split('\\');
+            if (splited.Count() > 1)
+            {
+                domain = splited[0];
+                user = splited[1];
+            }
+            else
+            {
+                domain = "TAMSA";
+                user = User;
+            }
+            WebService.SetCredentials(domain, user, Password);
+            WebService.InitTMAP(TMAPresponse, TMAPresponse);
         }
 
         /// <summary>
@@ -121,6 +146,46 @@ namespace TaskMobile.ViewModels
             DB.MillsREPO Mills = new DB.MillsREPO();
             AvailableLanguages = await Languages.SupportedLanguages();
             SupportedMills = await Mills.SupportedMills();
+            IsBusy = false;
         }
+
+        private void TMAPresponse(WebServices.Entities.TMAP.AuthResponse response)
+        {
+            Device.BeginInvokeOnMainThread(async () => {
+                IsBusy = false;
+                switch (response.Response)
+                {
+                    case WebServices.Entities.TMAP.TmapResponse.Ok:
+                        await _navigationService.NavigateAsync("TaskMobile:///MainPage");
+                        break;
+                    case WebServices.Entities.TMAP.TmapResponse.CertificateError:
+                        await _dialogService.DisplayAlertAsync("Error", "Error de certificado", "Ok");
+                        break;
+                    case WebServices.Entities.TMAP.TmapResponse.InvalidCredentials:
+                        await _dialogService.DisplayAlertAsync("Error", "Credenciales inválidas.", "Ok");
+                        break;
+                    case WebServices.Entities.TMAP.TmapResponse.NoNetworkConnection:
+                        await _dialogService.DisplayAlertAsync("Error", "Error de red.", "Ok");
+                        break;
+                    case WebServices.Entities.TMAP.TmapResponse.UserDoNotHaveTmapAccessRights:
+                        await _dialogService.DisplayAlertAsync("Error", "No tienes permisos en TMP.", "Ok");
+                        break;
+                    case WebServices.Entities.TMAP.TmapResponse.MaxBadLogonReached:
+                        await _dialogService.DisplayAlertAsync("Error", "Error de tiempo máximo de inicio de sesión.", "Ok");
+                        break;
+                    case WebServices.Entities.TMAP.TmapResponse.RequestTimeout:
+                        await _dialogService.DisplayAlertAsync("Error", "Error de request.", "Ok");
+                        break;
+                    case WebServices.Entities.TMAP.TmapResponse.Unknow:
+                        await _dialogService.DisplayAlertAsync("Error", "Error desconocido.", "Ok");
+                        break;
+                    default:
+                        await _dialogService.DisplayAlertAsync("Error", "Error no catalogado.", "Ok");
+                        break;
+                }
+            });
+        }
+
+
     }
 }

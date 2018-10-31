@@ -1,5 +1,4 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using System;
@@ -7,25 +6,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TaskMobile.WebServices.REST;
+using TaskMobile.WebServices;
 using Xamarin.Forms;
-using TaskMobile.WebServices.Entities;
-using TaskMobile.WebServices.Entities.Common;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class RejectedDetailViewModel : BaseViewModel, INavigatingAware
     {
-        public RejectedDetailViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
-        {
+        private readonly WebServices.REST.Activities _service;
 
+        public RejectedDetailViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient client) 
+        : base(navigationService, dialogService,client)
+        {
+            _service = new WebServices.REST.Activities(client);
         }
 
 
         #region  VIEW MODEL PROPERTIES
 
         private List<Models.Activity> _activities;
-        private bool _isRefreshing = false;
         private int _currentTask;
 
         /// <summary>
@@ -41,18 +40,6 @@ namespace TaskMobile.ViewModels.Tasks
         }
 
         /// <summary>
-        /// Flag for stablish when the list view is refreshing.
-        /// </summary>
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                SetProperty(ref _isRefreshing, value);
-            }
-        }
-
-        /// <summary>
         /// Current task that contains the showed activities by this view model.
         /// </summary>
         public int CurrentTask
@@ -64,9 +51,9 @@ namespace TaskMobile.ViewModels.Tasks
         #endregion
         #region  COMMANDS
         //Command implementations goes here.
-        private DelegateCommand _Finish;
+        private DelegateCommand _finish;
         public DelegateCommand FinishCommand =>
-            _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
+            _finish ?? (_finish = new DelegateCommand(ExecuteFinishCommand));
 
         public ICommand RefreshCommand
         {
@@ -74,24 +61,11 @@ namespace TaskMobile.ViewModels.Tasks
             {
                 return new Command(async () =>
                 {
-                    IsRefreshing = true;
-                    await RefreshData();
-                    IsRefreshing = false;
+                    await ShowActivities();
                 });
             }
         }
-
         #endregion
-
-
-        /// <summary>
-        /// Refresh detail  task list.
-        /// </summary>
-        /// <returns></returns>
-        private async Task RefreshData()
-        {
-            await ShowActivities(CurrentTask);
-        }
 
         /// <summary>
         /// Go to main page.
@@ -103,45 +77,30 @@ namespace TaskMobile.ViewModels.Tasks
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            int TappedTask = (int) parameters["TaskWithActivities"] ;
-            CurrentTask = TappedTask;
-            Models.Vehicle Current = await App.SettingsInDb.CurrentVehicle();
-            Vehicle = Current.NameToShow;
-            await ShowActivities(TappedTask);
+            int tappedTask = (int) parameters["TaskWithActivities"] ;
+            CurrentTask = tappedTask;
+            Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
+            Vehicle = current.NameToShow;
+            await ShowActivities();
         }
 
-        private async Task ShowActivities(int taskToQuery)
+        private async Task ShowActivities()
         {
             try
             {
                 IsRefreshing = true;
-                var RESTClient = new Client(WebServices.URL.GetActivities);
-                var Requests = new Request<ActivityRequest>();
-                Requests.MessageBody.TaskId = taskToQuery;
-                var Response = await RESTClient.Post< Response<ActivityResponse> >(Requests);
-                var ResultCode = Response.MessageLog.ProcessingResultCode;
-                var ActivitiesFromWS = Response.MessageBody.QueryTaskActivitiesResult.ACTIVITIES;
-                
-                if (ResultCode == 0 && ActivitiesFromWS.Count() >= 0)
-                {
-                    Activities = ActivitiesFromWS.Select(activityToConvert => Converters.Activity(activityToConvert) ).ToList();
-                }
-                else
-                {
-                    if (Response.MessageLog.LogItem != null)
-                            await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
-                    else
-                        await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
-                }
+                _service.GetAll(CurrentTask, "R",
+                    activities =>
+                    {
+                        Activities = activities.ToList();
+                        IsRefreshing = false;
+                    }, OnWebServiceError);
             }
             catch (Exception ex)
             {
-                App.LogToDb.Error("Error al consultar actividades de la tarea: " + taskToQuery, ex);
-                await _dialogService.DisplayAlertAsync("Error", "Algo sucedió al consultar las actividades", "Entiendo");
-            }
-            finally
-            {
                 IsRefreshing = false;
+                App.LogToDb.Error("Error al consultar actividades de la tarea: " + CurrentTask, ex);
+                await _dialogService.DisplayAlertAsync("Error", "Algo sucedió al consultar las actividades", "Entiendo");
             }
         }
     }

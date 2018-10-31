@@ -26,6 +26,8 @@ namespace TaskMobile.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::AndroidSecureHTTP.Resource.String.ApplicationName = global::TaskMobile.Droid.Resource.String.ApplicationName;
+			global::AndroidSecureHTTP.Resource.String.Hello = global::TaskMobile.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::TaskMobile.Droid.Resource.Attribute.actionBarSize;
 			global::ZXing.Net.Mobile.Forms.Android.Resource.Layout.zxingscanneractivitylayout = global::TaskMobile.Droid.Resource.Layout.zxingscanneractivitylayout;
 			global::ZXing.Net.Mobile.Forms.Android.Resource.Layout.zxingscannerfragmentlayout = global::TaskMobile.Droid.Resource.Layout.zxingscannerfragmentlayout;
@@ -2963,6 +2965,12 @@ namespace TaskMobile.Droid
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f080028
+			public const int ApplicationName = 2131230760;
+			
+			// aapt resource value: 0x7f080027
+			public const int Hello = 2131230759;
 			
 			// aapt resource value: 0x7f08000f
 			public const int abc_action_bar_home_description = 2131230735;

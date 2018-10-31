@@ -1,5 +1,4 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using System;
@@ -7,28 +6,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TaskMobile.WebServices.Entities;
-using TaskMobile.WebServices.Entities.Common;
-using TaskMobile.WebServices.REST;
+using TaskMobile.WebServices;
 using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class FinishDetailsViewModel : BaseViewModel, INavigatingAware
     {
-        private bool _isRefreshing = false;
         private int _currentTask;
         private List<Models.Activity> _activities;
-        private DelegateCommand _Finish;
+        private DelegateCommand _finish;
+        private readonly WebServices.REST.Activities _service;
 
-        public FinishDetailsViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
+        public FinishDetailsViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient client) 
+            : base(navigationService, dialogService, client)
         {
-
+            _service = new WebServices.REST.Activities(client);
         }
 
         #region  COMMANDS
         public DelegateCommand FinishCommand =>
-            _Finish ?? (_Finish = new DelegateCommand(GoToMainPage));
+            _finish ?? (_finish = new DelegateCommand(GoToMainPage));
 
         public ICommand RefreshCommand
         {
@@ -57,18 +55,6 @@ namespace TaskMobile.ViewModels.Tasks
         }
 
         /// <summary>
-        /// Stablish when the list view is refreshing.
-        /// </summary>
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                SetProperty(ref _isRefreshing, value);
-            }
-        }
-
-        /// <summary>
         /// Task that contains the showed <see cref="Activities"/>.
         /// </summary>
         private int CurrentTask
@@ -81,10 +67,10 @@ namespace TaskMobile.ViewModels.Tasks
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            int TappedTask = (int)parameters["TaskWithDetail"];
-            CurrentTask = TappedTask;
-            Models.Vehicle Current = await App.SettingsInDb.CurrentVehicle();
-            Vehicle = Current.NameToShow;
+            int tappedTask = (int)parameters["TaskWithDetail"];
+            CurrentTask = tappedTask;
+            Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
+            Vehicle = current.NameToShow;
             await ShowActivities();
         }
 
@@ -104,24 +90,12 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 IsRefreshing = true;
-                var RESTClient = new Client(WebServices.URL.GetActivities);
-                var Requests = new Request<ActivityRequest>();
-                Requests.MessageBody.TaskId = CurrentTask;
-                var Response = await RESTClient.Post<Response<ActivityResponse>>(Requests);
-                var ResultCode = Response.MessageLog.ProcessingResultCode;
-                var ActivitiesFromWS = Response.MessageBody.QueryTaskActivitiesResult.ACTIVITIES;
-
-                if (ResultCode == 0 && ActivitiesFromWS.Count() >= 0)
-                {
-                    Activities = ActivitiesFromWS.Select(activityToConvert => Converters.Activity(activityToConvert)).ToList();
-                }
-                else
-                {
-                    if (Response.MessageLog.LogItem != null)
-                        await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
-                    else
-                        await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
-                }
+                _service.GetAll(CurrentTask, "F",
+                    activities =>
+                    {
+                        Activities = activities.ToList();
+                        IsRefreshing = false;
+                    }, OnWebServiceError);
             }
             catch (Exception ex)
             {

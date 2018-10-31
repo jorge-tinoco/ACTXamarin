@@ -1,7 +1,10 @@
 ﻿using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using System;
 using System.Threading.Tasks;
+using TaskMobile.WebServices;
+using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels
 {
@@ -13,7 +16,7 @@ namespace TaskMobile.ViewModels
     ///     public YourClass: BaseViewModel
     ///     {
     ///         ...
-    ///         void YourClass(INavigationService navigationService):base( navigationService)
+    ///         void YourClass(INavigationService navigation):base( navigation)
     ///         {
     ///             ...
     ///         }
@@ -23,11 +26,13 @@ namespace TaskMobile.ViewModels
     /// </example>
     public class BaseViewModel : BindableBase
     {
-        private string _Driver;
-        private string _Vehicle;
+        protected readonly INavigationService _navigationService;
+        protected readonly IPageDialogService _dialogService;
+        protected readonly IClient WebService;
+        private bool _isRefreshing = true;
+        private string _driver;
+        private string _vehicle;
         private Models.Vehicle _curentVehicle;
-        protected INavigationService _navigationService;
-        protected IPageDialogService _dialogService;
 
         public BaseViewModel(INavigationService navigationService)
         {
@@ -40,15 +45,28 @@ namespace TaskMobile.ViewModels
             _dialogService = dialogService;
         }
 
+        public BaseViewModel(INavigationService navigationService, IClient webService)
+        {
+            _navigationService = navigationService;
+            WebService = webService;
+        }
+
+        public BaseViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient webService)
+        {
+            _navigationService = navigationService;
+            _dialogService = dialogService;
+            WebService = webService;
+        }
+
         /// <summary>
         /// Current driver.
         /// </summary>
         public string Driver
         {
-            get { return _Driver; }
+            get { return _driver; }
             set
             {
-                SetProperty(ref _Driver, value);
+                SetProperty(ref _driver, value);
             }
         }
 
@@ -57,12 +75,17 @@ namespace TaskMobile.ViewModels
         /// </summary>
         public string Vehicle
         {
-            get { return _Vehicle; }
+            get { return _vehicle; }
             set
             {
-                SetProperty(ref _Vehicle, value);
+                SetProperty(ref _vehicle, value);
             }
         }
+
+        /// <summary>
+        /// Vehicle identifier(int format).
+        /// </summary>
+        protected int VehicleId => _curentVehicle.Identifier != null ? int.Parse(_curentVehicle.Identifier) : 0;
 
         /// <summary>
         /// Model that represents the current vehicle.
@@ -71,6 +94,15 @@ namespace TaskMobile.ViewModels
         {
             get { return _curentVehicle; }
             set { SetProperty(ref _curentVehicle, value); }
+        }
+
+        /// <summary>
+        /// Says when the view model is busy.
+        /// </summary>
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set { SetProperty(ref _isRefreshing, value); }
         }
 
         /// <summary>
@@ -87,6 +119,53 @@ namespace TaskMobile.ViewModels
             }
             else
                 Vehicle = CurrentVehicle.NameToShow;
+        }
+
+        /// <summary>
+        /// Executed when some problem occurs in web services comsumption.
+        /// </summary>
+        /// <param name="error">Web service error.</param>
+        protected virtual void OnWebServiceError(object error)
+        {
+            IsRefreshing = false;
+            string errorMessage = string.Empty;
+            string title = "Error en consumo de servicio";
+            if (error is string)
+                errorMessage = (string)error;
+            if (error is Exception)
+                errorMessage = error.ToString();
+            if (error is Exceptions.WttException)
+            {
+                var casted = (Exceptions.WttException) error;
+                switch (casted.Severity)
+                {
+                    case Exceptions.Severity.None:
+                        title = "Información";
+                        break;
+                    case Exceptions.Severity.Low:
+                        title = "Atención";
+                        break;
+                    case Exceptions.Severity.Medium:
+                        title = "Alerta";
+                        break;
+                    case Exceptions.Severity.High:
+                        title = "Error";
+                        break;
+                    case Exceptions.Severity.Intense:
+                        title = "Peligro";
+                        break;
+                    default:
+                        title = "Mensaje NO identificado";
+                        break;
+                }
+                errorMessage = casted.Message;
+            }
+            App.LogToDb.Error(errorMessage);
+            Device.BeginInvokeOnMainThread(async () => {
+                await _dialogService.DisplayAlertAsync(title, errorMessage, "Entiendo");
+                if (errorMessage == "AuthenticationExpiredError")
+                    await _navigationService.NavigateAsync("TaskMobile:///LoginPage");
+            });
         }
     }
 }
