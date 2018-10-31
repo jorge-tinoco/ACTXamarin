@@ -1,0 +1,343 @@
+﻿using Prism.Commands;
+using Prism.Navigation;
+using Prism.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
+using TaskMobile.Models;
+using TaskMobile.WebServices;
+using TaskMobile.WebServices.Entities;
+using TaskMobile.WebServices.Entities.Common;
+using Xamarin.Forms;
+using Thread = System.Threading.Tasks;
+
+namespace TaskMobile.ViewModels.Tasks
+{
+    /// <summary>
+    /// View model representing <see cref="Views.Tasks.AssignedToExecuted"/> view.
+    /// </summary>
+    public class AssignedToExecutedViewModel : BaseViewModel, INavigatingAware
+    {
+        private string _rejectionColor;
+        private Rejection _rejection;
+        private List<Activity> _activities;
+        private IEnumerable<Rejection> _rejections;
+        private DelegateCommand<Picker> _pickerCommand;
+
+        /// <summary>
+        /// Constructor that implements navigation service.
+        /// </summary>
+        /// <param name="navigationService">Navigation service.</param>
+        /// <param name="dialog">Prism dialog service.</param>
+        /// <param name="client">Web service client.</param>
+        public AssignedToExecutedViewModel(INavigationService navigationService, IPageDialogService dialog, IClient client) 
+            : base(navigationService, dialog, client)
+        {
+            Driver = "TINOCO";
+        }
+
+        #region  COMMANDS
+        public DelegateCommand<Activity> RunCommand
+        {
+            get
+            {
+                return new DelegateCommand<Activity>(async (activity) =>
+                {
+                    await RunActivity(activity);
+                });
+            }
+        }
+        public DelegateCommand<Activity> RejectCommand
+        {
+            get
+            {
+                return new DelegateCommand<Activity>(async (activity) =>
+                {
+                    await RejectActivity(activity);
+                });
+            }
+        }
+        public DelegateCommand<Picker> PickerCommand =>
+            _pickerCommand ?? (_pickerCommand = new DelegateCommand<Picker>(FocusPicker));
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    await ShowActivities();
+                });
+            }
+        }
+        #endregion
+
+        #region  VIEW MODEL PROPERTIES
+
+        /// <summary>
+        /// Current pending/assigned  tasks.
+        /// </summary>
+        public List<Activity> Activities
+        {
+            get { return _activities; }
+            set
+            {
+                SetProperty(ref _activities, value);
+            }
+        }
+
+        public int CurrentTask { get; set; }
+
+        /// <summary>
+        /// Available rejections reasons.
+        /// </summary>
+        public IEnumerable<Rejection> Rejections
+        {
+            get { return _rejections; }
+            set { SetProperty(ref _rejections, value); }
+        }
+
+        /// <summary>
+        /// Selected reason for rejection
+        /// </summary>
+        public Rejection Rejection
+        {
+            get { return _rejection; }
+            set
+            {
+                RaisePropertyChanged("RejectionColor");
+                SetProperty(ref _rejection, value);
+            }
+        }
+
+        /// <summary>
+        /// Defines the rejection icon color.
+        /// </summary>
+        public string RejectionColor
+        {
+            get
+            {
+                if (Rejection == null)
+                    return Utilities.TenarisColors.ShamrockGreen;
+                else
+                    return Utilities.TenarisColors.OrangePeel;
+            }
+            set { SetProperty(ref _rejectionColor, value); }
+        }
+        #endregion
+
+        #region METHODS
+        public async void OnNavigatingTo(NavigationParameters parameters)
+        {
+            try
+            {
+                var tappedTask = (int)parameters["TaskToRun"];
+                CurrentTask = tappedTask;
+                Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
+                Rejections = await App.SettingsInDb.Rejections();
+                Vehicle = current.NameToShow;
+                await ShowActivities();
+            }
+            catch (Exception e)
+            {
+                App.LogToDb.Error(e);
+                await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error cuando se consultaban las actividades", "Entiendo");
+            }
+        }
+
+        /// <summary>
+        /// Run the selected activity, and navigate to <see cref="Views.Tasks.Executed"/> view.
+        /// </summary>
+        /// <param name="tappedActivity"></param>
+        private async Thread.Task RunActivity(Activity tappedActivity)
+        {
+            try
+            {
+                IsRefreshing = true;
+                string route = "UpdateActivityStart";
+                var request = new Request<ActivityUpdRequest>
+                {
+                    MessageBody =
+                    {
+                        TaskId = CurrentTask,
+                        RejectionId = 0,
+                        LastUpdateBy = Driver,
+                        ActivityId = tappedActivity.Id
+                    }
+                };
+                var data = Newtonsoft.Json.JsonConvert.SerializeObject(request);
+                await Thread.Task.Run(() =>
+                {
+                    WebService.Post<Response<ActivityUpdResponse>>(route, data,
+                      response =>
+                      {
+                          Device.BeginInvokeOnMainThread(async () => {
+                              double code = response.MessageLog.ProcessingResultCode;
+                              if (code.Equals(0) && response.MessageBody.Result == "0")
+                              {
+                                  var parameters = new NavigationParameters
+                                  {
+                                      {"ExecutedActivity", tappedActivity}
+                                  };
+                                  await _navigationService.NavigateAsync("ExecutedTask", parameters);
+                              }
+                              else
+                              {
+                                  if (response.MessageLog.LogItem != null)
+                                      await _dialogService.DisplayAlertAsync("Error", response.MessageLog.LogItem.ErrorDescription, "Entiendo");
+                                  else
+                                      await _dialogService.DisplayAlertAsync("Información", "No se ha podido ejecutar la actividad : " + tappedActivity.Name, "Entiendo");
+                              }
+                              IsRefreshing = false;
+                          });
+                      }, OnWebServiceError);
+                });
+            }
+            catch (Exception ex)
+            {
+                App.LogToDb.Error("Error al ejecutar la actividad " + tappedActivity.Id, ex);
+                await _dialogService.DisplayAlertAsync("Error", "Algo fue mal al ejecutar la actividad :" + tappedActivity.Id, "Entiendo");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
+
+        /// <summary>
+        /// Reject activity and navigate to <see cref="Views.Tasks.Rejected"/> view.
+        /// </summary>
+        /// <param name="tappedActivity">Activity to reject.</param>
+        private async Thread.Task RejectActivity(Activity tappedActivity)
+        {
+            try
+            {
+                if (Rejection == null)
+                    await _dialogService.DisplayAlertAsync("Espera", "Es necesario  seleccionar el motivo de rechazo", "Lo haré");
+                else
+                {
+                    IsRefreshing = true;
+                    var route = "UpdateActivityRejected";
+                    var request = new Request<ActivityUpdRequest>
+                    {
+                        MessageBody =
+                        {
+                            TaskId = CurrentTask,
+                            RejectionId = Rejection.Number,
+                            LastUpdateBy = Driver,
+                            ActivityId = tappedActivity.Id,
+                            DestinyLocation = "sample string 4"
+                        }
+                    };
+                    var data = Newtonsoft.Json.JsonConvert.SerializeObject(request);
+                    await Thread.Task.Run(() =>
+                    {
+                        WebService.Post<Response<ActivityUpdResponse>>(route, data,
+                          response =>
+                          {
+                              Device.BeginInvokeOnMainThread(async () => {
+                                  var code = response.MessageLog.ProcessingResultCode;
+                                  if (code.Equals(0) && response.MessageBody.Result == "0")
+                                  {
+                                      NavigationParameters parameters = new NavigationParameters();
+                                      parameters.Add("RejectedActivity", tappedActivity);
+                                      parameters.Add("ComesFrom", "Assigned");
+                                      await _navigationService.NavigateAsync("RejectedTask", parameters);
+                                  }
+                                  else
+                                  {
+                                      if (response.MessageLog.LogItem != null)
+                                          await _dialogService.DisplayAlertAsync("Error", response.MessageLog.LogItem.ErrorDescription, "Entiendo");
+                                      else
+                                          await _dialogService.DisplayAlertAsync("Información", "No se ha podido rechazar la actividad : " + tappedActivity.Name, "Entiendo");
+                                  }
+                                  IsRefreshing = false;
+                              });
+                          }, OnWebServiceError);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                App.LogToDb.Error("Error al rechazar actividad " + tappedActivity.Id, ex);
+                await _dialogService.DisplayAlertAsync("Error", "Algo fue mal al rechazar la actividad :" + tappedActivity.Id, "Entiendo");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
+
+        /// <summary>
+        /// Refresh activities list.
+        /// </summary>
+        private async Thread.Task ShowActivities()
+        {
+            try
+            {
+                IsRefreshing = true;
+                var route = "GetRequestTasksActivities";
+                var request = new Request<ActivityRequest> {MessageBody = {TaskId = CurrentTask}};
+                var data = Newtonsoft.Json.JsonConvert.SerializeObject(request);
+                await Thread.Task.Run(() =>
+                {
+<<<<<<< Updated upstream
+                    Activities = ActivitiesFromWS.
+                                        Where(x => x.STATUS  == "A").
+                                        Select(activityToConvert => Converters.Activity(activityToConvert)).
+                                        OrderBy(x => x.Order).
+                                        ToList();
+                }
+                else
+                {
+                    if (Response.MessageLog.LogItem != null )
+                            await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
+                    else
+                        await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
+                }
+=======
+                    WebService.Post<Response<ActivityResponse>>(route, data,
+                      response =>
+                      {
+                          Device.BeginInvokeOnMainThread(async () => {
+                              var code = response.MessageLog.ProcessingResultCode;
+                              var activities = response.MessageBody.QueryTaskActivitiesResult.ACTIVITIES;
+                              if (code.Equals(0) && activities.Count() >= 0)
+                              {
+                                  Activities = activities.Select(activityToConvert => Converters.Activity(activityToConvert)).ToList();
+                              }
+                              else
+                              {
+                                  if (response.MessageLog.LogItem != null)
+                                      await _dialogService.DisplayAlertAsync("Error", response.MessageLog.LogItem.ErrorDescription, "Entiendo");
+                                  else
+                                      await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
+                              }
+                              IsRefreshing = false;
+                          });
+                      }, OnWebServiceError);
+                });
+>>>>>>> Stashed changes
+            }
+            catch (Exception ex)
+            {
+                App.LogToDb.Error("Error al descargar actividades de la tarea: " + CurrentTask, ex);
+                await _dialogService.DisplayAlertAsync("Error", "Algo sucedió al descargar las actividades", "Entiendo");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
+
+        /// <summary>
+        /// Open the picker visual element.
+        /// </summary>
+        /// <param name="rejectionPicker">Picker to open</param>
+        private void FocusPicker(Picker rejectionPicker)
+        {
+            rejectionPicker.Focus();
+        }
+        #endregion
+    }
+}

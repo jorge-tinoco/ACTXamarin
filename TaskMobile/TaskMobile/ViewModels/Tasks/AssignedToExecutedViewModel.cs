@@ -1,16 +1,14 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Thread = System.Threading.Tasks;
 using System.Windows.Input;
 using TaskMobile.Models;
-using TaskMobile.WebServices.Entities.Common;
-using TaskMobile.WebServices.REST;
+using TaskMobile.WebServices;
 using Xamarin.Forms;
-using System;
-using TaskMobile.WebServices.Entities;
+using Thread = System.Threading.Tasks;
 
 namespace TaskMobile.ViewModels.Tasks
 {
@@ -20,19 +18,23 @@ namespace TaskMobile.ViewModels.Tasks
     public class AssignedToExecutedViewModel : BaseViewModel, INavigatingAware
     {
         private string _rejectionColor;
-        private bool _isRefreshing = false;
         private Rejection _rejection;
         private List<Activity> _activities;
         private IEnumerable<Rejection> _rejections;
         private DelegateCommand<Picker> _pickerCommand;
+        private readonly WebServices.REST.Activities _service;
 
         /// <summary>
         /// Constructor that implements navigation service.
         /// </summary>
         /// <param name="navigationService">Navigation service.</param>
-        public AssignedToExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
+        /// <param name="dialog">Prism dialog service.</param>
+        /// <param name="client">Web service client.</param>
+        public AssignedToExecutedViewModel(INavigationService navigationService, IPageDialogService dialog, IClient client) 
+            : base(navigationService, dialog, client)
         {
             Driver = "TINOCO";
+            _service = new WebServices.REST.Activities(client);
         }
 
         #region  COMMANDS
@@ -122,19 +124,6 @@ namespace TaskMobile.ViewModels.Tasks
             }
             set { SetProperty(ref _rejectionColor, value); }
         }
-
-        /// <summary>
-        /// Flag for stablish when the list view is refreshing.
-        /// </summary>
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                SetProperty(ref _isRefreshing, value);
-            }
-        }
-
         #endregion
 
         #region METHODS
@@ -142,64 +131,56 @@ namespace TaskMobile.ViewModels.Tasks
         {
             try
             {
-                int TappedTask = (int)parameters["TaskToRun"];
-                CurrentTask = TappedTask;
-                Models.Vehicle Current = await App.SettingsInDb.CurrentVehicle();
+                var tappedTask = (int)parameters["TaskToRun"];
+                CurrentTask = tappedTask;
+                Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
                 Rejections = await App.SettingsInDb.Rejections();
-                Vehicle = Current.NameToShow;
+                Vehicle = current.NameToShow;
                 await ShowActivities();
             }
             catch (Exception e)
             {
                 App.LogToDb.Error(e);
-                await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error cuanso se consultaban las actividades", "Entiendo");
+                await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error cuando se consultaban las actividades", "Entiendo");
             }
         }
 
         /// <summary>
         /// Run the selected activity, and navigate to <see cref="Views.Tasks.Executed"/> view.
         /// </summary>
-        /// <param name="parameter">Task activity to run.</param>
+        /// <param name="tappedActivity"></param>
         private async Thread.Task RunActivity(Activity tappedActivity)
         {
             try
             {
                 IsRefreshing = true;
-                var RESTClient = new Client(WebServices.URL.ActivityStart);
-                var Requests = new Request<ActivityUpdRequest>();
-                Requests.MessageBody.TaskId = CurrentTask;
-                Requests.MessageBody.RejectionId = 0;
-                Requests.MessageBody.LastUpdateBy = Driver;
-                Requests.MessageBody.ActivityId = tappedActivity.Id;
-                var Response = await RESTClient.Post<Response<ActivityUpdResponse>>(Requests);
-                var ResultCode = Response.MessageLog.ProcessingResultCode;
-                if (ResultCode == 0 && Response.MessageBody.Result == "0")
-                {
-                    NavigationParameters Parameters = new NavigationParameters();
-                    Parameters.Add("ExecutedActivity", tappedActivity);
-                    await _navigationService.NavigateAsync("ExecutedTask", Parameters);
-                }
-                else
-                {
-                    if (Response.MessageLog.LogItem != null)
-                        await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
-                    else
-                        await _dialogService.DisplayAlertAsync("Información", "No se ha podido ejecutar la actividad : " + tappedActivity.Name, "Entiendo");
-                }
+                _service.Start( CurrentTask, tappedActivity.Id, Driver,
+                    started =>
+                    {
+                        Device.BeginInvokeOnMainThread( async () =>
+                        {
+                            IsRefreshing = false;
+                            if (started)
+                            {
+                                var parameters = new NavigationParameters
+                                  {
+                                      {"ExecutedActivity", tappedActivity}
+                                  };
+                                await _navigationService.NavigateAsync("ExecutedTask", parameters);
+                            }
+                        });
+                    }, OnWebServiceError);
             }
             catch (Exception ex)
             {
+                IsRefreshing = false;
                 App.LogToDb.Error("Error al ejecutar la actividad " + tappedActivity.Id, ex);
                 await _dialogService.DisplayAlertAsync("Error", "Algo fue mal al ejecutar la actividad :" + tappedActivity.Id, "Entiendo");
-            }
-            finally
-            {
-                IsRefreshing = false;
             }
         }
 
         /// <summary>
-        /// Reject activity and navigate to <see cref="Rejected"/> view.
+        /// Reject activity and navigate to <see cref="Views.Tasks.Rejected"/> view.
         /// </summary>
         /// <param name="tappedActivity">Activity to reject.</param>
         private async Thread.Task RejectActivity(Activity tappedActivity)
@@ -211,40 +192,30 @@ namespace TaskMobile.ViewModels.Tasks
                 else
                 {
                     IsRefreshing = true;
-                    var RESTClient = new Client(WebServices.URL.ActivityRejected);
-                    var Requests = new Request<ActivityUpdRequest>();
-                    Requests.MessageBody.TaskId = CurrentTask;
-                    Requests.MessageBody.RejectionId = Rejection.Number;
-                    Requests.MessageBody.LastUpdateBy = Driver;
-                    Requests.MessageBody.ActivityId = tappedActivity.Id;
-                    Requests.MessageBody.DestinyLocation = "sample string 4";
-                    var Response = await RESTClient.Post<Response<ActivityUpdResponse>>(Requests);
-                    var ResultCode = Response.MessageLog.ProcessingResultCode;
-                    if (ResultCode == 0 && Response.MessageBody.Result == "0")
-                    {
-                        NavigationParameters Parameters = new NavigationParameters();
-                        Parameters.Add("RejectedActivity", tappedActivity);
-                        Parameters.Add("ComesFrom", "Assigned");
-                        await _navigationService.NavigateAsync("RejectedTask", Parameters);
-                    }
-                    else
-                    {
-                        if (Response.MessageLog.LogItem != null )
-                            await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
-                        else
-                            await _dialogService.DisplayAlertAsync("Información", "No se ha podido rechazar la actividad : " + tappedActivity.Name, "Entiendo");
-                    }
+                    _service.Reject(CurrentTask, tappedActivity.Id, Rejection.Number, Driver,
+                          rejected =>
+                          {
+                              Device.BeginInvokeOnMainThread(async () =>
+                              {
+                                  IsRefreshing = false;
+                                  if (rejected)
+                                  {
+                                      var parameters = new NavigationParameters
+                                      {
+                                          {"RejectedActivity", tappedActivity},
+                                          {"ComesFrom", "Assigned"}
+                                      };
+                                      await _navigationService.NavigateAsync("RejectedTask", parameters);
+                                  }
+                              });
+                          }, OnWebServiceError);
                 }
-
             }
             catch (Exception ex)
             {
+                IsRefreshing = false;
                 App.LogToDb.Error("Error al rechazar actividad " + tappedActivity.Id, ex);
                 await _dialogService.DisplayAlertAsync("Error", "Algo fue mal al rechazar la actividad :" + tappedActivity.Id, "Entiendo");
-            }
-            finally
-            {
-                IsRefreshing = false;
             }
         }
 
@@ -256,37 +227,18 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 IsRefreshing = true;
-                var RESTClient = new Client(WebServices.URL.GetActivities);
-                var Requests = new Request<ActivityRequest>();
-                Requests.MessageBody.TaskId = CurrentTask;
-                var Response = await RESTClient.Post<Response<ActivityResponse>>(Requests);
-                var ResultCode = Response.MessageLog.ProcessingResultCode;
-                var ActivitiesFromWS = Response.MessageBody.QueryTaskActivitiesResult.ACTIVITIES;
-
-                if (ResultCode == 0 && ActivitiesFromWS.Count() >= 0)
-                {
-                    Activities = ActivitiesFromWS.
-                                        Where(x => x.STATUS  == "A").
-                                        Select(activityToConvert => Converters.Activity(activityToConvert)).
-                                        OrderBy(x => x.Order).
-                                        ToList();
-                }
-                else
-                {
-                    if (Response.MessageLog.LogItem != null )
-                            await _dialogService.DisplayAlertAsync("Error", Response.MessageLog.LogItem.ErrorDescription, "Entiendo");
-                    else
-                        await _dialogService.DisplayAlertAsync("Información", "No se encontraron actividades", "Entiendo");
-                }
+                _service.GetAll(CurrentTask, "A" ,
+                    activities =>
+                    {
+                        Activities = activities.ToList();
+                        IsRefreshing = false;
+                    }, OnWebServiceError);
             }
             catch (Exception ex)
             {
+                IsRefreshing = false;
                 App.LogToDb.Error("Error al descargar actividades de la tarea: " + CurrentTask, ex);
                 await _dialogService.DisplayAlertAsync("Error", "Algo sucedió al descargar las actividades", "Entiendo");
-            }
-            finally
-            {
-                IsRefreshing = false;
             }
         }
 

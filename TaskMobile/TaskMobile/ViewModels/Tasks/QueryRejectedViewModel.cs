@@ -1,29 +1,31 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using TaskMobile.WebServices.Entities.Common;
-using TaskMobile.WebServices.REST;
 using System.Threading.Tasks;
+using TaskMobile.WebServices;
+using Xamarin.Forms;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class QueryRejectedViewModel : BaseViewModel, INavigatingAware
     {
-        public QueryRejectedViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService, dialogService)
+        private readonly WebServices.REST.Tasks _service;
+
+
+        public QueryRejectedViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient client) 
+        : base(navigationService, dialogService, client)
         {
             Driver = "Jorge Tinoco";
+            _service = new WebServices.REST.Tasks(client);
         }
 
         #region VIEW MODEL PROPERTIES
 
         private DateTime _start = DateTime.Now.AddDays(-15);
         private DateTime _end = DateTime.Now;
-        private bool _isRefreshing = false;
         private bool _isFirstLoad = true;
 
         public ObservableCollection<Models.Task> RejectedTasks { get; private set; }
@@ -57,18 +59,6 @@ namespace TaskMobile.ViewModels.Tasks
             }
         }
 
-        /// <summary>
-        /// Indicates if the listview is refreshing.
-        /// </summary>
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                SetProperty(ref _isRefreshing, value);
-            }
-        }
-
         public bool IsFirstLoad
         {
             get { return _isFirstLoad; }
@@ -93,16 +83,7 @@ namespace TaskMobile.ViewModels.Tasks
             }
         }
 
-        public DelegateCommand RefreshCommand
-        {
-            get
-            {
-                return new DelegateCommand(async () =>
-                {
-                    await RefreshData();
-                });
-            }
-        }
+        public DelegateCommand RefreshCommand => new DelegateCommand( RefreshData);
 
         #endregion
 
@@ -110,12 +91,12 @@ namespace TaskMobile.ViewModels.Tasks
         /// <summary>
         /// Navigate to <see cref="Views.Tasks.RejectedDetail"/>  that shows details of selected task.
         /// </summary>
-        /// <param name="selectedTask">Selected task by the user.</param>
+        /// <param name="tappedTask">Selected task by the user.</param>
         private async void GoToActivities(object tappedTask)
         {
-            NavigationParameters Parameters = new NavigationParameters();
-            Parameters.Add("TaskWithActivities", tappedTask);
-            await _navigationService.NavigateAsync("RejectedDetail", Parameters);
+            var parameters = new NavigationParameters();
+            parameters.Add("TaskWithActivities", tappedTask);
+            await _navigationService.NavigateAsync("RejectedDetail", parameters);
         }
 
         /// <summary>
@@ -127,39 +108,38 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 IsRefreshing = true;
-                int TaskToExpand = tappedTask.Number;
-                string StockType = tappedTask.Type;
                 if (!tappedTask.Expanded)
                 {
                     tappedTask.Clear();
-                    Client RESTClient = new Client(WebServices.URL.RequestDetails);
-                    Request<WebServices.Entities.DetailsRequest> Requests = new Request<WebServices.Entities.DetailsRequest>();
-                    Requests.MessageBody.TaskId = TaskToExpand;
-                    var Response = await RESTClient.Post<Response<WebServices.Entities.DetailsResponse>>(Requests);
-                    if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskDetailsResult != null)
-                    {
-                        Models.TaskDetail DetailHeaders = new Models.TaskDetail();
-                        DetailHeaders.WorkOrder = "OP";
-                        DetailHeaders.Lot = "Lote";
-                        DetailHeaders.SapCode = "Código SAP";
-                        DetailHeaders.PiecesText = "Piezas";
-                        DetailHeaders.TonsText = "Toneladas";
-                        DetailHeaders.RowIsHeader = true;
-                        tappedTask.Add(DetailHeaders);
-                        IEnumerable<Models.TaskDetail> LocalDetails = Response.MessageBody.QueryTaskDetailsResult.DETAILS.
-                                                                        Select(detailToConvert => Converters.TaskDetail(detailToConvert, TaskToExpand, StockType));
-                        tappedTask.Add(LocalDetails);
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync("Información", "No se encontró detalles", "Entiendo");
-                    }
+                    _service.Details(tappedTask,
+                        response =>
+                        {
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                if (!response.Any())
+                                    await _dialogService.DisplayAlertAsync("Información", "No se encontró detalles",
+                                        "Entiendo");
+                                else
+                                {
+                                    foreach (var taskToAdd in response)
+                                    {
+                                        tappedTask.Add(taskToAdd);
+                                    }
+                                }
+                                tappedTask.Expanded = !tappedTask.Expanded;
+                                IsRefreshing = false;
+                            });
+                        }, OnWebServiceError);
                 }
-                tappedTask.Expanded = !tappedTask.Expanded;
-                IsRefreshing = false;
+                else
+                {
+                    tappedTask.Expanded = !tappedTask.Expanded;
+                    IsRefreshing = false;
+                }
             }
             catch (Exception ex)
             {
+                IsRefreshing = false;
                 App.LogToDb.Error("Error al mostrar detalles de la tarea " + tappedTask.Number, ex);
                 await _dialogService.DisplayAlertAsync("Error", "Algo ocurrió cuando mostrábamos los detalles", "Entiendo");
             }
@@ -168,30 +148,23 @@ namespace TaskMobile.ViewModels.Tasks
         /// <summary>
         /// Refresh the rejected task list view.
         /// </summary>
-        private async Task RefreshData()
+        private void RefreshData()
         {
             IsRefreshing = true;
-            Client RESTClient = new Client(WebServices.URL.GetTasks);
-            Request<WebServices.Entities.TaskRequest> Requests = new Request<WebServices.Entities.TaskRequest>();
-            Requests.MessageBody.VehicleId = int.Parse(CurrentVehicle.Identifier);
-            Requests.MessageBody.Status = "R";
-            Requests.MessageBody.InitialDate = StartDate;
-            Requests.MessageBody.FinalDate = EndDate;
-            var Response = await RESTClient.Post<Response<WebServices.Entities.TaskResponse>>(Requests);
             RejectedTasks.Clear();
-            if (Response.MessageLog.ProcessingResultCode == 0 && Response.MessageBody.QueryTaskResult.Count() > 0)
-            {
-                var AllTasks = Response.MessageBody.QueryTaskResult.SelectMany(x => x.TASK);
-                var Ordered = AllTasks.OrderByDescending(x => x.CREATED_DATE);
-                var TasksConverted = Ordered.Select(taskToConvert => Converters.Task(taskToConvert));
-                foreach (var item in TasksConverted)
+            _service.ByRange(VehicleId, "R", StartDate, EndDate,
+                tasks =>
                 {
-                    RejectedTasks.Add(item);
-                }
-            }
-            else
-                await _dialogService.DisplayAlertAsync("Información", "No se encontró tareas asociadas al vehículo ", "Entiendo");
-            IsRefreshing = false;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        tasks = tasks.OrderByDescending(x => x.DateTask);
+                        foreach (var taskToAdd in tasks)
+                        {
+                            RejectedTasks.Add(taskToAdd);
+                        }
+                        IsRefreshing = false;
+                    });
+                }, OnWebServiceError);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -201,16 +174,13 @@ namespace TaskMobile.ViewModels.Tasks
                 IsFirstLoad = false;
                 await CheckVehicle();
                 if (CurrentVehicle != null)
-                    await RefreshData();
+                    RefreshData();
             }
             catch (Exception e)
             {
                 IsRefreshing = false;
                 App.LogToDb.Error(e);
                 await _dialogService.DisplayAlertAsync("Error", "Ha ocurrido un error al descargar las tareas rechazadas", "Entiendo");
-            }
-            finally {
-                IsRefreshing = false;
             }
         }
 

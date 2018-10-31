@@ -1,28 +1,57 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using TaskMobile.WebServices.Entities.TMAP;
+using System.Threading.Tasks;
 
 namespace TaskMobile.WebServices
 {
     /// <summary>
-    /// Web services client interface.
+    ///  Dependency injection interface for TMAP web services implementation.
     /// </summary>
     /// <remarks>
-    ///     Define in this places all possible methods for working with webservices.
+    ///     Used for make platform specific implementation for web services.
     /// </remarks>
     public interface IClient
+
     {
-        /// <summary>
-        /// Define a method for using a GET request for a web services.
-        /// </summary>
-        /// <typeparam name="T">Result object type from the web service.</typeparam>
-        /// <returns>Result object o <seealso cref="T"/> type.</returns>
-        Task<T> Get<T>();
+        string LOGGING_URL { get; set; }
+
+        string TMAP_URL { get; set; }
 
         /// <summary>
-        /// Defines a method for querying a web service using GET operation.
+        /// TMAP key for querying.
         /// </summary>
-        /// <typeparam name="T">Result object type from the web service.</typeparam>
-        /// <param name="URL">Web service URL to query.</param>
-        /// <returns>Result object o <seealso cref="T"/> type.</returns>
-        Task<T> Get<T>(string URL);
+        /// <example>
+        ///     APP-ACT
+        /// </example>
+        string TMAP_KEY_PROXY { get; set; }
+        
+        /// <summary>
+        /// User domain stablished in TMAP client.
+        /// </summary>
+        string UserDomain { get; }
+
+        /// <summary>
+        /// User name stablished in TMAP client.
+        /// </summary>
+        string UserName { get; }
+
+        /// <summary>
+        /// Authentication type.
+        /// </summary>
+        Authentication Authentication { get; }
+
+        /// <summary>
+        /// Expiration time in seconds.
+        /// </summary>
+        int ExpirationTime { get; set; }
+
+        void SetCredentials(string domain, string user, string password);
+
+        void InitTMAP(Action<AuthResponse> callbackSuccess, Action<AuthResponse> callbackError);
+
+        void Post<T>(string route, string data, Action<T> callbackSuccess, Action<object> callbackError);
+
+        void Get<T>(string route, Action<T> callbackSuccess, Action<object> callbackError);
     }
 }
