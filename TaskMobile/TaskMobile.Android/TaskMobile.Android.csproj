@@ -216,6 +216,23 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <AndroidAsset Include="Assets\fonts\Roboto-Black.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-BlackItalic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-Bold.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-BoldCondensed.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-BoldCondensedItalic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-BoldItalic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-Condensed.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-CondensedItalic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-Italic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-Light.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-LightItalic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-Medium.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-MediumItalic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-Regular.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-Thin.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto-ThinItalic.ttf" />
+    <AndroidAsset Include="Assets\fonts\Roboto_Specimen_Book.pdf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>

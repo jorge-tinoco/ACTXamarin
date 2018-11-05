@@ -162,6 +162,14 @@ namespace TaskMobile.Droid.WebServices
         }
 
         /// <summary>
+        /// Close session.
+        /// </summary>
+        public void LogOut()
+        {
+            _secureClient.Logout();
+        }
+
+        /// <summary>
         /// Set user credentials.
         /// </summary>
         /// <param name="domain">User's domain.</param>

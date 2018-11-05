@@ -24,7 +24,6 @@ namespace TaskMobile.ViewModels.Tasks
                                : base(navigationService, dialogService, client)
         {
             _service = new WebServices.REST.Tasks(client);
-            Driver = "Jorge Tinoco";
             AssignedTasks = new ObservableCollection<Models.Task>();
         }
 
@@ -67,6 +66,8 @@ namespace TaskMobile.ViewModels.Tasks
                 await CheckVehicle();
                 if (CurrentVehicle != null)
                     RefreshData();
+                Models.Driver driver = await App.SettingsInDb.Driver();
+                Driver = driver.User;
             }
             catch (Exception e)
             {
@@ -79,7 +80,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// <summary>
         /// Navigate to <see cref="AssignedToExecuted"/> view.
         /// </summary>
-        /// <param name="tapped">Selected task by the user.</param>
+        /// <param name="tapped">Selected <see cref="Models.Task"/> by the user.</param>
         private async void GoToActivities(object tapped)
         {
             var parameters = new NavigationParameters();

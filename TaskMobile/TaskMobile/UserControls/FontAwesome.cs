@@ -523,6 +523,7 @@
         public static string SignIn = "\uf090";
         public static string SignLanguage = "\uf2a7";
         public static string SignOut = "\uf08b";
+        public static string SignOutAlt = "\uf2f5";
         public static string Simplybuilt = "\uf215";
         public static string Sitemap = "\uf0e8";
         public static string Skyatlas = "\uf216";

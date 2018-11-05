@@ -7,16 +7,16 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              ControlTemplate="{StaticResource TenarisTemplate}"
-             Title="Tarea ejecutada">
+             Title="Tarea Ejecutada">
         <RelativeLayout x:Name="ExecutedContainer" HeightRequest="492">
             <RelativeLayout  x:Name="Steps" 
                          RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height, Factor=0.080,   Constant=0}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.20,Constant=0}">
-                <Button x:Name="Step1" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnWithCheck}" Opacity="0.2"
+                <Button x:Name="Step1" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnDone}"
                             RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.25, Constant=0}"/>
-                <Button x:Name="Step2" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnWithCheck}" Opacity="0.2"
+                <Button x:Name="Step2" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnDone}"
                             RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.55, Constant=0}"/>
-                <Button x:Name="Step3" Text="3" Style="{StaticResource BtnWithCheck}" 
+                <Button x:Name="Step3" Text="3" Style="{StaticResource BtnSelected}" 
                             RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.85, Constant=0}"/>
             </RelativeLayout>
             <StackLayout x:Name="TaskFinished" Orientation="Vertical"
@@ -24,11 +24,11 @@
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}"
                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.25, Constant=0}"  
                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}">
-                <Label HorizontalOptions="Center" Text="Tarea ejecutada"  Style="{StaticResource GreenBoldLabel}" />
-                <Label HorizontalOptions="Center" Text="{Binding TaskNumber}" Style="{StaticResource BlueBoldLabel}"/>
+                <Label HorizontalOptions="Center" TextColor="{StaticResource Color.PacificBlue}" Text="Tarea Ejecutada"  Style="{StaticResource GreenBoldLabel}" />
+                <Label HorizontalOptions="Center" Text="{Binding TaskNumber}" Style="{StaticResource BlueBoldLabel}" Opacity="0.3"/>
             </StackLayout>
             <StackLayout x:Name="FromToPlaces" Orientation="Horizontal" 
-                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=TaskFinished, Property=Y, Factor=1.5,Constant=0}"  
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=TaskFinished, Property=Y, Factor=2.5,Constant=0}"  
                         RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25,    Constant=0}"  
                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}"
                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.10,Constant=0}">
@@ -62,19 +62,19 @@
                 <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="20"/>
             </StackLayout.Spacing>
 
-            <StackLayout x:Name="OtherButton" >
+            <StackLayout x:Name="OtherButton">
                 <StackLayout.Spacing>
                     <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="8"/>
                 </StackLayout.Spacing>
-                <userControls:SquareButton Command="{Binding OtherCommand}"  Text="{x:Static userControls:Icon.Child}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
-                <Label Text="Otra" TextColor="Black" HorizontalOptions="Center"/>
+                <userControls:SquareButton Command="{Binding OtherCommand}"  Text="{x:Static userControls:Icon.ArrowLeft}" Style="{StaticResource BtnCubic}" />
+                <Label Text="Regresar" Style="{StaticResource LabelBtnCubic}" />
             </StackLayout>
             <StackLayout  x:Name="FinishButton">
                 <StackLayout.Spacing>
                     <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="5"/>
                 </StackLayout.Spacing>
-                <userControls:SquareButton Command="{Binding FinishCommand}" Text="{x:Static userControls:Icon.SignLanguage}" Style="{StaticResource BtnCubic}" Opacity=".95"  />
-                <Label Text="Terminar" TextColor="Black" HorizontalOptions="Center"/>
+                <userControls:SquareButton Command="{Binding FinishCommand}" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnCubic}"  />
+                <Label Text="Terminar" Style="{StaticResource LabelBtnCubic}"/>
             </StackLayout>
         </StackLayout>
     </RelativeLayout>

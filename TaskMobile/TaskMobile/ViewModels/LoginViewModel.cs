@@ -142,6 +142,9 @@ namespace TaskMobile.ViewModels
         /// </summary>
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
+            var logout = parameters["logout"] as string;
+            if (logout == "yes")
+                CloseSession();
             DB.LanguagesREPO Languages = new DB.LanguagesREPO();
             DB.MillsREPO Mills = new DB.MillsREPO();
             AvailableLanguages = await Languages.SupportedLanguages();
@@ -156,7 +159,11 @@ namespace TaskMobile.ViewModels
                 switch (response.Response)
                 {
                     case WebServices.Entities.TMAP.TmapResponse.Ok:
-                        await _navigationService.NavigateAsync("TaskMobile:///MainPage");
+                        bool stored = await App.SettingsInDb.SetDriver(User);
+                        if(!stored)
+                            await _dialogService.DisplayAlertAsync("Error", "No se pudo guardar el usuario en la base de datos", "Ok");
+                        else
+                            await _navigationService.NavigateAsync("TaskMobile:///MainPage");
                         break;
                     case WebServices.Entities.TMAP.TmapResponse.CertificateError:
                         await _dialogService.DisplayAlertAsync("Error", "Error de certificado", "Ok");
@@ -186,6 +193,9 @@ namespace TaskMobile.ViewModels
             });
         }
 
-
+        private void CloseSession()
+        {
+            WebService.LogOut();
+        }
     }
 }

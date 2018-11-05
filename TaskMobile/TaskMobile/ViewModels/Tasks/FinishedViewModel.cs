@@ -1,18 +1,16 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class FinishedViewModel : BaseViewModel, INavigatingAware
     {
-        private int _TaskNumber;
-        private DelegateCommand _Other;
-        private DelegateCommand _Finish;
+        private int _activity;
+        private string _origin;
+        private string _destination;
+        private DelegateCommand _other;
+        private DelegateCommand _finish;
 
         public FinishedViewModel(INavigationService navigationService, IPageDialogService dialogService) 
             : base(navigationService, dialogService)
@@ -23,21 +21,39 @@ namespace TaskMobile.ViewModels.Tasks
         #region COMMANDS
 
         public DelegateCommand OtherCommand =>
-            _Other ?? (_Other = new DelegateCommand(ExecuteOtherCommand));
+            _other ?? (_other = new DelegateCommand(ExecuteOtherCommand));
 
         public DelegateCommand FinishCommand =>
-            _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
+            _finish ?? (_finish = new DelegateCommand(ExecuteFinishCommand));
         #endregion
 
         #region VIEW MODEL PROPERTIES
 
         /// <summary>
-        /// Executed task number.
+        /// Executed activity number.
         /// </summary>
-        public int TaskNumber
+        public int Activity
         {
-            get { return _TaskNumber; }
-            set { SetProperty(ref _TaskNumber, value); }
+            get { return _activity; }
+            set { SetProperty(ref _activity, value); }
+        }
+
+        /// <summary>
+        /// Origin warehouse.
+        /// </summary>
+        public string Origin
+        {
+            get { return _origin; }
+            set { SetProperty(ref _origin, value); }
+        }
+
+        /// <summary>
+        /// Destination warehouse.
+        /// </summary>
+        public string Destination
+        {
+            get { return _destination; }
+            set { SetProperty(ref _destination, value); }
         }
         #endregion
 
@@ -63,8 +79,15 @@ namespace TaskMobile.ViewModels.Tasks
         /// <param name="parameters">Finished task.</param>
         void INavigatingAware.OnNavigatingTo(NavigationParameters parameters)
         {
-            Models.Activity Finished = parameters["ActivityFinished"] as Models.Activity;
-            TaskNumber = Finished.Id;
+            var finished = parameters["ActivityFinished"] as Models.Activity;
+            var task = parameters["CurrentTask"] as Models.Task;
+            if (task != null)
+            {
+                Origin = task.Origin;
+                Destination = task.Destination;
+            }
+            if (finished != null)
+                Activity = finished.Id;
         }
     }
 }

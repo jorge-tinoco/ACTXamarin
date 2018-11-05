@@ -21,7 +21,6 @@ namespace TaskMobile.ViewModels.Tasks
         public QueryFinishedViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient client) 
             : base(navigationService,dialogService, client)
         {
-            Driver = "TINOCO";
             _service = new WebServices.REST.Tasks(client);
         }
 
@@ -90,6 +89,8 @@ namespace TaskMobile.ViewModels.Tasks
                 await CheckVehicle();
                 if ( CurrentVehicle != null)
                     RefreshData();
+                Models.Driver driver = await App.SettingsInDb.Driver();
+                Driver = driver.User;
             }
             catch (Exception e)
             {

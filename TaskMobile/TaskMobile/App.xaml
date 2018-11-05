@@ -59,10 +59,13 @@
             <!-- colorPrimaryDark is used for the status bar -->
             <Color x:Key="Color.PrimaryDark">#002952</Color>
             <Color x:Key="Color.Silver">#BABABA</Color>
+            <Color x:Key="Color.Menu">#EFEFEF</Color>
+            <Color x:Key="Color.Nero">#1F1F1F</Color>
+            <Color x:Key="Color.Nobel">#959595</Color>
             
 
             <!--The smallest readable font size for the device. Think about this like legal footnotes.-->
-            <OnIdiom x:Key="XSmallTextSize" x:TypeArguments="x:Double" Phone="10" Tablet="13" Desktop="23" />
+            <OnIdiom x:Key="XSmallTextSize" x:TypeArguments="x:Double" Phone="10" Tablet="14" Desktop="23" />
             
             <!--A small but readable font size. Use this for block of text.-->
             <OnIdiom x:Key="SmallTextSize" x:TypeArguments="x:Double" Phone="14" Tablet="17" Desktop="23" />
@@ -160,8 +163,15 @@
                 </Setter>
             </Style>
             <Style x:Key="BtnWithCheck" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource Color.BluePrimary}" />
-                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource Color.ShamrockGreen}" />
+                <Setter Property="BorderColor" Value="{StaticResource Color.BlueSecondary}" />
+                <Setter Property="BorderWidth" Value="1.3" />
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Black.ttf#Roboto Black" iOS="Roboto Light" WinPhone="Assets/fonts/Roboto-Light.ttf#Roboto Light"/>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="FontSize">
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double" Phone="14" Tablet="21"/>
@@ -175,11 +185,6 @@
                 <Setter Property="HeightRequest">
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double" Phone="40" Tablet="50"/>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="FontFamily">
-                    <Setter.Value>
-                        <OnPlatform x:TypeArguments="x:String" Android="fa-solid-900.ttf#Font Awesome 5 Free Regular" iOS="Font Awesome 5 Free" WinPhone="Assets/fa-solid-900.ttf#Font Awesome 5 Free"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="BorderRadius">
@@ -218,13 +223,19 @@
                 </Setter>
             </Style>
             <Style x:Key="BtnCubic" TargetType="Button">
+                <Setter Property="Opacity" Value="0.90"/>
                 <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="BorderColor" Value="{StaticResource Color.PacificBlue}" />
                 <Setter Property="BorderWidth" Value="1" />
-                <Setter Property="TextColor" Value="{StaticResource Color.Silver}" />
+                <Setter Property="TextColor" Value="{StaticResource Color.GrayPrimary}" />
                 <Setter Property="FontSize">
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double" Phone="{StaticResource MediumTextSize}" Tablet="{StaticResource LargeTextSize}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Light.ttf#Roboto Light" iOS="Roboto Light" WinPhone="Assets/fonts/Roboto-Light.ttf#Roboto Light"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="WidthRequest">
@@ -246,6 +257,21 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="BtnDone" TargetType="Button"
+                   BasedOn="{StaticResource BtnWithCheck}">
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fa-solid-900.ttf#Font Awesome 5 Free Regular" iOS="Font Awesome 5 Free" WinPhone="Assets/fa-solid-900.ttf#Font Awesome 5 Free"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{StaticResource Color.ShamrockGreen}" />
+                <Setter Property="BorderColor" Value="{StaticResource Color.BlueSecondary}" />
+            </Style>
+            <Style x:Key="BtnSelected" TargetType="Button"
+                   BasedOn="{StaticResource BtnWithCheck}">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.BlueSecondary}" />
+            </Style>
             <!--#endregion-->
             
             <!--#region  Label styles goes here-->
@@ -264,18 +290,33 @@
             <Style x:Key="GreenBoldLabel" TargetType="Label">
                 <Setter Property="FontSize">
                     <Setter.Value>
-                        <OnIdiom x:TypeArguments="x:Double" Phone="22" Tablet="30"/>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="22" Tablet="40"/>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Medium.ttf#Roboto Medium" iOS="Roboto Light" WinPhone="Assets/fonts/Roboto-Light.ttf#Roboto Light"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{StaticResource Color.PacificBlue}" />
             </Style>
             <Style x:Key="GreenNormalLabel" TargetType="Label">
                 <Setter Property="FontSize" Value="20" />
                 <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
             </Style>
             <Style x:Key="BlueBoldLabel" TargetType="Label">
-                <Setter Property="FontSize" Value="25" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="25" Tablet="45" Desktop="45" />
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="TextColor" Value="{StaticResource Color.BluePrimary}" />
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Medium.ttf#Roboto Medium" iOS="Roboto Light" WinPhone="Assets/fonts/Roboto-Light.ttf#Roboto Light"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Opacity" Value="0.3"/>
             </Style>
             <Style x:Key="BlueNormalLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource Color.Silver}" />
@@ -287,12 +328,86 @@
             </Style>
             <Style x:Key="LabelDirections" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{StaticResource Color.GreenPrimary}" />
+                <Setter Property="TextColor" Value="{StaticResource Color.GrayPrimary}" />
             </Style>
             <Style x:Key="CenterAndExpand" TargetType="Label">
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
             </Style>
+            <Style x:Key="LabelBtnCubic" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Color.GrayPrimary}" />
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Light.ttf#Roboto Light" iOS="Roboto Light" WinPhone="Assets/fonts/Roboto-Light.ttf#Roboto Light"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="LabelDriverAndCar" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="{StaticResource SmallTextSize}" Tablet="{StaticResource SmallTextSize}" Desktop="23" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Light.ttf#Roboto Light" iOS="Roboto Light" WinPhone="Assets/fonts/Roboto-Light.ttf#Roboto Light"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="DriverAndCar" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Color.PinkPrimary}" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="{StaticResource SmallTextSize}" Tablet="{StaticResource SmallTextSize}" Desktop="23" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Condensed.ttf#Roboto Condensed" iOS="Roboto Condensed" WinPhone="Assets/fonts/Roboto-Condensed.ttf#Roboto Condensed"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TableHeader" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            </Style>
+            <Style x:Key="MenuItemPrimary" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Color.Nero}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="14" Tablet="14" Desktop="14" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:String" Android="fonts/Roboto-Light.ttf#Roboto Light" iOS="Roboto Light" WinPhone="Assets/fonts/Roboto-Light.ttf#Roboto Light"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Key="MenuItemSecondary" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Color.Nobel}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="12" Tablet="12" Desktop="12" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Key="MenuItemIcon" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="20" Tablet="20" Desktop="20" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+           
             <!--#endregion-->
 
             <!--#region  GLOBAL CONTROLS styles goes here-->
@@ -339,6 +454,25 @@
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
             </Style>
+            <Style x:Key="MenuItems" TargetType="StackLayout">
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="50" Tablet="50"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="Orientation" Value="Horizontal" />
+                <Setter Property="Padding">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="Thickness" Phone="5" Tablet="5"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Spacing">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double" Phone="15" Tablet="15"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <!--#endregion-->
 
             <ControlTemplate x:Key="TenarisTemplate" >
@@ -358,6 +492,7 @@
                         <Label Text="Tenaris Tamsa 2018 (v1.0.0) delta"
 					       HorizontalOptions="End"
                                TextColor="#495057"
+                               FontFamily="fonts/Roboto-Light.ttf#Roboto Light"
                            FontSize="Small"
                            VerticalOptions="Center"  />
                     </StackLayout>

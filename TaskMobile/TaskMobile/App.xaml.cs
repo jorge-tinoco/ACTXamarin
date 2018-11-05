@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Prism.Navigation;
+using Xamarin.Forms;
 using TaskMobile.DB;
 using Prism.Unity;
 
@@ -20,7 +21,8 @@ namespace TaskMobile
         protected override void OnInitialized()
         {
             InitializeComponent();
-            NavigationService.NavigateAsync("LoginPage");
+            var parameter = new NavigationParameters{ {"logout",  "no"} };
+            NavigationService.NavigateAsync("LoginPage",parameter);
         }
 
         /// <summary>

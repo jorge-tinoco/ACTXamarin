@@ -46,6 +46,8 @@ namespace TaskMobile.WebServices
         /// </summary>
         int ExpirationTime { get; set; }
 
+        void LogOut();
+
         void SetCredentials(string domain, string user, string password);
 
         void InitTMAP(Action<AuthResponse> callbackSuccess, Action<AuthResponse> callbackError);

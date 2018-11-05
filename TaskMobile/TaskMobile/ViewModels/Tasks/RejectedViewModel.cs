@@ -1,18 +1,16 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace TaskMobile.ViewModels.Tasks
 {
     public class RejectedViewModel : BaseViewModel, INavigatingAware
     {
-        private int _taskNumber;
+        private int _activity;
         private string _origin;
         private string _destination;
-        private string cameFrom;
+        private string _cameFrom;
+        private DelegateCommand _other;
+        private DelegateCommand _finish;
 
         public RejectedViewModel(INavigationService navigationService) : base(navigationService)
         {
@@ -20,28 +18,26 @@ namespace TaskMobile.ViewModels.Tasks
         }
         #region COMMANDS
 
-        private DelegateCommand _Other;
         public DelegateCommand OtherCommand =>
-            _Other ?? (_Other = new DelegateCommand(ExecuteOtherCommand));
+            _other ?? (_other = new DelegateCommand(ExecuteOtherCommand));
 
-        private DelegateCommand _Finish;
         public DelegateCommand FinishCommand =>
-            _Finish ?? (_Finish = new DelegateCommand(ExecuteFinishCommand));
+            _finish ?? (_finish = new DelegateCommand(ExecuteFinishCommand));
         #endregion
 
         #region VIEW MODEL PROPERTIES
 
         /// <summary>
-        /// Rejected task number.
+        /// Rejected activity number.
         /// </summary>
-        public int TaskNumber
+        public int Activity
         {
-            get { return _taskNumber; }
-            set { SetProperty(ref _taskNumber, value); }
+            get { return _activity; }
+            set { SetProperty(ref _activity, value); }
         }
 
         /// <summary>
-        /// Where the rejected task  came from.
+        /// Where the rejected task/activity  came from.
         /// </summary>
         public string Origin
         {
@@ -50,7 +46,7 @@ namespace TaskMobile.ViewModels.Tasks
         }
 
         /// <summary>
-        /// Where the rejected task went
+        /// Where the rejected task/activity went
         /// </summary>
         public string Destination
         {
@@ -61,9 +57,15 @@ namespace TaskMobile.ViewModels.Tasks
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            Models.Activity Rejected = parameters["RejectedActivity"] as Models.Activity;
-            cameFrom = (string)parameters["ComesFrom"] ;
-            TaskNumber = Rejected.Id;
+            _cameFrom = (string)parameters["ComesFrom"] ;
+            var rejected = parameters["RejectedActivity"] as Models.Activity;
+            var task = parameters["CurrentTask"] as Models.Task;
+            if (task != null)
+            {
+                Origin = task.Origin;
+                Destination = task.Destination;
+            }
+            if (rejected != null) Activity = rejected.Id;
         }
 
         /// <summary>
@@ -71,9 +73,9 @@ namespace TaskMobile.ViewModels.Tasks
         /// </summary>
         private async void ExecuteOtherCommand()
         {
-            if ( cameFrom == "Executed")
+            if (_cameFrom == "Executed")
                 await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/QueryExecuted");
-            if ( cameFrom == "Assigned")
+            if (_cameFrom == "Assigned")
                 await _navigationService.NavigateAsync("TaskMobile:///MainPage/NavigationPage/QueryAssigned");
 
         }

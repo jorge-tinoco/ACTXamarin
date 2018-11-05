@@ -38,6 +38,23 @@ namespace TaskMobile.DB
         }
 
         /// <summary>
+        /// Returns the current driver.
+        /// </summary>
+        /// <remarks>
+        /// Only one vehicle should be stored in db.
+        /// </remarks>
+        /// <returns>Current <see cref="TaskMobile.Models.Driver"/> or null if not set.</returns>
+        public async Thread.Task<Driver> Driver()
+        {
+            int drivers = await connection.Table<Vehicle>().CountAsync();
+            if (drivers > 0)
+            {
+                return await connection.Table<Driver>().FirstAsync();
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Set one vehicle as current. 
         /// </summary>
         /// <param name="currentVehicle">Vehicle to set as current.</param>
@@ -54,6 +71,37 @@ namespace TaskMobile.DB
                         await connection.DeleteAsync(OldVehicle);
                 }
                 await connection.InsertAsync(currentVehicle);
+                return true;
+            }
+            catch (Exception e)
+            {
+                App.LogToDb.Error(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Store user name in database. 
+        /// </summary>
+        /// <param name="user">Driver name/user name</param>
+        /// <returns>True if all was ok.</returns>
+        public async Thread.Task<bool> SetDriver(string user)
+        {
+            try
+            {
+                int drivers = await connection.Table<Driver>().CountAsync();
+                if (drivers > 0)
+                {
+                    var current = await connection.Table<Driver>().FirstAsync();
+                    if (current != null)
+                        await connection.DeleteAsync(current);
+                }
+                var driver = new Driver
+                {
+                    User = user,
+                    Name = user
+                };
+                await connection.InsertAsync(driver);
                 return true;
             }
             catch (Exception e)
