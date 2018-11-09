@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{D32E030F-0BBB-4B88-90D7-CE94708C9EED}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SecureHttpShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AnonymousHttp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AuthenticationType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Encryptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICredentialsStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SecureHttpConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PublicKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Credentials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InitResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SecureHttp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AuthenticateHttp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpirableAuthenticateHttp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeTracker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TrackAction.cs" />
+  </ItemGroup>
+</Project>
