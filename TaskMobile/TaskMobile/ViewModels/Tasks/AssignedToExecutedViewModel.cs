@@ -33,7 +33,6 @@ namespace TaskMobile.ViewModels.Tasks
         public AssignedToExecutedViewModel(INavigationService navigationService, IPageDialogService dialog, IClient client) 
             : base(navigationService, dialog, client)
         {
-            Driver = "TINOCO";
             _service = new WebServices.REST.Activities(client);
         }
 
@@ -60,6 +59,7 @@ namespace TaskMobile.ViewModels.Tasks
         }
         public DelegateCommand<Picker> PickerCommand =>
             _pickerCommand ?? (_pickerCommand = new DelegateCommand<Picker>(FocusPicker));
+
         public ICommand RefreshCommand
         {
             get
@@ -86,7 +86,7 @@ namespace TaskMobile.ViewModels.Tasks
             }
         }
 
-        public int CurrentTask { get; set; }
+        public Models.Task CurrentTask { get; set; }
 
         /// <summary>
         /// Available rejections reasons.
@@ -131,12 +131,19 @@ namespace TaskMobile.ViewModels.Tasks
         {
             try
             {
-                var tappedTask = (int)parameters["TaskToRun"];
-                CurrentTask = tappedTask;
-                Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
-                Rejections = await App.SettingsInDb.Rejections();
-                Vehicle = current.NameToShow;
-                await ShowActivities();
+                CurrentTask = parameters["TaskToRun"] as Models.Task;
+                if (CurrentTask == null)
+                    await _dialogService.DisplayAlertAsync("Error",
+                        "No se ha detectado alguna tarea para consultar en esta página", "Ok");
+                else
+                {
+                    Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
+                    Rejections = await App.SettingsInDb.Rejections();
+                    Vehicle = current.NameToShow;
+                    await ShowActivities();
+                    Driver driver = await App.SettingsInDb.Driver();
+                    Driver = driver.User;
+                }
             }
             catch (Exception e)
             {
@@ -154,7 +161,7 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 IsRefreshing = true;
-                _service.Start( CurrentTask, tappedActivity.Id, Driver,
+                _service.Start( CurrentTask.Number, tappedActivity.Id, Driver,
                     started =>
                     {
                         Device.BeginInvokeOnMainThread( async () =>
@@ -164,7 +171,8 @@ namespace TaskMobile.ViewModels.Tasks
                             {
                                 var parameters = new NavigationParameters
                                   {
-                                      {"ExecutedActivity", tappedActivity}
+                                      {"ExecutedActivity", tappedActivity},
+                                      {"CurrentTask", CurrentTask}
                                   };
                                 await _navigationService.NavigateAsync("ExecutedTask", parameters);
                             }
@@ -188,11 +196,11 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 if (Rejection == null)
-                    await _dialogService.DisplayAlertAsync("Espera", "Es necesario  seleccionar el motivo de rechazo", "Lo haré");
+                    await _dialogService.DisplayAlertAsync("Espera", "Es necesario  seleccionar el motivo de rechazo", "Ok");
                 else
                 {
                     IsRefreshing = true;
-                    _service.Reject(CurrentTask, tappedActivity.Id, Rejection.Number, Driver,
+                    _service.Reject(CurrentTask.Number, tappedActivity.Id, Rejection.Number, Driver,
                           rejected =>
                           {
                               Device.BeginInvokeOnMainThread(async () =>
@@ -227,7 +235,7 @@ namespace TaskMobile.ViewModels.Tasks
             try
             {
                 IsRefreshing = true;
-                _service.GetAll(CurrentTask, "A" ,
+                _service.GetAll(CurrentTask.Number, "A" ,
                     activities =>
                     {
                         Activities = activities.ToList();
@@ -237,7 +245,7 @@ namespace TaskMobile.ViewModels.Tasks
             catch (Exception ex)
             {
                 IsRefreshing = false;
-                App.LogToDb.Error("Error al descargar actividades de la tarea: " + CurrentTask, ex);
+                App.LogToDb.Error("Error al descargar actividades de la tarea: " + CurrentTask.Number, ex);
                 await _dialogService.DisplayAlertAsync("Error", "Algo sucedió al descargar las actividades", "Entiendo");
             }
         }

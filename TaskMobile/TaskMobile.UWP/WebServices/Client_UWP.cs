@@ -35,6 +35,11 @@ namespace TaskMobile.UWP.WebServices
             throw new NotImplementedException();
         }
 
+        public void LogOut()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Post<T>(string route, string data, Action<T> callbackSuccess, Action<object> callbackError)
         {
             throw new NotImplementedException();

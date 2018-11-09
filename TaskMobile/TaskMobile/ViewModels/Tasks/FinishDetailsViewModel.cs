@@ -72,6 +72,8 @@ namespace TaskMobile.ViewModels.Tasks
             Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
             Vehicle = current.NameToShow;
             await ShowActivities();
+            Models.Driver driver = await App.SettingsInDb.Driver();
+            Driver = driver.User;
         }
 
         /// <summary>
@@ -99,12 +101,9 @@ namespace TaskMobile.ViewModels.Tasks
             }
             catch (Exception ex)
             {
+                IsRefreshing = false;
                 App.LogToDb.Error("Error al consultar actividades de la tarea: " + CurrentTask, ex);
                 await _dialogService.DisplayAlertAsync("Error", "Algo sucedió al consultar las actividades", "Entiendo");
-            }
-            finally
-            {
-                IsRefreshing = false;
             }
         }
        

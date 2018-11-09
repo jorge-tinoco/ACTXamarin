@@ -18,7 +18,6 @@ namespace TaskMobile.ViewModels.Tasks
         public QueryExecutedViewModel(INavigationService navigationService, IPageDialogService dialogService, IClient client) 
             : base(navigationService, dialogService,client)
         {
-            Driver = "Jorge Tinoco";
             ExecutedTasks = new ObservableCollection<Models.Task>();
             _service = new WebServices.REST.Tasks(client);
         }
@@ -58,6 +57,8 @@ namespace TaskMobile.ViewModels.Tasks
                 await CheckVehicle();
                 if (CurrentVehicle != null)
                     RefreshData();
+                Models.Driver driver = await App.SettingsInDb.Driver();
+                Driver = driver.User;
             }
             catch (Exception e)
             {
@@ -69,7 +70,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// <summary>
         /// Navigate to <see cref="Views.Tasks.ExecutedToFinish"/> view.
         /// </summary>
-        /// <param name="tapped">Selected task by the user.</param>
+        /// <param name="tapped">Selected <see cref="Models.Task"/> by the user.</param>
         private async void GoToActivities(object tapped)
         {
             NavigationParameters parameters = new NavigationParameters();

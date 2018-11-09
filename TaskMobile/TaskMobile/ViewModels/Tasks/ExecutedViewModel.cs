@@ -7,7 +7,7 @@ namespace TaskMobile.ViewModels.Tasks
     public class ExecutedViewModel : BaseViewModel, INavigatingAware
     {
 
-        private int _taskNumber;
+        private int _activity;
         private string _origin;
         private string _destination;
         private DelegateCommand _other;
@@ -28,16 +28,16 @@ namespace TaskMobile.ViewModels.Tasks
 
         #region VIEW MODEL PROPERTIES
         /// <summary>
-        /// Executed task number.
+        /// Executed activity.
         /// </summary>
-        public int TaskNumber
+        public int Activity
         {
-            get { return _taskNumber; }
-            set { SetProperty(ref _taskNumber, value); }
+            get { return _activity; }
+            set { SetProperty(ref _activity, value); }
         }
 
         /// <summary>
-        /// Where the executed tasks come from
+        /// Origin warehouse.
         /// </summary>
         public string Origin
         {
@@ -46,7 +46,7 @@ namespace TaskMobile.ViewModels.Tasks
         }
 
         /// <summary>
-        /// Where the executed task goes 
+        /// Destinatination warehouse.
         /// </summary>
         public string Destination
         {
@@ -57,8 +57,14 @@ namespace TaskMobile.ViewModels.Tasks
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            var Executed = parameters["ExecutedActivity"] as Models.Activity;
-            TaskNumber = Executed.Id;
+            var executed = parameters["ExecutedActivity"] as Models.Activity;
+            var task = parameters["CurrentTask"] as Models.Task;
+            if (task != null)
+            {
+                Origin = task.Origin;
+                Destination = task.Destination;
+            }
+            if (executed != null) Activity = executed.Id;
         }
 
         /// <summary>

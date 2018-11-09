@@ -59,5 +59,13 @@
     "Expanded": "true",
     "WhenFalse": "",
     "WhenTrue": ""
+  },
+  "Executed.xaml": {
+    "TaskNumber": "234232",
+    "Origin": "ALCO",
+    "Destination": "CECO"
+  },
+  "_Master.xaml": {
+    "NavigateCommand": "DUMMY"
   }
 }

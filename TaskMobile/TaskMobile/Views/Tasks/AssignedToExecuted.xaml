@@ -9,7 +9,7 @@
             ControlTemplate="{StaticResource TenarisTemplate}"
              Title="Confirmación de tareas">
     <RelativeLayout x:Name="AssignedToExecutedContainer" HeightRequest="492">
-        <Label Text="Reubicación de producto terminado" Style="{StaticResource LabelDirections}"
+        <Label Text="Reubicación de producto terminado"  Style="{StaticResource LabelDirections}"
                RelativeLayout.XConstraint="{ConstraintExpression 
                                         Type=RelativeToParent, 
                                         Property=Width, 
@@ -29,30 +29,37 @@
                 Command="{Binding PickerCommand}" CommandParameter="{Reference Name=RejectionPicker}"
                 RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.85, Constant=0}"
                 RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height,  Factor=.13, Constant=0}"/>
-        <RelativeLayout  x:Name="Steps" 
-                         RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height, Factor=0.080,   Constant=0}"
-                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.20,Constant=0}">
-            <Button x:Name="Step1" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnWithCheck}" Opacity="0.2"
+        <Label Text="Motivo de rechazo" Style="{StaticResource LabelBtnCubic}" 
+               RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.83, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height,  Factor=.25, Constant=0}"/>
+        <RelativeLayout  x:Name="Steps"
+                         RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height, Factor=0.080,   Constant=0}">
+            <RelativeLayout.HeightConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.10,Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.20,Constant=0}" 
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.25,Constant=0}" />
+            </RelativeLayout.HeightConstraint>
+            <Button x:Name="Step1" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnDone}"
                             RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.25, Constant=0}"/>
-            <Button x:Name="Step2" Text="2" Style="{StaticResource BtnWithCheck}"
+            <Button x:Name="Step2" Text="2" Style="{StaticResource BtnSelected}" 
                             RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.55, Constant=0}"/>
-            <Button x:Name="Step3" Text="3" Style="{StaticResource BtnWithCheck}" 
+            <Button x:Name="Step3" Text="3" Style="{StaticResource BtnWithCheck}"
                             RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.85, Constant=0}"/>
         </RelativeLayout>
         <RelativeLayout x:Name="VehicleAndDriver"
-                        RelativeLayout.YConstraint="{ConstraintExpression 
-                                        Type= RelativeToParent, 
-                                        Property=Height, 
-                                        Factor=.22, 
-                                        Constant=0}"
                         RelativeLayout.XConstraint="{ConstraintExpression 
                                         Type= RelativeToParent, 
                                         Property=Width, 
                                         Factor=.10, 
                                         Constant=0}"  >
-            <StackLayout x:Name="VehicleContainer"  Orientation="Horizontal" >
-                <Label Text="Vehículo:" FontAttributes="Bold"/>
-                <Label Text="{Binding Vehicle}"/>
+            <RelativeLayout.YConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.18, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.22, Constant=0}"
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.25, Constant=0}"/>
+            </RelativeLayout.YConstraint>
+            <StackLayout x:Name="VehicleContainer"  Orientation="Horizontal"  VerticalOptions="Center">
+                <Label Text="Vehículo: " Style="{StaticResource LabelDriverAndCar}"/>
+                <Label Text="{Binding Vehicle}" Style="{StaticResource DriverAndCar}"/>
             </StackLayout>
             <StackLayout x:Name="DriverContainer" Orientation="Horizontal"
                           RelativeLayout.XConstraint="{ConstraintExpression 
@@ -60,8 +67,8 @@
                                         Property=Width, 
                                         Factor=.45, 
                                         Constant=0}">
-                <Label Text="Chofer:" FontAttributes="Bold"/>
-                <Label Text="{Binding Driver}"/>
+                <Label Text="Chofer: " Style="{StaticResource LabelDriverAndCar}"/>
+                <Label Text="{Binding Driver}" Style="{StaticResource DriverAndCar}"/>
             </StackLayout>
         </RelativeLayout>
         <Frame HasShadow="True" BackgroundColor="White" Margin="10,10,10,-10"
@@ -69,11 +76,6 @@
                                         Type=RelativeToParent, 
                                         Property=Width, 
                                         Factor=.05, 
-                                        Constant=0}"
-            RelativeLayout.YConstraint="{ConstraintExpression 
-                                        Type=RelativeToParent, 
-                                        Property=Height, 
-                                        Factor=.25, 
                                         Constant=0}"
             RelativeLayout.HeightConstraint = "{ConstraintExpression 
                                         Type=RelativeToParent,
@@ -83,23 +85,28 @@
                                         Type=RelativeToParent,
                                         Property=Width,
                                         Factor=.90}">
+            <RelativeLayout.YConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.23, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.28, Constant=0}"
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.30, Constant=0}"/>
+            </RelativeLayout.YConstraint>
             <StackLayout>
                 <RelativeLayout RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.80}" >
-                    <Label Text="Id actividad" HorizontalOptions="Center"
+                    <Label Text="Id actividad" Style="{StaticResource TableHeader}"
                                    RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.10}"/>
-                    <Label Text="Órden" HorizontalOptions="Center" FontAttributes="Bold"
+                    <Label Text="Órden" Style="{StaticResource TableHeader}"
                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.10, Constant=0}"
                                    RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}" />
-                    <Label Text="Estado" 
+                    <Label Text="Estado"  Style="{StaticResource TableHeader}"
                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}"
                                    RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}" />
-                    <Label Text="Nombre actividad"  FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                    <Label Text="Nombre actividad" Style="{StaticResource TableHeader}"
                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.40, Constant=0}"
                                    RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.30}" />
-                    <Label Text="Vehículo (alias)" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" LineBreakMode="WordWrap"
+                    <Label Text="Vehículo" Style="{StaticResource TableHeader}" VerticalOptions="CenterAndExpand" LineBreakMode="WordWrap"
                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.70, Constant=0}"
                                    RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}"/>
-                    <Label Text="Vehículo (número)" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap"
+                    <Label Text="Número Vehículo" Style="{StaticResource TableHeader}" LineBreakMode="CharacterWrap"
                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.85, Constant=0}"
                                    RelativeLayout.WidthConstraint = "{ConstraintExpression  Type=RelativeToParent, Property=Width,  Factor=.15}"/>
                 </RelativeLayout>
@@ -127,9 +134,9 @@
                                         <ColumnDefinition Width="1.5*" />
                                         <ColumnDefinition Width="1.5*" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Id}"  Grid.Row="0" Grid.Column="0" />
+                                    <Label Text="{Binding Id}"  Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="0" />
                                     <Label Text="{Binding Order}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="1" />
-                                    <Label Text="{Binding Status}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="2" />
+                                    <Label Text="{Binding Status}" Style="{StaticResource CenterAndExpand}" VerticalOptions="CenterAndExpand" Grid.Row="0" Grid.Column="2" />
                                     <Label Text="{Binding Name}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="3" />
                                     <Label Text="{Binding VehicleAlias}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="4" />
                                     <Label Text="{Binding VehicleNumber}" Style="{StaticResource CenterAndExpand}" Grid.Row="0" Grid.Column="5" />

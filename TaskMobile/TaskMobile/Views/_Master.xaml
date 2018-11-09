@@ -12,72 +12,79 @@
             <StackLayout Orientation="Vertical"  BackgroundColor="White" >
                 <StackLayout Orientation="Vertical" HorizontalOptions="Center">
                     <Image Source="tenaris_isotipo.jpg" Scale="1.0" />
-                    <Label Text="Task Mobile" FontSize="28" HorizontalOptions="Center"
+                    <Label Text="WTT" FontSize="28" HorizontalOptions="Center"
                         VerticalOptions="Center" FontAttributes="Bold" TextColor="{StaticResource Color.GrayPrimary}" />
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.Olive}" Padding="5" >
+                <StackLayout Style="{StaticResource MenuItems}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/NavigationPage/ChangeVehicle" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Taxi}"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="White"/>
+                                                   TextColor="{StaticResource Color.Olive}"
+                                                   Style="{StaticResource MenuItemIcon}"/>
                     <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
-                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Vehículos" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Seleccione el vehículo" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="Vehículos"/>
+                        <Label Text="Seleccione el vehículo" Style="{StaticResource MenuItemSecondary}"/>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.MilanoRed}" Padding="5" >
+                <StackLayout Style="{StaticResource MenuItems}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/NavigationPage/QueryAssigned" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.ThumbTack}"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="White"/>
+                                                   TextColor="{StaticResource Color.MilanoRed}"
+                                                   Style="{StaticResource MenuItemIcon}"/>
                     <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
-                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas asignadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas que aún tienes pendientes." HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="Tareas asignadas" />
+                        <Label Text="Tareas que aún tienes pendientes." Style="{StaticResource MenuItemSecondary}"/>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.BlueSecondary}" Padding="5" >
+                <StackLayout Style="{StaticResource MenuItems}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/NavigationPage/QueryExecuted" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.CaretSquareORight}"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="White"/>
+                                                   TextColor="{StaticResource Color.RoyalPurple}"
+                                                   Style="{StaticResource MenuItemIcon}"/>
                     <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
-                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas ejecutadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Consulta las tareas ya realizadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="Tareas ejecutadas"                 Style="{StaticResource MenuItemPrimary}"/>
+                        <Label Text="Consulta las tareas ya realizadas" Style="{StaticResource MenuItemSecondary}"/>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.PacificBlue}" Padding="5" >
+                <StackLayout Style="{StaticResource MenuItems}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/NavigationPage/QueryFinished" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.CheckSquare}"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="White"/>
+                                                   TextColor="{StaticResource Color.RobinsEggBlue}"
+                                                   Style="{StaticResource MenuItemIcon}"/>
                     <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
-                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas terminadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas que ya no necesitan atención" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="Tareas terminadas"            Style="{StaticResource MenuItemPrimary}"/>
+                        <Label Text="Tareas en estatus Finalizado" Style="{StaticResource MenuItemSecondary}"/>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="{StaticResource Color.PinkPrimary}" Padding="5" >
+                <StackLayout Style="{StaticResource MenuItems}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/NavigationPage/QueryRejected" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Ban}"
-                                               VerticalOptions="Center"
-                                               FontSize="20"
-                                               TextColor="White"/>
+                                                   TextColor="{StaticResource Color.Citrus}"
+                                                   Style="{StaticResource MenuItemIcon}"/>
                     <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
-                        <Label FontSize="14"  FontAttributes="Bold" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas rechazadas" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                        <Label FontSize="12" TextColor="{StaticResource Color.GrayGoogle}" Text="Tareas eliminadas por ti" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="Tareas rechazadas"        Style="{StaticResource MenuItemPrimary}"/>
+                        <Label Text="Tareas eliminadas por ti" Style="{StaticResource MenuItemSecondary}"/>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Style="{StaticResource MenuItems}">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="TaskMobile:///MainPage/LoginPage?logout=yes" NumberOfTapsRequired="1"/>
+                    </StackLayout.GestureRecognizers>
+                    <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.SignOutAlt}"
+                                                   TextColor="{StaticResource Color.Avocado}"
+                                                   Style="{StaticResource MenuItemIcon}"/>
+                    <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Start">
+                        <Label Text="Cerrar"        Style="{StaticResource MenuItemPrimary}"/>
+                        <Label Text="Cierra tu sesión" Style="{StaticResource MenuItemSecondary}"/>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

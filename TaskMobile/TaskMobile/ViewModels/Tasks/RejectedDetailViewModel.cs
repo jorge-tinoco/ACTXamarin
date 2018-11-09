@@ -72,7 +72,7 @@ namespace TaskMobile.ViewModels.Tasks
         /// </summary>
         private async void ExecuteFinishCommand()
         {
-            await _navigationService.NavigateAsync("TaskMobile:///MainPage");
+            await _navigationService.GoBackAsync();
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -82,6 +82,8 @@ namespace TaskMobile.ViewModels.Tasks
             Models.Vehicle current = await App.SettingsInDb.CurrentVehicle();
             Vehicle = current.NameToShow;
             await ShowActivities();
+            Models.Driver driver = await App.SettingsInDb.Driver();
+            Driver = driver.User;
         }
 
         private async Task ShowActivities()

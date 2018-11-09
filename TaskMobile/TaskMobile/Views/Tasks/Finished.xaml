@@ -12,23 +12,23 @@
         <RelativeLayout  x:Name="Steps" 
                          RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height, Factor=0.080,   Constant=0}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.20,Constant=0}">
-            <Button x:Name="Step1" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnWithCheck}" Opacity="0.2"
+            <Button x:Name="Step1" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnDone}" Opacity="0.2"
                             RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.25, Constant=0}"/>
-            <Button x:Name="Step2" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnWithCheck}" Opacity="0.2"
+            <Button x:Name="Step2" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnDone}" Opacity="0.2"
                             RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.55, Constant=0}"/>
-            <Button x:Name="Step3" Text="3" Style="{StaticResource BtnWithCheck}" 
+            <Button x:Name="Step3" Text="3" Style="{StaticResource BtnSelected}" 
                             RelativeLayout.XConstraint="{ConstraintExpression   Type= RelativeToParent, Property = Width,   Factor=.85, Constant=0}"/>
         </RelativeLayout>
         <StackLayout x:Name="TaskFinished" Orientation="Vertical"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.50,Constant=0}"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}"
-                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.38, Constant=0}"  
+                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.25, Constant=0}"  
                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25, Constant=0}">
-            <Label HorizontalOptions="Center" Text="Tarea finalizada"  Style="{StaticResource GreenBoldLabel}" />
-            <Label HorizontalOptions="Center" Text="234" Style="{StaticResource BlueBoldLabel}"/>
+            <Label HorizontalOptions="Center" Text="Tarea finalizada"  Style="{StaticResource GreenBoldLabel}" TextColor="{StaticResource Color.PacificBlue}" />
+            <Label HorizontalOptions="Center" Text="{Binding Activity}" Style="{StaticResource BlueBoldLabel}" Opacity="0.3"/>
         </StackLayout>
         <StackLayout x:Name="FromToPlaces" Orientation="Horizontal" 
-                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=TaskFinished, Property=Y, Factor=1.5,Constant=0}"  
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=TaskFinished, Property=Y, Factor=2.5,Constant=0}"  
                         RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.25,    Constant=0}"  
                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}"
                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.10,Constant=0}">
@@ -36,31 +36,46 @@
                 <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand"
                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}">
                     <Label HorizontalOptions="Center" Text="Origen"  Style="{StaticResource GreenNormalLabel}"/>
-                    <Label HorizontalOptions="Center" Text="ALCO" Style="{StaticResource BlueNormalLabel}"/>
+                    <Label HorizontalOptions="Center" Text="{Binding Origin}" Style="{StaticResource BlueNormalLabel}"/>
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand"
                             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,  Factor=.5,    Constant=0}"  
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=.50,Constant=0}">
                     <Label HorizontalOptions="Center" Text="Destino"  Style="{StaticResource GreenNormalLabel}"/>
-                    <Label HorizontalOptions="Center" Text="FAT2" Style="{StaticResource BlueNormalLabel}"/>
+                    <Label HorizontalOptions="Center" Text="{Binding Destination}" Style="{StaticResource BlueNormalLabel}"/>
                 </StackLayout>
             </RelativeLayout>
         </StackLayout>
-        <RelativeLayout x:Name="FinishContainer" MinimumWidthRequest="200"
-                                RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.55, Constant=0}"
-                                RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height,  Factor=.85, Constant=0}">
-            <Button Text="Terminar"  Style="{StaticResource BtnSecondary}" Command="{Binding FinishCommand}" />
-            <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.SignLanguage}" FontSize="20" TextColor="White"
-                                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=FinishContainer, Property=Y, Factor=0,Constant=8}"  
-                                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=FinishContainer, Property=X, Factor=0,Constant=13}" />
-        </RelativeLayout>
-        <RelativeLayout x:Name="OtherContainer"
-                            RelativeLayout.XConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.75, Constant=0}"
-                            RelativeLayout.YConstraint="{ConstraintExpression Type= RelativeToParent,  Property=Height,  Factor=.85, Constant=0}">
-            <Button Text="Otra" Style="{StaticResource BtnBorders}" Opacity=".86" Command="{Binding OtherCommand}" />
-            <userControls:FontAwesomeLabel Text="{x:Static userControls:Icon.Child}" FontSize="20" TextColor="White"
-                                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=OtherContainer, Property=Y, Factor=0,Constant=8}"  
-                                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=OtherContainer, Property=X, Factor=0,Constant=13}" />
-        </RelativeLayout>
+        <StackLayout x:Name="OtherAndFinish" Orientation="Vertical">
+            <RelativeLayout.XConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.85, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.85, Constant=0}"
+                                                      Desktop="{ConstraintExpression Type= RelativeToParent,  Property=Width,  Factor=.85, Constant=0}"/>
+            </RelativeLayout.XConstraint>
+            <RelativeLayout.YConstraint>
+                <OnIdiom x:TypeArguments="Constraint" Phone="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.15, Constant=0}" 
+                                                      Tablet="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.15, Constant=0}"
+                                                      Desktop="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=.15, Constant=0}"/>
+            </RelativeLayout.YConstraint>
+
+            <StackLayout.Spacing>
+                <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="20"/>
+            </StackLayout.Spacing>
+
+            <StackLayout x:Name="OtherButton">
+                <StackLayout.Spacing>
+                    <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="8"/>
+                </StackLayout.Spacing>
+                <userControls:SquareButton Command="{Binding OtherCommand}"  Text="{x:Static userControls:Icon.ArrowLeft}" Style="{StaticResource BtnCubic}" />
+                <Label Text="Regresar" Style="{StaticResource LabelBtnCubic}" />
+            </StackLayout>
+            <StackLayout  x:Name="FinishButton">
+                <StackLayout.Spacing>
+                    <OnIdiom x:TypeArguments="x:Double" Phone="2" Tablet="5"/>
+                </StackLayout.Spacing>
+                <userControls:SquareButton Command="{Binding FinishCommand}" Text="{x:Static userControls:Icon.Check}" Style="{StaticResource BtnCubic}"  />
+                <Label Text="Terminar" Style="{StaticResource LabelBtnCubic}"/>
+            </StackLayout>
+        </StackLayout>
     </RelativeLayout>
 </ContentPage>

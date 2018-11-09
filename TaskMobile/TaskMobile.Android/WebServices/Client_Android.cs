@@ -36,7 +36,7 @@ namespace TaskMobile.Droid.WebServices
             var crypto = new Utilities.Crypto();
             var file = new Utilities.File();
             var appInfo = new Utilities.App();
-
+            // TODO: set the correct encrypted files and make sure settings are correct.
             crypto.EncryptFile("config_tl.txt");
             string environment = file.ReadFromAssets("current_config.txt");
             //var currentConfig = string.Format("Configuration/config_{0}.txt", environment);
@@ -162,6 +162,14 @@ namespace TaskMobile.Droid.WebServices
         }
 
         /// <summary>
+        /// Close session.
+        /// </summary>
+        public void LogOut()
+        {
+            _secureClient.Logout();
+        }
+
+        /// <summary>
         /// Set user credentials.
         /// </summary>
         /// <param name="domain">User's domain.</param>
@@ -172,6 +180,8 @@ namespace TaskMobile.Droid.WebServices
             Credentials.Domain = domain;
             Credentials.User = user;
             Credentials.Password = password;
+            Credentials.WsUser = _user;
+            Credentials.WsPassword = _password;
         }
 
         /// <summary>
@@ -208,12 +218,13 @@ namespace TaskMobile.Droid.WebServices
        /// <param name="error">TMAP error callback.</param>
         public void Post<T>(string route, string data, Action<T> success, Action<object> error)
        {
+            //TODO: make sure if necessary include Authentication header in this part.
             var credentials = $"{_user}:{_password}";
             var byteArray = Encoding.UTF8.GetBytes(credentials);
             var base64 = Convert.ToBase64String(byteArray);
             var header = new KeyValuePair<string, string>("Basic",base64);
             var headers = new List<KeyValuePair<string, string>> {header};
-           _secureClient.Post(route, data, headers,
+           _secureClient.Post(route, data,
                     response =>
                     {
                         var settings = new JsonSerializerSettings

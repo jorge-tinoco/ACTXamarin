@@ -26,6 +26,11 @@ namespace TaskMobile.iOS.WebServices
 
         int IClient.ExpirationTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+        public void LogOut()
+        {
+            throw new NotImplementedException();
+        }
+
         void IClient.Get<T>(string route, Action<T> callbackSuccess, Action<object> callbackError)
         {
             throw new NotImplementedException();
